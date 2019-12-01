@@ -1,0 +1,706 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                <li><a  href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <style>
+            .small_text{
+                font-size: 9px;
+                color: darkgray;
+            }
+            .small_text:hover{
+                font-size: 9px;
+                color: black;
+            }
+            .table_zebra tbody tr td:nth-child(2n+1){
+                background: lemonchiffon;
+            }
+            .table_zebra tbody tr td:nth-child(2){
+                background: none;
+            }
+
+            .alert-box{
+                margin-bottom: 5px;
+                margin-top: 5px;
+                display: none;
+            }
+
+            .table-abc-analysis tr td:first-child{
+                width: 25%;
+            }
+
+            .field-file{
+                font-size: 15px;
+                font-weight: bold;
+                text-shadow: 1px 1px 1px #444, 0 0 1px #ccc;
+                color: black;
+            }
+
+            optgroup{
+                border-bottom: 1px solid #ccc;
+                color:#bbb;
+            }
+            optgroup option{
+                color:#444;
+            }
+
+            .error-border{
+                border:3px solid red;
+                background: bisque;
+            }
+
+
+            .setTemplateDataBtn{
+                border:1px solid #dddddd;
+                background: #bbbbbb;
+            }
+
+            .setTemplateDataBtnNeedSave{
+                border:1px solid brown;
+                background: red;
+            }
+
+            .field-view-file-data{
+                font-size: 9px; color:#bbb;
+            }
+
+            .field-view-file-data:hover{
+                background: white;
+                color: black;
+            }
+
+            .attribute_import_status,
+            .product_import_status,
+            .manufacturer_import_status,
+            .attribute_import_status,
+            .option_import_status
+            {
+                border-left: 10px solid #CCC;
+            }
+            #modal_form {
+                width: 800px;
+                height: 600px;
+                border-radius: 5px;
+                border: 3px #000 solid;
+                background: #fff;
+                position: fixed;
+                top: 25%;
+                left: 50%;
+                margin-top: -300px;
+                margin-left: -400px;
+                display: none;
+                opacity: 0;
+                z-index: 5;
+                padding: 40px 10px;
+            }
+
+            #modal_form_well{
+                overflow-y: auto;
+            }
+
+            #modal_form #modal_close {
+                width: 21px;
+                height: 21px;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                cursor: pointer;
+                display: block;
+            }
+
+            #overlay {
+                z-index:3;
+                position:fixed;
+                background-color:#000;
+                opacity:0.8;
+                -moz-opacity:0.8;
+                filter:alpha(opacity=80);
+                width:100%;
+                height:100%;
+                top:0;
+                left:0;
+                cursor:pointer;
+                display:none;
+            }
+        </style>
+        {% if error_warning %}
+        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul  class="nav nav-tabs" >
+                    <li><a  data-toggle="tab"  href="#tab_yml_import" >{{ tab_yml_import }}</a></li>
+                    <li><a  data-toggle="tab" href="#tab-setting"  >{{ tab_setting }}</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab_yml_import" class="tab-pane">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="tab-content">
+                                    <div class="table-responsive">
+                                        <h3>{{ text_step_1_setting }}</h3>
+                                        <form id="template_data_form">
+                                            <table class="table table-bordered table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="text-left" width="25%">
+                                                        {{ entry_import_yml_oc_format_data }}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <select onchange="getStepOneSettings(this.value,0);" name="import_yml_oc_format_data"  class="form-control">
+                                                                    <option value="0" >{{ entry_select }}</option>
+                                                                    {% for import_yml_oc_format_data_row in import_yml_oc_format_data %}
+                                                                        <option value="{{ import_yml_oc_format_data_row }}" >{{ "entry_import_yml_oc_format_data_format_#{import_yml_oc_format_data_row}" }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" colspan="2" id="stepOneSettings">
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <div  id="stepTwoSettings">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-setting" class="tab-pane" >
+                        <div align="right">
+                            <a onclick="$('#form-setting').submit();" title="{{ entry_import_yml_oc_template_data_save_template_data }}" class="btn btn-info"><i class="fa fa-tasks"></i>{{ entry_import_yml_oc_template_data_save_template_data }}</a>
+                        </div>
+                        <br>
+                        <h2>{{ entry_update_csv_link_new_title }}</h2>
+                        <form action="{{ action_setting }}" method="post" enctype="multipart/form-data" id="form-setting">
+                            {{ id|date('h:i A', 'UTC') }}
+                            <input name="import_yml_oc_update_yml_link[{{ id }}][id]" type="hidden" value="{{ id }}" />
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>{{ column_update_csv_link_template_data }}</th>
+                                    <th>{{ column_update_csv_link_token }}</th>
+                                    <th>{{ column_update_csv_link_status }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="text-left">
+                                        <div class="input-group">
+                                            {% if import_yml_oc_update_yml_link_template_data == false %}
+                                            <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                <option value="0">{{ entry_import_yml_oc_template_data_empty }}</option>
+                                            </select>
+                                            {% else %}
+                                            <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                <option value="0">{{ entry_select }}</option>
+                                                {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
+                                                    <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" name="import_yml_oc_update_yml_link[{{ id }}][token]" value="" />
+                                    </td>
+                                    <td>
+                                        <select name="import_yml_oc_update_yml_link[{{ id }}][status]"  class="form-control">
+                                            <option value="0">{{ entry_update_csv_link_status_0 }}</option>
+                                            <option value="1">{{ entry_update_csv_link_status_1 }}</option>
+                                            <option value="3">{{ entry_update_csv_link_status_3 }}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <h2>{{ entry_update_csv_link_title }}</h2>
+                            {% if import_yml_oc_update_yml_link %}
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>{{ column_update_csv_link_template_data }}</th>
+                                    <th>{{ column_update_csv_link_token }}</th>
+                                    <th>{{ column_update_csv_link_status }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for link_data in import_yml_oc_update_yml_link %}
+                                    {{ set id = link_data.id }}
+                                    <input name="import_yml_oc_update_yml_link[{{ id }}][id]" type="hidden" value="{{ id }}" />
+                                    <tr>
+                                        <td class="text-left">
+                                            <div class="input-group">
+                                                {% if import_yml_oc_update_yml_link_template_data %}
+                                                <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                    <option value="0" >{{ entry_import_yml_oc_template_data_empty }}</option>
+                                                </select>
+                                                {% else %}
+                                                    <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                        {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
+                                                            {% if link_data.template_data_id and link_data.template_data_id == template_data_key %}
+                                                                <option selected="" value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                            {% else %}
+                                                                <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" name="import_yml_oc_update_yml_link[{{ id }}][token]" value="{{ link_data.token }}" />
+                                        </td>
+                                        <td>
+                                            <select name="import_yml_oc_update_yml_link[{{ id }}][status]"  class="form-control">
+                                                <option value="0" >{{ entry_update_csv_link_status_0 }}</option>
+                                                {% if link_data.status and link_data.status == 1 %}
+                                                    <option selected="" value="1" >{{ entry_update_csv_link_status_1 }}</option>
+                                                    <option value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                {% elseif link_data.status and link_data.status == 3 %}
+                                                    <option value="1" >{{ entry_update_csv_link_status_1 }}</option>
+                                                    <option selected=""  value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                {% else %}
+                                                    <option value="1" >{{ entry_update_csv_link_status_1 }}</option>
+                                                    <option value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                {% endif %}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">{{ column_update_csv_link_link }}</td>
+                                        <td colspan="2">
+                                            <input style="width:60%"  class="form-control"  readonly="" onclick="$(this).select()" value="{{ "#{HTTP_CATALOG}index.php?route=feed/import_yml_oc_update_yml_link&user_token=#{link_data.token}" }}"/>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                                <div class="alert alert-success">{{ entry_update_csv_link_empty }}</div>
+                            {% endif %}
+                        </form>
+                        <hr>
+                        {% if error_warning == false and success == false %}
+                        <div id="import_yml_oc_notification" class="alert alert-info"><i class="fa fa-info-circle"></i>
+                            <div id="import_yml_oc_loading"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal_form">
+    <span id="modal_close">X</span>
+    <div id="modal_form_well" class="well" style="height: 550px; overflow-y: auto">
+    </div>
+</div>
+<div id="overlay"></div>
+
+<script type="text/javascript"><!--
+
+    var start = 0;
+    var first_start = 0;
+    var finished = 0;
+    var limit = 0;
+    var total = 0;
+
+    function startImport(new_start) {
+        var errors = false;
+
+        if ($("select[name='import_yml_oc_template_data_yml[type_change]']").val() == 0) {
+            $("select[name='import_yml_oc_template_data_yml[type_change]']").addClass('error-border');
+            errors = true;
+        } else {
+            $("select[name='import_yml_oc_template_data_yml[type_change]']").removeClass('error-border');
+        }
+        if (errors === true) {
+            return;
+        }
+
+        if (limit==0 && start==0) {
+            start = parseInt($('input[name=\'import_yml_oc_template_data_yml[start]\']').val()) - 1;
+            first_start = parseInt($('input[name=\'import_yml_oc_template_data_yml[start]\']').val()) - 1;
+            if (start<0) {
+                start = 0;
+            }
+            if (first_start<0) {
+                first_start = 0;
+            }
+
+            limit = parseInt($('input[name=\'import_yml_oc_template_data_yml[limit]\']').val());
+            $('input[name=\'import_yml_oc_template_data_yml[limit]\']').prop('readOnly',true);
+            $('input[name=\'import_yml_oc_template_data_yml[start]\']').prop('readOnly',true);
+            $('#startImport').hide();
+            $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }}: <b>{{ text_wite }}</b> / <b>{{ text_wite }}</b></div>');
+        } else {
+            finished = start+limit-first_start;
+            new_start = parseInt(new_start);
+            start = new_start;
+        }
+
+        $.ajax({
+            type: 'post',
+            url: 'index.php?route=extension/module/import_yml_oc/startImport&user_token={{ user_token }}&start='+start,
+            data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
+            {% if debug_mode %}
+                dataType: 'html',
+                    success: function(json) {
+                    $('#importStartMessages').html('Sorry, debug mode is enabled<br><br>'+json);
+                    $('#startImport').show();
+                    start = 0;
+                    total = 0;
+                    first_start = 0;
+                    limit = 0;
+                    finished = 0;
+                    return;
+            {% else %}
+                    dataType: 'json',
+                        success: function(json) {
+            {% endif %}
+
+                if (json['error']!='') {
+                    $('#importStartMessages').html('<div class="alert alert-danger">'+json['error']+'</div>');
+                    $('#startImport').show();
+                    start = 0;
+                    total = 0;
+                    first_start = 0;
+                    limit = 0;
+                    finished = 0;
+                    return;
+                }
+
+                if (json['success']!='') {
+                    $('#importStartMessages').html('<div class="alert alert-success">'+json['success']+'</div>');
+                    $('input[name=\'import_yml_oc_template_data_yml[limit]\']').prop('readonly',false);
+                    $('input[name=\'import_yml_oc_template_data_yml[start]\']').prop('readonly',false);
+                    $('#startImport').show();
+                    start = 0;
+                    total = 0;
+                    first_start = 0;
+                    limit = 0;
+                    finished = 0;
+                    return;
+                }
+
+                if (json['total']!='') {
+                    total = parseInt(json['total']) - first_start;
+                    if(total<0){
+                        total = 0;
+                    }
+                    $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }} : <b>'+finished+'</b> / <b>'+total+'</b></div>');
+                    startImport(start+limit);
+                }
+            },
+            failure: function(response) {
+            {% if debug_mode %}
+                alert(response);
+            {% endif %}
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+            {% if debug_mode %}
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            {% endif %}
+            }
+        });
+    }
+
+    function openElementOnNameValue(name_open,value_this,value_open,element) {
+        if (value_open == value_this) {
+            $(element + "[name='"+name_open+"']").show();
+        } else {
+            $(element + "[name='"+name_open+"']").hide();
+            $(element + "[name='"+name_open+"'] option[value='0']").prop('selected', true);
+        }
+    }
+
+    function setTemplateData(type_action) {
+        $("#setTemplateData").empty();
+
+        $("#setTemplateData").before('<div id="import_yml_oc_loading_setTemplateData"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>').show();
+
+        $.ajax({
+            type: 'post',
+            url: 'index.php?route=extension/module/import_yml_oc/setTemplateData&user_token={{ user_token }}&type_action='+type_action,
+            data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
+            dataType: 'json',
+            success: function(json) {
+                if (json['success']!='') {
+                    $('#setTemplateData').html(json['success']);
+                }
+                if (json['error']!='') {
+                    $('#setTemplateData').html(json['error']);
+                }
+                if (type_action=='save') {
+                    var new_option = '<option value="'+json['import_yml_oc_template_data_yml_id']+'">'+json['import_yml_oc_template_data_yml_name']+'</option>'
+                    $("select[name='import_yml_oc_template_data_yml[id]']").append(new_option);
+                    $("select[name='import_yml_oc_template_data_yml[id]'] option[value='"+json['import_yml_oc_template_data_yml_id']+"']").prop('selected', true);
+                    $("#setTemplateDataTypeAction option[value='update']").prop('selected', true);
+                }
+                if (type_action=='delete') {
+                    $("select[name='import_yml_oc_template_data_yml[id]'] option[value='"+json['import_yml_oc_template_data_yml_id_delete']+"']").remove();
+                }
+                $('#import_yml_oc_loading_setTemplateData').remove();
+                $("#setTemplateDataBtn").removeClass('setTemplateDataBtnNeedSave');
+            },
+            failure: function(response) {
+
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+
+    function getTypesDataColumns(type_data,id_td,field) {
+        $(id_td).html('<div id="import_yml_oc_'+id_td+'"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>').show();
+        $.ajax({
+            type: 'post',
+            url: 'index.php?route=extension/module/import_yml_oc/getTypesData&user_token={{ user_token }}&field='+field+'&type_data='+type_data,
+            data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
+            dataType: 'html',
+            success: function(response) {
+                $(id_td).html(response);
+            },
+            failure: function(response){
+
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+
+    function updateSaveButton() {
+        $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select').change(function(){
+            $("#setTemplateDataBtn").addClass('setTemplateDataBtnNeedSave');
+            $("#setTemplateData").hide();
+        });
+    }
+
+    function changeTypeData() {
+        $('.select-type-data').each(function() {
+            if(this.value!=0){
+                $(this).change();
+            }
+        });
+    }
+
+    function changeTypeDataColumn(data_column_class) {
+        if(data_column_class === 0) {
+            $('.select-type-data-column').each(function() {
+                if(this.value != 0) {
+                    $(this).change();
+                }
+            });
+        }else{
+            $('.'+data_column_class).change();
+        }
+    }
+
+    function getTypesDataColumnsAdditional(type_data_column,field,id_td) {
+        $(id_td).html('<div id="import_yml_oc_loading_'+id_td+'"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>').show();
+        $.ajax({
+            type: 'post',
+            url: 'index.php?route=extension/module/import_yml_oc/getTypesDataColumnAdditional&user_token={{ user_token }}&field='+field+'&type_data_column='+type_data_column,
+            data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
+            dataType: 'html',
+            success: function(response) {
+                if(response!=''){
+                    $(id_td).show(100);
+                    $(id_td).html(response);
+                }else{
+                    $(id_td).hide();
+                }
+
+            },
+            failure: function(response){
+
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+
+    function getStepTwoSettings() {
+        $("#stepTwoSettings").before('<div class="import_yml_oc_loading_stepTwoSettings"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>');
+        $.ajax({
+            type: 'post',
+            url: 'index.php?route=extension/module/import_yml_oc/getStepTwoSettings&user_token={{ user_token }}',
+            data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
+            dataType: 'html',
+            success: function(response) {
+                $('#stepTwoSettings').html(response);
+                $('.import_yml_oc_loading_stepTwoSettings').remove();
+            },
+            failure: function(response){
+                //alert(response);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+
+    function setCategoryMatchingRow(yml_category_id,category_id,set,text) {
+        if (set == true) {
+            var row = "<div id='setCategoryMatchingRow_"+yml_category_id+"_"+category_id+"_0'><input onclick='removeSel("+yml_category_id+","+category_id+",0);' id='setCategoryMatchingRow"+yml_category_id+"_"+category_id+"' name='import_yml_oc_template_data_yml[category][category_matching]["+yml_category_id+"]["+category_id+"]' type='checkbox' checked='' value="+category_id+" /><label for='setCategoryMatchingRow"+yml_category_id+"_"+category_id+"' >&nbsp;&nbsp;&nbsp;"+text+"</label><br></div>";
+
+            $("#yml_category_category_matching_select"+yml_category_id).append(row);
+
+            $("#yml_category_category_matching_select"+yml_category_id).show();
+        } else {
+            $("#setCategoryMatchingRow"+yml_category_id+"_"+category_id+"_").remove();
+        }
+    }
+
+    function removeSel(yml_category_id,category_id,str){
+        $("#setCategoryMatchingRow_"+yml_category_id+"_"+category_id+"_"+str).remove();
+    }
+
+    function setCategoryMatching(yml_category_id,this_value,set){
+        if ( set == true && $("input[name='import_yml_oc_template_data_yml[category][category_matching]["+yml_category_id+"][select]']").is(":checked")==true ) {
+            $.ajax({
+                type: 'post',
+                url: 'index.php?route=extension/module/import_yml_oc/setCategoryMatching&user_token={{ user_token }}&yml_category_id='+yml_category_id,
+                data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
+                dataType: 'html',
+                success: function(html) {
+
+                    $('#modal_form_well').empty();
+                    $('#modal_form_well').append(html);
+
+                },
+                failure: function(response){
+
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+            $('#overlay').fadeIn(400,function(){
+                $('#modal_form').css('display', 'block').animate({opacity: 1, top: '50%'}, 50);
+            });
+        }
+
+        if ($("input[name='import_yml_oc_template_data_yml[category][category_matching]["+yml_category_id+"][select]']").is(":checked")==false) {
+            $("#yml_category_category_matching_select"+yml_category_id).hide();
+            return;
+        }
+    }
+
+    $(document).ready(function() {
+        $('#modal_close, #overlay').click( function(){
+            $('#modal_form').animate({opacity: 0, top: '45%'}, 200,
+                function(){
+                    $(this).css('display', 'none');
+                    $('#overlay').fadeOut(400);
+                    $('#modal_form_well').empty();
+                }
+            );
+        });
+    });
+
+    function getStepOneSettings(format_data,template_data) {
+        $("#stepOneSettings").before('<div id="import_yml_oc_loading_stepOneSettings"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>');
+        $("#stepTwoSettings").empty();
+        $.ajax({
+            type: 'post',
+            url: 'index.php?route=extension/module/import_yml_oc/getStepOneSettings&user_token={{ user_token }}',
+            data: 'template_data='+template_data+'&format_data='+format_data,
+            dataType: 'html',
+            success: function(response) {
+                $('#stepOneSettings').html(response);
+                $('#ocext_loading_stepOneSettings').remove();
+            },
+            failure: function(response){
+
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }
+
+    function openSettingBox(id_box,check_value) {
+        if (check_value == 0) {
+            $(id_box).hide(100);
+        } else {
+            $(id_box).show(200);
+        }
+    }
+
+    function getUniqueParams() {
+        $("#unique_param").hide();
+
+        $(".unique_param_type_row").hide();
+        $('.select-type-data').each(function(){
+            if (this.value != 0) {
+                $("#unique_param_"+this.value).show(150);
+                $("#unique_param").show(150);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $("a[href=\'#{{ open_tab ?>\']").click();
+        {% demo_mode %}
+            $("select[name='import_yml_oc_format_data']").val('csv');
+            $("select[name='import_yml_oc_format_data']").change();
+        {% endif %}
+    });
+
+    function getNotifications() {
+        $.ajax({
+            type: 'GET',
+            url: 'index.php?route=extension/module/import_yml_oc/getNotifications&user_token={{ user_token }}',
+            dataType: 'json',
+            success: function(json) {
+                if (json['error']) {
+                    $('#import_yml_oc_notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> '+json['error']);
+                } else if (json['message'] && json['message']!='' ) {
+                    $('#import_yml_oc_notification').html('<i class="fa fa-info-circle"></i><button type="button" class="close" data-dismiss="alert">&times;</button> '+json['message']);
+                }else{
+                    $('#import_yml_oc_notification').remove();
+                }
+            },
+            failure: function() {
+                $('#import_yml_oc_notification').remove();
+            },
+            error: function() {
+                $('#import_yml_oc_notification').remove();
+            }
+        });
+    }
+    getNotifications();
+
+    //--></script>
+{{ footer }}

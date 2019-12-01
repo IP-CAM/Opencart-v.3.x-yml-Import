@@ -1,0 +1,9 @@
+# Git
+/.git/
+
+# IDE Project files
+/.idea
+/upload/.idea
+
+# OS X
+/**/*.DS_Store
