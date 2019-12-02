@@ -1,795 +1,68 @@
 {% if errors == false %}
-{% if format_data == 'yml' %}
-    <h2>{{ text_step_2_synchronization }}</h2>
-    <p class="alert alert-success">{{ text_count_categories }}: <b>{{ count_categories }}</b>, {{ text_count_offers }}: <b>{{ count_offers }}</b></p>
-    <table class="table table-bordered table-hover">
-        <tbody>
-        <tr>
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_category_matching }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <div class="well" style="max-height: 200px; overflow-y: auto">
-                        {% for yml_category_data_row in yml_categories %}
-                        {% if template_data_selected.category.category_matching[yml_category_data_row.yml_category_id].select is defined and template_data_selected.category.category_matching[yml_category_data_row.yml_category_id]|length > 1 %}
-                            <input class="setCategoryMatching" onchange="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)" name="import_yml_oc_template_data_yml.category.category_matching[{{ yml_category_data_row.yml_category_id }}].select" type="checkbox" id="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" checked="" />
-                        {% else %}
-                            <input class="setCategoryMatching" onchange="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)" name="import_yml_oc_template_data_yml.category.category_matching[{{ yml_category_data_row.yml_category_id }}].select" type="checkbox" id="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" />
-                        {% endif %}
-                        <label for="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" >&nbsp;&nbsp;&nbsp;{{ yml_category_data_row.name }}</label><br>
-                        <div id="yml_category_category_matching_select{{ yml_category_data_row.yml_category_id }}" class="well" style="max-height: 200px; overflow-y: auto">
-                            <a onclick="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)">Редактировать список</a><br><br>
-                            {% set categories_matching_selected = [] %}
-                            {% set yml_category_id = yml_category_data_row.yml_category_id %}
-                            {% if template_data_selected.category.category_matching[yml_category_id].select is defined and template_data_selected.category.category_matching[yml_category_id].select and yml_categories and categories %}
-                                {% set template_data_selected.category.category_matching[yml_category_id].select = false %}
-                                {% if template_data_selected.category.category_matching[yml_category_id] %}
-                                    {% set categories_matching_selected = template_data_selected.category.category_matching[yml_category_id] %}
-                                {% endif %}
-                            {% endif %}
-                            {% for category_id in categories_matching_selected %}
-                                {% if categories[category_id] %}
-                                    <div id="setCategoryMatchingRow_{{ yml_category_id }}_{{ category_id }}__">
-                                        <input checked="" onclick="removeSel({{ yml_category_id }},{{ category_id }},'_')" name="import_yml_oc_template_data_yml[category][category_matching][{{ yml_category_id }}][{{ category_id }}]" type="checkbox" value="{{ category_id }}"  />
-                                        <label >&nbsp;&nbsp;&nbsp;{{ categories[category_id].name }}</label><br>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        <script>
-                            $(document).ready(function() {
-                                setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,false);
-                            });
-                        </script>
-                        {% endfor %}
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_import_status }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.product_import_status',this.value)" name="import_yml_oc_template_data_yml[product][import_status]"  class="form-control">
-                        {% if template_data_selected.product.import_status is defined and template_data_selected.product.import_status %}
-                            <option value="1" selected="">{{ text_enabled }}</option>
-                            <option value="0">{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="">{{ text_disabled }}</option>
-                            <option value="1">{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                </div>
-                <script>
-                    $(document).ready(function() {
-                        $("select[name='import_yml_oc_template_data_yml[product][import_status]']").change();
-                    });
-                </script>
-            </td>
-        </tr>
-        <tr class="product_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_category_skip }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <div class="well" style="max-height: 200px; overflow-y: auto">
-                        <a onclick="if($('.import_yml_oc_template_data_yml_product_category_skip').is(':checked')){ $('.import_yml_oc_template_data_yml_product_category_skip').prop('checked',false); }else{ $('.import_yml_oc_template_data_yml_product_category_skip').prop('checked',true); }">Выделение</a><br><br>
-                        {% for yml_category_data_row in yml_categories %}
-                            {% if template_data_selected.product.category_skip[yml_category_data_row.yml_category_id] %}
-                                <input class='import_yml_oc_template_data_yml_product_category_skip' name="import_yml_oc_template_data_yml[product][category_skip][{{ yml_category_data_row.yml_category_id }}]" type="checkbox" id="yml_category_skip_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" checked="" />
-                            {% else %}
-                                <input class='import_yml_oc_template_data_yml_product_category_skip' name="import_yml_oc_template_data_yml[product][category_skip][{{ yml_category_data_row.yml_category_id }}]" type="checkbox" id="yml_category_skip_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" />
-                            {% endif %}
-                            <label for="yml_category_skip_{{ yml_category_data_row.yml_category_id }}" >&nbsp;&nbsp;&nbsp;{{ yml_category_data_row.name }}</label><br>
-                        {% endfor %}
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status">
-            <td class="text-left" >
-                Импорт группы товаров, как один под одинаковому атрибуту или по одинаковому значения поля
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.product_group_import',this.value)"  style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][group_import]"  class="form-control">
-                        {% if template_data_selected.product.group_import is defined and template_data_selected.product.group_import %}
-                            <option value="1" selected="">{{ text_enabled }}</option>
-                            <option value="0">{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="">{{ text_disabled }}</option>
-                            <option value="1">{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                    <div class="product_group_import">
-                        <hr>
-                        <br>
-                        <label style="margin-top: 10px;">&nbsp;&nbsp;Товары с одинаковым значением выбранного атрибута будут добавлены, как один товар</label>
-                        <select style="margin-bottom: 5px; max-width:150px;" id="group_import_attribute" name="import_yml_oc_template_data_yml[product][group_import_attribute]"  class="form-control">
-                            <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                            {% for offer_attribute_element, offer_attribute_element_name in offer_attributes %}
-                                {% if template_data_selected.product.group_import_attribute and template_data_selected.product.group_import_attribute and template_data_selected.product.group_import_attribute == offer_attribute_element %}
-                                    <option value="{{ offer_attribute_element }}" selected="">{{ offer_attribute_element_name }}</option>
-                                {% else %}
-                                    <option value="{{ offer_attribute_element }}">{{ offer_attribute_element_name }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                        <br>
-                        <hr>
-                        <label style="margin-top: 10px;">&nbsp;&nbsp;Товары с одинаковым значением выбранного поля YML будут добавлены, как один товар</label>
-                        <select style="margin-bottom: 5px; max-width:150px;" id="group_import_element" name="import_yml_oc_template_data_yml[product][group_import_element]"  class="form-control">
-                            <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                            {% for offer_element, tmp in offer_elements %}
-                                {% if template_data_selected.product.group_import_element is defined and template_data_selected.product.group_import_element and template_data_selected.product.group_import_element == offer_element %}
-                                    <option value="{{ offer_element }}" selected="">{{ offer_element }}</option>
-                                {% else %}
-                                    <option value="{{ offer_element }}">{{ offer_element }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                        <hr>
-                        <label style="margin-top: 10px;">&nbsp;&nbsp;Как создавать единый идентификатор</label>
-                        <select style="margin-bottom: 5px; max-width:150px;" id="group_import_identificator" name="import_yml_oc_template_data_yml[product][group_import_identificator]"  class="form-control">
-                            {% if template_data_selected.product.group_import_identificator is defined and template_data_selected.product.group_import_identificator and template_data_selected.product.group_import_identificator == 'attribute' %}
-                                <option value="0">Выбрать</option>
-                                <option selected="" value="attribute">Делать product_id из указанного атрибута</option>
-                                <option value="element">Делать product_id из указанного поля YML</option>
-                                <option value="attribute_element">Делать product_id из указанного атрибута и из указанного поля YML</option>
-                            {% elseif template_data_selected.product.group_import_identificator is defined and template_data_selected.product.group_import_identificator and template_data_selected.product.group_import_identificator == 'element' %}
-                                <option value="0" >Выбрать</option>
-                                <option value="attribute">Делать product_id из указанного атрибута</option>
-                                <option selected="" value="element">Делать product_id из указанного поля YML</option>
-                                <option value="attribute_element">Делать product_id из указанного атрибута и из указанного поля YML</option>
-                            {% elseif template_data_selected.product.group_import_identificator is defined and template_data_selected.product.group_import_identificator and template_data_selected.product.group_import_identificator == 'attribute_element' %}
-                                <option value="0">Выбрать</option>
-                                <option value="attribute">Делать product_id из указанного атрибута</option>
-                                <option value="element">Делать product_id из указанного поля YML</option>
-                                <option selected="" value="attribute_element">Делать product_id из указанного атрибута и из указанного поля YML</option>
-                            {% else %}
-                                <option value="0">Выбрать</option>
-                                <option value="attribute">Делать product_id из указанного атрибута</option>
-                                <option value="element">Делать product_id из указанного поля YML</option>
-                                <option value="attribute_element">Делать product_id из указанного атрибута и из указанного поля YML</option>
-                            {% endif %}
-                        </select>
-                        <hr>
-                        <label>Создавать префикс для товара из группы товаров (рекомендуется, во избежания замены уже существующих товаров. Например 00000</label>
-                        {% if template_data_selected.product.group_import_prefix %}
-                            <input name="import_yml_oc_template_data_yml[product][group_import_prefix]" value="{{ template_data_selected.product.group_import_prefix }}"  class="form-control" />
-                        {% else %}
-                            <input name="import_yml_oc_template_data_yml[product][group_import_prefix]" value="00000"  class="form-control" />
-                        {% endif %}
-                        <hr>
-                    </div>
-                    <script type="text/javascript">
-                        $(document).ready(function() {
-                            $("select[name='import_yml_oc_template_data_yml[product][group_import]']").change();
-                        });
-                    </script>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_id_column }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select name="import_yml_oc_template_data_yml[product][id_column]"  class="form-control">
-                        <option value="0">{{ entry_select }}</option>
-                        {% for id_column, id_column_title in unique_types_data.product %}
-                            {% if template_data_selected.product.id_column is defined and template_data_selected.product.id_column == id_column %}
-                                <option value="{{ id_column }}" selected="">{{ id_column_title }}</option>
-                            {% else %}
-                                <option value="{{ id_column }}">{{ id_column_title }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_status_default }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][status_default]"  class="form-control">
-                        {% if template_data_selected.product.status_default is defined and template_data_selected.product.status_default %}
-                            <option value="1" selected="">{{ text_enabled }}</option>
-                            <option value="0">{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="">{{ text_disabled }}</option>
-                            <option value="1">{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_price }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.product_price_delta',this.value)" style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][price]"  class="form-control">
-                        {% if template_data_selected.product.price is defined and template_data_selected.product.price %}
-                            <option value="1" selected="">{{ text_enabled }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="">{{ text_disabled }}</option>
-                            <option value="1" >{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                    <div class="product_price_delta">
-                        <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_price_delta }}</label>
-                        {% if template_data_selected.product.price_delta is defined %}
-                            <input placeholder="{{ text_type_data_yml_setting_product_price_delta }}" name="import_yml_oc_template_data_yml[product][price_delta]" value="{{ template_data_selected.product.price_delta }}"  class="form-control" />
-                        {% else %}
-                            <input placeholder="{{ text_type_data_yml_setting_product_price_delta }}" name="import_yml_oc_template_data_yml[product][price_delta]" value=""  class="form-control" />
-                        {% endif %}
-                        <br>
-                        <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_price_param }}</label>
-                        <table>
-                            {% for i in range(low = 0, high = 8, step = 1) %}
-                                <tr>
-                                    <td class="text-left">
-                                        {{ text_type_data_yml_setting_product_price_param_limit }}
-                                    </td>
-                                    <td class="text-left">
-                                        <div  style="margin-left: 5px;"  class="input-group">
-                                            {% if template_data_selected.product.price_param[i].limit is defined %}
-                                                <input placeholder="{{ text_type_data_yml_setting_product_price_param_limit }}" name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][limit]" value="{{ template_data_selected.product.price_param[i].limit }}"  class="form-control" />
-                                            {% else %}
-                                                <input placeholder="{{ text_type_data_yml_setting_product_price_param_limit }}" name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][limit]" value=""  class="form-control" />
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                    <td class="text-left" style="padding-left: 5px;">
-                                        {{ text_type_data_yml_setting_product_price_param_delta }}
-                                    </td>
-                                    <td class="text-left">
-                                        <div  style="margin-left: 5px;"  class="input-group">
-                                            <div  style="margin-left: 5px;"  class="input-group">
-                                                {% if template_data_selected.product.price_param[i].delta is defined %}
-                                                    <input placeholder="{{ text_type_data_yml_setting_product_price_param_delta }}" name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][delta]" value="{{ template_data_selected.product.price_param[i].delta }}"  class="form-control" />
-                                                {% else %}
-                                                    <input placeholder="{{ text_type_data_yml_setting_product_price_param_delta }}" name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][delta]" value=""  class="form-control" />
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-left">
-                                        <select name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][delta_type]"  class="form-control">
-                                            {% if template_data_selected.product.price_param[i].delta_type is defined and template_data_selected.product.price_param[i].delta_type == 'currency' %}
-                                                <option value="currency" selected="" >у.е. (в валюте магазина)</option>
-                                                <option value="percent" >%</option>
-                                            {% else %}
-                                                <option value="currency" >у.е. (в валюте магазина)</option>
-                                                <option value="percent" selected="" >%</option>
-                                            {% endif %}
-                                        </select>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-
-                        <br>
-                        <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_price_special }}</label>
-                        <select onchange="openSettingBox('.product_price_special_delta',this.value)" name="import_yml_oc_template_data_yml[product][price_special]"  class="form-control">
-                            {% if template_data_selected.product.price_special is defined and template_data_selected.product.price_special %}
-                                <option value="1" selected="" >{{ text_type_data_yml_setting_product_price_special }}</option>
-                                <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                            {% else %}
-                                <option value="0" selected="" >{{ text_type_data_yml_setting_no_import }}</option>
-                                <option value="1" >{{ text_type_data_yml_setting_product_price_special }}</option>
-                            {% endif %}
-                        </select>
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("select[name='import_yml_oc_template_data_yml[product][price]']").change();
-                            $("select[name='import_yml_oc_template_data_yml[product][price_special]']").change();
-                        });
-                    </script>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_quantity }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.product_quantity_param',this.value)"  style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][quantity]"  class="form-control">
-                        {% if template_data_selected.product.quantity is defined and template_data_selected.product.quantity %}
-                            <option value="1" selected="" >{{ text_enabled }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="" >{{ text_disabled }}</option>
-                            <option value="1" >{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                    <div class="product_quantity_param">
-                        <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_quantity_false_0 }}</label>
-                        {% if template_data_selected.product.quantity_false_0 is defined %}
-                            <input placeholder="{{ text_type_data_yml_setting_product_quantity_false_0 }}" name="import_yml_oc_template_data_yml[product][quantity_false_0]" value="{{ template_data_selected.product.quantity_false_0 }}"  class="form-control" />
-                        {% else %}
-                            <input placeholder="{{ text_type_data_yml_setting_product_quantity_false_0 }}" name="import_yml_oc_template_data_yml[product][quantity_false_0]" value="0"  class="form-control" />
-                        {% endif %}
-                        <hr>
-                        <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_quantity_true_100 }}</label>
-                        {% if template_data_selected.product.quantity_true_100 is defined %}
-                            <input placeholder="{{ text_type_data_yml_setting_product_quantity_true_100 }}" name="import_yml_oc_template_data_yml[product][quantity_true_100]" value="{{ template_data_selected.product.quantity_true_100 }}"  class="form-control" />
-                        {% else %}
-                            <input placeholder="{{ text_type_data_yml_setting_product_quantity_true_100 }}" name="import_yml_oc_template_data_yml[product][quantity_true_100]" value="100"  class="form-control" />
-                        {% endif %}
-                        <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_quantity_false_status }}</label>
-                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][quantity_false_status]"  class="form-control">
-                            {% if template_data_selected.product.quantity_false_status is defined and template_data_selected.product.quantity_false_status %}
-                                <option value="1" selected="" >{{ text_enabled }}</option>
-                                <option value="0" >{{ text_disabled }}</option>
-                            {% else %}
-                                <option value="0" selected="" >{{ text_disabled }}</option>
-                                <option value="1" >{{ text_enabled }}</option>
-                            {% endif %}
-                        </select>
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("select[name='import_yml_oc_template_data_yml[product][quantity]']").change();
-                        });
-                    </script>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_image }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.product_image_upload',this.value)"   style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][image]"  class="form-control">
-                        {% if template_data_selected.product.image is defined and template_data_selected.product.image %}
-                            <option value="1" selected="" >{{ text_enabled }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="" >{{ text_disabled }}</option>
-                            <option value="1" >{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                    <div class="product_image_upload">
-                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][image_upload]"  class="form-control">
-                            {% if template_data_selected.product.image_upload is defined and template_data_selected.product.image_upload %}
-                                <option value="1" selected="" >{{ text_type_data_yml_setting_product_image_upload_1 }}</option>
-                                <option value="0" >{{ text_disabled }}</option>
-                            {% else %}
-                                <option value="0" selected="" >{{ text_type_data_yml_setting_product_image_upload_0 }}</option>
-                                <option value="1" >{{ text_type_data_yml_setting_product_image_upload_1 }}</option>
-                            {% endif %}
-                        </select>
-                    </div>
-                    <div class="product_image_upload">
-                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][image_new_name]"  class="form-control">
-                            {% if template_data_selected.product.image_new_name is defined and template_data_selected.product.image_new_name %}
-                                <option value="1" selected="" >Оставлять название картинок</option>
-                                <option value="0" >Создавать новое название картинкам</option>
-                            {% else %}
-                                <option value="0" selected="" >Создавать новое название картинкам</option>
-                                <option value="1" >Оставлять название картинок</option>
-                            {% endif %}
-                        </select>
-                    </div>
-                    <div class="product_image_upload">
-                        <label style="margin-top: 10px;">Путь размещения картинок</label><br>
-                        {% if template_data_selected.product.image_new_path is defined and template_data_selected.product.image_new_path %}
-                            <div style="float: left; padding-top: 10px;" ><?php echo HTTP_CATALOG }}image/</div><input placeholder="Путь к картинкам" name="import_yml_oc_template_data_yml[product][image_new_path]" value="{{ template_data_selected['product']['image_new_path'] }}"  class="form-control" style="width: auto !important" />
-                        {% else %}
-                            <div style="float: left; padding-top: 10px;" ><?php echo HTTP_CATALOG ?>image/</div><input placeholder="Путь к картинкам" name="import_yml_oc_template_data_yml[product][image_new_path]" value="catalog/"  class="form-control" style="width: auto !important"  />
-                        {% endif %}
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("select[name='import_yml_oc_template_data_yml[product][image]']").change();
-                        });
-                    </script>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status" style="display: none">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_rec }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][rec]"  class="form-control">
-                        {% if template_data_selected.product.rec is defined and template_data_selected.product.rec %}
-                            <option value="1" selected="" >{{ text_enabled }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="" >{{ text_disabled }}</option>
-                            <option value="1" >{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status" >
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_description }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][description]"  class="form-control">
-                        {% if template_data_selected.product.description is defined and template_data_selected.product.description %}
-                            <option value="1" selected="" >{{ text_enabled }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="" >{{ text_disabled }}</option>
-                            <option value="1" >{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                    <div>
-                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][description_cdata]"  class="form-control">
-                            {% if template_data_selected.product.description_cdata is defined and template_data_selected.product.description_cdata %}
-                                <option value="1" selected="" >Описания в формате HTML (CDATA)</option>
-                                <option value="0" >Описание текстом</option>
-                            {% else %}
-                                <option value="0" selected="" >Описание текстом</option>
-                                <option value="1" >Описания в формате HTML (CDATA)</option>
-                            {% endif %}
-                        </select>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status" >
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_typePrefix }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select name="import_yml_oc_template_data_yml[product][typePrefix]"  class="form-control" style="margin-top: 5px;">
-                        <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                        {% for db_column_name, column_title in types_data.product.product %}
-                            {% if template_data_selected.product.typePrefix is defined and template_data_selected.product.typePrefix == db_column_name %}
-                                <option value="{{ db_column_name }}" selected="" >{{ column_title }}</option>
-                            {% else %}
-                                <option value="{{ db_column_name }}" >{{ column_title }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status" >
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_model }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select name="import_yml_oc_template_data_yml[product][model]"  class="form-control" style="margin-top: 5px;">
-                        <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                        {% for db_column_name, column_title in types_data.product.product %}
-                            {% if template_data_selected.product.model is defined and template_data_selected.product.model == db_column_name %}
-                                <option value="{{ db_column_name }}" selected="">{{ column_title }}</option>
-                            {% elseif template_data_selected.product.model is defined and template_data_selected.product.model == 'model' %}
-                                <option value="{{ db_column_name }}"  selected="">{{ column_title }}</option>
-                            {% else %}
-                                <option value="{{ db_column_name }}">{{ column_title }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status" >
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_barcode }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select name="import_yml_oc_template_data_yml[product][barcode]" class="form-control" style="margin-top: 5px;">
-                        <option value="0">{{ text_type_data_yml_setting_no_import }}</option>
-                        {% for db_column_name, column_title in types_data.product.product %}
-                            {% if template_data_selected.product.barcode is defined and template_data_selected.product.barcode == db_column_name %}
-                                <option value="{{ db_column_name }}" selected="">{{ column_title }}</option>
-                            {% elseif template_data_selected.product.barcode is defined and template_data_selected.product.barcode == 'barcode' %}
-                                <option value="{{ db_column_name }}"  selected="">{{ column_title }}</option>
-                            {% else %}
-                                <option value="{{ db_column_name }}">{{ column_title }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_name }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.product_seo_title',this.value)" style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][name]"  class="form-control">
-                        {% if template_data_selected.product.name is defined and template_data_selected.product.name %}
-                            <option value="1" selected="">{{ text_enabled }}</option>
-                            <option value="0">{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="">{{ text_disabled }}</option>
-                            <option value="1">{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                    <div class="product_seo_title">
-                        <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_title }}</label>
-                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][seo_title]"  class="form-control">
-                            {% if template_data_selected.product.seo_title is defined and template_data_selected.product.seo_title %}
-                                <option value="1" selected="">{{ text_type_data_yml_setting_product_seo_title }}</option>
-                                <option value="0">{{ text_type_data_yml_setting_no_import }}</option>
-                            {% else %}
-                                <option value="0" selected="">{{ text_type_data_yml_setting_no_import }}</option>
-                                <option value="1">{{ text_type_data_yml_setting_product_seo_title }}</option>
-                            {% endif %}
-                        </select>
-                        <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_name_self }}</label>
-                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][name_self]"  class="form-control">
-                            <option value="0">{{ text_type_data_yml_setting_no_import }}</option>
-
-                            {% for offer_element, tmp in offer_elements %}
-                                {% if template_data_selected.product.name_self is defined and template_data_selected.product.name_self and template_data_selected.product.name_self == offer_element %}
-                                    <option value="{{ offer_element }}" selected="" >{{ offer_element }}</option>
-                                {% elseif template_data_selected.product.name_self == false and offer_element == 'name' %}
-                                    <option value="{{ offer_element }}" >{{ offer_element }}</option>
-                                {% else %}
-                                    <option value="{{ offer_element }}" >{{ offer_element }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("select[name='import_yml_oc_template_data_yml[product][name]']").change();
-                        });
-                    </script>
-                </div>
-            </td>
-        </tr>
-        <tr class="product_import_status" >
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_product_custom_field_import }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <table>
-                        {% for i in range(low = 0, high = 5, step = 1) %}
-                        <tr>
-                            <td class="text-left">
-                                {{ text_type_data_yml_setting_product_custom_field_import_from }}
-                            </td>
-                            <td class="text-left">
-                                <div  style="margin-left: 5px;"  class="input-group">
-                                    <select style="margin-bottom: 5px; max-width:150px;" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][from]"  class="form-control">
-                                        <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                                        {% for offer_element, tmp in offer_elements %}
-                                            {% if template_data_selected.product.custom_field[i].from is defined and template_data_selected.product.custom_field[i].from and template_data_selected.product.custom_field[i].from == offer_element %}
-                                                <option value="{{ offer_element }}" selected="">{{ offer_element }}</option>
-                                            {% else %}
-                                                <option value="{{ offer_element }}">{{ offer_element }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </td>
-                            <td class="text-left" style="padding-left: 5px;">
-                                {{ text_type_data_yml_setting_product_custom_field_import_to }}
-                            </td>
-                            <td class="text-left">
-                                <div style="margin-left: 5px;"  class="input-group">
-                                    <select name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][to]"  class="form-control" style="max-width:150px; ">
-                                        <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                                        {% for offer_element, tmp in offer_elements %}
-                                            {% if template_data_selected.product.custom_field[i].to is defined and template_data_selected.product.custom_field[i].to and template_data_selected.product.custom_field[i].to == db_column_name %}
-                                                <option value="{{ db_column_name }}" selected="">{{ column_title }}</option>
-                                            {% else %}
-                                                <option value="{{ db_column_name }}">{{ column_title }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </td>
-                            <td class="text-left">
-                                {% if template_data_selected.product.custom_field[i].prefix_left is defined %}
-                                   <input placeholder="Текстовый префикс слева" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][prefix_left]" value="{{ template_data_selected.product.custom_field[i].prefix_left }}" class="form-control" />
-                                {% else %}
-                                    <input placeholder="Текстовый префикс слева" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][prefix_left]" value="" class="form-control" />
-                                {% endif %}
-                            </td>
-                            <td class="text-left" >
-                                {% if template_data_selected.product.custom_field[i].prefix_right is defined %}
-                                    <input placeholder="Текстовый префикс справа" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][prefix_right]" value="{{ template_data_selected.product.custom_field[i].prefix_right }}"  class="form-control" />
-                                {% else %}
-                                    <input placeholder="Текстовый префикс справа" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][prefix_right]" value=""  class="form-control" />
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </td>
-        </tr>
-        {% if offer_attributes %}
-            <tr class="product_import_status" >
+    {% if format_data == 'yml' %}
+        <h2>{{ text_step_2_synchronization }}</h2>
+        <p class="alert alert-success">{{ text_count_categories }}: <b>{{ count_categories }}</b>, {{ text_count_offers }}: <b>{{ count_offers }}</b></p>
+        <table class="table table-bordered table-hover">
+            <tbody>
+            <tr>
                 <td class="text-left" >
-                    Импортировать атрибут поля YML файла в поле товара
+                    {{ text_type_data_yml_setting_category_matching }}
                 </td>
                 <td class="text-left" >
                     <div class="input-group">
-                        <table>
-                            {% for i in range(low = 0, high = 5, step = 1) %}
-                                <tr>
-                                    <td class="text-left">
-                                        Атрибут поля YML файла
-                                    </td>
-                                    <td class="text-left" >
-                                        <div  style="margin-left: 5px;"  class="input-group">
-                                            <select style="margin-bottom: 5px; max-width:150px;" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][from]"  class="form-control">
-                                                <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                                                {% for offer_attribute_element, offer_attribute_element_name in offer_attributes %}
-                                                    {% if template_data_selected.product.custom_field_attribute[i].from is defined and template_data_selected.product.custom_field_attribute[i].from and template_data_selected.product.custom_field_attribute[i].from == offer_attribute_element %}
-                                                        <option value="{{ offer_attribute_element }}" selected="" >{{ offer_attribute_element_name }}</option>
-                                                    {% else %}
-                                                        <option value="{{ offer_attribute_element }}" >{{ offer_attribute_element_name }}</option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-left" style="padding-left: 5px;">
-                                        {{ text_type_data_yml_setting_product_custom_field_import_to }}
-                                    </td>
-                                    <td class="text-left">
-                                        <div style="margin-left: 5px;"  class="input-group">
-                                            <select name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][to]"  class="form-control" style="max-width:150px; ">
-                                                <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                                                {% for db_column_name, column_title in types_data.product.product %}
-                                                    {% if template_data_selected.product.custom_field_attribute[i].to is defined and template_data_selected.product.custom_field_attribute[i].to and template_data_selected.product.custom_field_attribute[i].to == db_column_name %}
-                                                        <option value="{{ db_column_name }}" selected="" >{{ column_title }}</option>
-                                                    {% else %}
-                                                        <option value="{{ db_column_name }}" >{{ column_title }}</option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td class="text-left">
-                                        {% if template_data_selected.product.custom_field_attribute[i].prefix_left is defined %}
-                                            <input placeholder="Текстовый префикс слева" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][prefix_left]" value="{{ template_data_selected.product.custom_field_attribute[i].prefix_left }}"  class="form-control" />
-                                        {% else %}
-                                            <input placeholder="Текстовый префикс слева" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][prefix_left]" value="" class="form-control" />
+                        <div class="well" style="max-height: 200px; overflow-y: auto">
+                            {% for yml_category_data_row in yml_categories %}
+                                {% if template_data_selected.category.category_matching[yml_category_data_row.yml_category_id].select is defined and template_data_selected.category.category_matching[yml_category_data_row.yml_category_id]|length > 1 %}
+                            <input class="setCategoryMatching" onchange="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)" name="import_yml_oc_template_data_yml.category.category_matching[{{ yml_category_data_row.yml_category_id }}].select" type="checkbox" id="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" checked="" />
+                                {% else %}
+                            <input class="setCategoryMatching" onchange="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)" name="import_yml_oc_template_data_yml.category.category_matching[{{ yml_category_data_row.yml_category_id }}].select" type="checkbox" id="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" />
+                                {% endif %}
+                                <label for="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" >&nbsp;&nbsp;&nbsp;{{ yml_category_data_row.name }}</label><br>
+                                <div id="yml_category_category_matching_select{{ yml_category_data_row.yml_category_id }}" class="well" style="max-height: 200px; overflow-y: auto">
+                                    <a onclick="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)">Редактировать список</a><br><br>
+                                    {% set categories_matching_selected = [] %}
+                                    {% set yml_category_id = yml_category_data_row.yml_category_id %}
+                                    {% if template_data_selected.category.category_matching[yml_category_id].select is defined and template_data_selected.category.category_matching[yml_category_id].select and yml_categories and categories %}
+                                        {% set template_data_selected = template_data_selected|merge({
+                                            category: template_data_selected.category|merge({
+                                                category_matching: template_data_selected.category.category_matching|merge({
+                                                    yml_category_id: template_data_selected.category.category_matching[yml_category_id]|merge({
+                                                        select: false
+                                                    })
+                                                })
+                                            })
+                                        }) %}
+                                        {% if template_data_selected.category.category_matching[yml_category_id] %}
+                                            {% set categories_matching_selected = template_data_selected.category.category_matching[yml_category_id] %}
                                         {% endif %}
-                                    </td>
-                                    <td class="text-left">
-                                        {% if template_data_selected.product.custom_field_attribute[i].prefix_right is defined %}
-                                            <input placeholder="Текстовый префикс справа" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][prefix_right]" value="{{ template_data_selected.product.custom_field_attribute[i].prefix_right }}"  class="form-control" />
-                                        {% else %}
-                                            <input placeholder="Текстовый префикс справа" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][prefix_right]" value=""  class="form-control" />
+                                    {% endif %}
+                                    {% for category_id in categories_matching_selected %}
+                                        {% if categories[category_id] %}
+                                            <div id="setCategoryMatchingRow_{{ yml_category_id }}_{{ category_id }}__">
+                                                <input checked="" onclick="removeSel({{ yml_category_id }},{{ category_id }},'_')" name="import_yml_oc_template_data_yml[category][category_matching][{{ yml_category_id }}][{{ category_id }}]" type="checkbox" value="{{ category_id }}"  />
+                                                <label >&nbsp;&nbsp;&nbsp;{{ categories[category_id].name }}</label><br>
+                                            </div>
                                         {% endif %}
-                                    </td>
-                                </tr>
+                                    {% endfor %}
+                                </div>
+                                <script>
+                                    $(document).ready(function() {
+                                        setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,false);
+                                    });
+                                </script>
                             {% endfor %}
-                        </table>
+                        </div>
                     </div>
                 </td>
             </tr>
-        {% endif %}
-        <tr>
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_category_import_status }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.product_category_param',this.value)"  name="import_yml_oc_template_data_yml[category][import_status]"  class="form-control">
-                        {% if template_data_selected.category.import_status is defined and template_data_selected.category.import_status %}
-                            <option value="1" selected="" >{{ text_enabled }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="" >{{ text_disabled }}</option>
-                            <option value="1" >{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                    <div class="product_category_param">
-                        <label style="margin-top: 10px;">{{ text_type_data_yml_setting_category_seo_title }}</label>
-                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[category][seo_title]"  class="form-control">
-                            {% if template_data_selected.category.seo_title is defined and template_data_selected.category.seo_title %}
-                                <option value="1" selected="" >{{ text_type_data_yml_setting_category_seo_title }}</option>
-                                <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
-                            {% else %}
-                                <option value="0" selected="" >{{ text_type_data_yml_setting_no_import }}</option>
-                                <option value="1" >{{ text_type_data_yml_setting_category_seo_title }}</option>
-                            {% endif %}
-                        </select>
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("select[name='import_yml_oc_template_data_yml[category][import_status]']").change();
-                        });
-                    </script>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_manufacturer_import_status }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.manufacturer_import_status',this.value)" name="import_yml_oc_template_data_yml[manufacturer][import_status]"  class="form-control">
-                        {% if template_data_selected.manufacturer.import_status is defined and template_data_selected.manufacturer.import_status %}
-                            <option value="1" selected="" >{{ text_enabled }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="" >{{ text_disabled }}</option>
-                            <option value="1" >{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                </div>
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        $("select[name='import_yml_oc_template_data_yml[manufacturer][import_status]']").change();
-                    });
-                </script>
-            </td>
-        </tr>
-        <tr class="manufacturer_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_manufacturer_vendor_code }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.manufacturer_vendor_code_field',this.value)" name="import_yml_oc_template_data_yml[manufacturer][vendor_code]"  class="form-control">
-                        {% if template_data_selected.manufacturer.vendor_code is defined and template_data_selected.manufacturer.vendor_code %}
-                            <option value="1" selected="" >{{ text_type_data_yml_setting_manufacturer_vendor_code }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="" >{{ text_disabled }}</option>
-                            <option value="1" >{{ text_type_data_yml_setting_manufacturer_vendor_code }}</option>
-                        {% endif %}
-                    </select>
-                    <div class="manufacturer_vendor_code_field" >
-                        <select name="import_yml_oc_template_data_yml[manufacturer][vendor_code_field]"  class="form-control" style="margin-top: 5px;">
-                            <option value="0" >{{ entry_select }}</option>
-                            {% for db_column_name, column_title in types_data.product.product %}
-                                {% if template_data_selected.manufacturer.vendor_code_field is defined and template_data_selected.manufacturer.vendor_code_field == db_column_name %}
-                                    <option value="{{ db_column_name }}" selected="" >{{ column_title }}</option>
-                                {% else %}
-                                    <option value="{{ db_column_name }}" >{{ column_title }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <script>
-                        $(document).ready(function() {
-                            $("select[name='import_yml_oc_template_data_yml[manufacturer][vendor_code]']").change();
-                        });
-                     </script>
-                </div>
-            </td>
-        </tr>
-        {% if offer_params %}
             <tr>
                 <td class="text-left" >
-                    Импорт опций
+                    {{ text_type_data_yml_setting_product_import_status }}
                 </td>
                 <td class="text-left" >
-
                     <div class="input-group">
-                        <select onchange="openSettingBox('.option_import_status',this.value)" name="import_yml_oc_template_data_yml[option][import_status]"  class="form-control">
-                            {% if template_data_selected.option.import_status is defined and template_data_selected.option.import_status %}
+                        <select onchange="openSettingBox('.product_import_status',this.value)" name="import_yml_oc_template_data_yml[product][import_status]"  class="form-control">
+                            {% if template_data_selected.product.import_status is defined and template_data_selected.product.import_status %}
                                 <option value="1" selected="">{{ text_enabled }}</option>
                                 <option value="0">{{ text_disabled }}</option>
                             {% else %}
@@ -800,215 +73,950 @@
                     </div>
                     <script>
                         $(document).ready(function() {
-                            $("select[name='import_yml_oc_template_data_yml[option][import_status]']").change();
+                            $("select[name='import_yml_oc_template_data_yml[product][import_status]']").change();
                         });
                     </script>
                 </td>
             </tr>
-            <tr class="option_import_status">
+            <tr class="product_import_status">
                 <td class="text-left" >
-                    Выбор опций для импорта
+                    {{ text_type_data_yml_setting_category_skip }}
                 </td>
                 <td class="text-left" >
-                    <div><a onclick="selectUnselect('.option_params_import')">Выделение</a><br><br></div>
-                    <table  class="table table-bordered table-hover">
-                        {% for offer_param_name in offer_params %}
-                        <tr>
-                            <td class="text-left">
-                                {{ offer_param_name }}
-                            </td>
-                            <td>
-                                <select name="import_yml_oc_template_data_yml[option][params][{{ offer_param_name }}][status]"  class="form-control option_params_import">
-                                    {% if template_data_selected.option.params[offer_param_name].status is defined and template_data_selected.option.params[offer_param_name].status %}
-                                        <option value="1" selected="" >{{ text_enabled }}</option>
-                                        <option value="0" >{{ text_disabled }}</option>
-                                    {% else %}
-                                        <option value="0" selected="" >{{ text_disabled }}</option>
-                                        <option value="1" >{{ text_enabled }}</option>
-                                    {% endif %}
-                                </select>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </table>
+                    <div class="input-group">
+                        <div class="well" style="max-height: 200px; overflow-y: auto">
+                            <a onclick="if($('.import_yml_oc_template_data_yml_product_category_skip').is(':checked')){ $('.import_yml_oc_template_data_yml_product_category_skip').prop('checked',false); }else{ $('.import_yml_oc_template_data_yml_product_category_skip').prop('checked',true); }">Выделение</a><br><br>
+                            {% for yml_category_data_row in yml_categories %}
+                                {% if template_data_selected.product.category_skip[yml_category_data_row.yml_category_id] %}
+                                    <input class='import_yml_oc_template_data_yml_product_category_skip' name="import_yml_oc_template_data_yml[product][category_skip][{{ yml_category_data_row.yml_category_id }}]" type="checkbox" id="yml_category_skip_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" checked="" />
+                                {% else %}
+                                    <input class='import_yml_oc_template_data_yml_product_category_skip' name="import_yml_oc_template_data_yml[product][category_skip][{{ yml_category_data_row.yml_category_id }}]" type="checkbox" id="yml_category_skip_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" />
+                                {% endif %}
+                                <label for="yml_category_skip_{{ yml_category_data_row.yml_category_id }}" >&nbsp;&nbsp;&nbsp;{{ yml_category_data_row.name }}</label><br>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </td>
             </tr>
-        {% endif %}
-        <tr>
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_attribute_import_status }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select onchange="openSettingBox('.attribute_import_status',this.value)" name="import_yml_oc_template_data_yml[attribute][import_status]"  class="form-control">
-                        {% if template_data_selected.attribute.import_status is defined and template_data_selected.attribute.import_status %}
-                            <option value="1" selected="" >{{ text_enabled }}</option>
-                            <option value="0" >{{ text_disabled }}</option>
-                        {% else %}
-                            <option value="0" selected="" >{{ text_disabled }}</option>
-                            <option value="1" >{{ text_enabled }}</option>
-                        {% endif %}
-                    </select>
-                </div>
-                <script>
-                    $(document).ready(function() {
-                        $("select[name='import_yml_oc_template_data_yml[attribute][import_status]']").change();
-                    });
-                 </script>
-            </td>
-        </tr>
-        <tr class="attribute_import_status">
-            <td class="text-left" >
-                {{ text_type_data_yml_setting_attribute_groupe_id }}
-            </td>
-            <td class="text-left" >
-                <div class="input-group">
-                    <select name="import_yml_oc_template_data_yml[attribute][attribute_group_id]"  class="form-control">
-                        <option value="0" >{{ entry_select }}</option>
-                        {% for attribute_group in attribute_groups %}
-                            {% if template_data_selected.attribute.attribute_group_id is defined and template_data_selected.attribute.attribute_group_id == attribute_group.attribute_group_id %}
-                                <option value="{{ attribute_group.attribute_group_id }}" selected="" >{{ attribute_group.name }}</option>
+            <tr class="product_import_status">
+                <td class="text-left" >
+                    Импорт группы товаров, как один под одинаковому атрибуту или по одинаковому значения поля
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.product_group_import',this.value)"  style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][group_import]"  class="form-control">
+                            {% if template_data_selected.product.group_import is defined and template_data_selected.product.group_import %}
+                                <option value="1" selected="">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
                             {% else %}
-                                <option value="{{ attribute_group.attribute_group_id }}" >{{ attribute_group.name }}</option>
+                                <option value="0" selected="">{{ text_disabled }}</option>
+                                <option value="1">{{ text_enabled }}</option>
                             {% endif %}
-                        {% endif %}
-                    </select>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <table class="table table-bordered table-hover">
-        <tr>
-            <td class="text-left" width="20%">
-                {{ entry_type_change }}
-            </td>
-            <td class="text-left">
-                <div class="input-group">
-                    <select name="import_yml_oc_template_data_yml[type_change]"  class="form-control">
-                        <option value="0" >{{ entry_select }}</option>
-                        {% for type_change, type_change_title in types_change %}
-                            {% if template_data_selected.type_change is defined and template_data_selected.type_change == type_change %}
-                                <option value="{{ type_change }}" selected="" >{{ type_change_title }}</option>
+                        </select>
+                        <div class="product_group_import">
+                            <hr>
+                            <br>
+                            <label style="margin-top: 10px;">&nbsp;&nbsp;Товары с одинаковым значением выбранного атрибута будут добавлены, как один товар</label>
+                            <select style="margin-bottom: 5px; max-width:150px;" id="group_import_attribute" name="import_yml_oc_template_data_yml[product][group_import_attribute]"  class="form-control">
+                                <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                                {% for offer_attribute_element, offer_attribute_element_name in offer_attributes %}
+                                    {% if template_data_selected.product.group_import_attribute and template_data_selected.product.group_import_attribute and template_data_selected.product.group_import_attribute == offer_attribute_element %}
+                                        <option value="{{ offer_attribute_element }}" selected="">{{ offer_attribute_element_name }}</option>
+                                    {% else %}
+                                        <option value="{{ offer_attribute_element }}">{{ offer_attribute_element_name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <br>
+                            <hr>
+                            <label style="margin-top: 10px;">&nbsp;&nbsp;Товары с одинаковым значением выбранного поля YML будут добавлены, как один товар</label>
+                            <select style="margin-bottom: 5px; max-width:150px;" id="group_import_element" name="import_yml_oc_template_data_yml[product][group_import_element]"  class="form-control">
+                                <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                                {% for offer_element, tmp in offer_elements %}
+                                    {% if template_data_selected.product.group_import_element is defined and template_data_selected.product.group_import_element and template_data_selected.product.group_import_element == offer_element %}
+                                        <option value="{{ offer_element }}" selected="">{{ offer_element }}</option>
+                                    {% else %}
+                                        <option value="{{ offer_element }}">{{ offer_element }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <hr>
+                            <label style="margin-top: 10px;">&nbsp;&nbsp;Как создавать единый идентификатор</label>
+                            <select style="margin-bottom: 5px; max-width:150px;" id="group_import_identificator" name="import_yml_oc_template_data_yml[product][group_import_identificator]"  class="form-control">
+                                {% if template_data_selected.product.group_import_identificator is defined and template_data_selected.product.group_import_identificator and template_data_selected.product.group_import_identificator == 'attribute' %}
+                                    <option value="0">Выбрать</option>
+                                    <option selected="" value="attribute">Делать product_id из указанного атрибута</option>
+                                    <option value="element">Делать product_id из указанного поля YML</option>
+                                    <option value="attribute_element">Делать product_id из указанного атрибута и из указанного поля YML</option>
+                                {% elseif template_data_selected.product.group_import_identificator is defined and template_data_selected.product.group_import_identificator and template_data_selected.product.group_import_identificator == 'element' %}
+                                    <option value="0" >Выбрать</option>
+                                    <option value="attribute">Делать product_id из указанного атрибута</option>
+                                    <option selected="" value="element">Делать product_id из указанного поля YML</option>
+                                    <option value="attribute_element">Делать product_id из указанного атрибута и из указанного поля YML</option>
+                                {% elseif template_data_selected.product.group_import_identificator is defined and template_data_selected.product.group_import_identificator and template_data_selected.product.group_import_identificator == 'attribute_element' %}
+                                    <option value="0">Выбрать</option>
+                                    <option value="attribute">Делать product_id из указанного атрибута</option>
+                                    <option value="element">Делать product_id из указанного поля YML</option>
+                                    <option selected="" value="attribute_element">Делать product_id из указанного атрибута и из указанного поля YML</option>
+                                {% else %}
+                                    <option value="0">Выбрать</option>
+                                    <option value="attribute">Делать product_id из указанного атрибута</option>
+                                    <option value="element">Делать product_id из указанного поля YML</option>
+                                    <option value="attribute_element">Делать product_id из указанного атрибута и из указанного поля YML</option>
+                                {% endif %}
+                            </select>
+                            <hr>
+                            <label>Создавать префикс для товара из группы товаров (рекомендуется, во избежания замены уже существующих товаров. Например 00000</label>
+                            {% if template_data_selected.product.group_import_prefix %}
+                                <input name="import_yml_oc_template_data_yml[product][group_import_prefix]" value="{{ template_data_selected.product.group_import_prefix }}"  class="form-control" />
                             {% else %}
-                                <option value="{{ type_change }}" >{{ type_change_title }}</option>
+                                <input name="import_yml_oc_template_data_yml[product][group_import_prefix]" value="00000"  class="form-control" />
                             {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-            </td>
-        </tr>
-    </table>
-    <table class="table table-bordered table-hover">
-        <tbody>
-        <tr>
-            <td class="text-left" width="20%">
-                {{ entry_import_yml_oc_template_data }}
-            </td>
-            <td class="text-left" width="20%">
-                {% if template_data_selected.id %}
-                    <input placeholder="{{ entry_import_yml_oc_template_data_name }}" name="import_yml_oc_template_data_yml[name]" value="{{ template_data_selected.name }}"  class="form-control" />
-                {% else %}
-                    <input placeholder="{{ entry_import_yml_oc_template_data_name }}" name="import_yml_oc_template_data_yml[name]" value="{{ template_data_name_new }}"  class="form-control" />
-                {% endif %}
-            </td>
-            <td class="text-left">
-                <div class="input-group">
-                    <select class="form-control" id="setTemplateDataTypeAction">
-                        {% if template_data_selected.id %}
-                            <option value="save" >{{ entry_import_yml_oc_template_data_save }}</option>
-                            <option value="update" selected="">{{ entry_import_yml_oc_template_data_update }}</option>
-                            <option value="delete" >{{ entry_import_yml_oc_template_data_delete }}</option>
-                        {% else %}
-                            <option value="save" >{{ entry_import_yml_oc_template_data_save }}</option>
-                            <option style="color: #ccc " value="update" >{{ entry_import_yml_oc_template_data_update }}</option>
-                            <option style="color: #ccc " value="delete" >{{ entry_import_yml_oc_template_data_delete }}</option>
-                        {% endif %}
-                    </select>
-                </div>
-            </td>
-            <td class="text-left">
-                <a id="setTemplateDataBtn" onclick="setTemplateData($('#setTemplateDataTypeAction').val())" class="btn btn-primary setTemplateDataBtn">{{ entry_import_yml_oc_template_data_save_template_data }}</a>
-                <span id="setTemplateData" class="alert alert-info" style="display: none"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <h2>{{ text_step_3_ending }}</h2>
-    <table class="table table-bordered table-hover">
-        <tbody>
-        <tr>
-            <td class="text-center" width="20%">
-                <a id="startImport" onclick="startImport($('input[name=\'import_yml_oc_template_data_yml[start]\']').val());" class="btn btn-primary" style="width: 100%">{{ text_step_3_start_import }}</a>
-            </td>
-            <td class="text-left">
-                <input placeholder="{{ text_step_3_start }}" name="import_yml_oc_template_data_yml[start]" value="{{ template_data_selected.start }}"  class="form-control" />
-            </td>
-            <td class="text-left">
-                <input placeholder="{{ text_step_3_limit }}" name="import_yml_oc_template_data_yml[limit]" value="{{ template_data_selected.limit }}"  class="form-control" />
-            </td>
-        </tr>
-        <tr >
-            <td colspan="3" id="importStartMessages">
-            </td>
-        </tr>
-        </tbody>
-    </table>
-{% else %}
-    {{ entry_import_yml_oc_format_data_empty }}
-{% endif %}
-<script type="text/javascript">
-    function selectUnselect(class_css) {
-        if($(class_css).val()=="1") {
-            $(class_css).val(0);
-        }else{
-            $(class_css).val(1);
+                            <hr>
+                        </div>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                $("select[name='import_yml_oc_template_data_yml[product][group_import]']").change();
+                            });
+                        </script>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_id_column }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select name="import_yml_oc_template_data_yml[product][id_column]"  class="form-control">
+                            <option value="0">{{ entry_select }}</option>
+                            {% for id_column, id_column_title in unique_types_data.product %}
+                                {% if template_data_selected.product.id_column is defined and template_data_selected.product.id_column == id_column %}
+                                    <option value="{{ id_column }}" selected="">{{ id_column_title }}</option>
+                                {% else %}
+                                    <option value="{{ id_column }}">{{ id_column_title }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_status_default }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][status_default]"  class="form-control">
+                            {% if template_data_selected.product.status_default is defined and template_data_selected.product.status_default %}
+                                <option value="1" selected="">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="">{{ text_disabled }}</option>
+                                <option value="1">{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_price }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.product_price_delta',this.value)" style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][price]"  class="form-control">
+                            {% if template_data_selected.product.price is defined and template_data_selected.product.price %}
+                                <option value="1" selected="">{{ text_enabled }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="">{{ text_disabled }}</option>
+                                <option value="1" >{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                        <div class="product_price_delta">
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_price_delta }}</label>
+                            {% if template_data_selected.product.price_delta is defined %}
+                                <input placeholder="{{ text_type_data_yml_setting_product_price_delta }}" name="import_yml_oc_template_data_yml[product][price_delta]" value="{{ template_data_selected.product.price_delta }}"  class="form-control" />
+                            {% else %}
+                                <input placeholder="{{ text_type_data_yml_setting_product_price_delta }}" name="import_yml_oc_template_data_yml[product][price_delta]" value=""  class="form-control" />
+                            {% endif %}
+                            <br>
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_price_param }}</label>
+                            <table>
+                                {% for i in range(low = 0, high = 8, step = 1) %}
+                                    <tr>
+                                        <td class="text-left">
+                                            {{ text_type_data_yml_setting_product_price_param_limit }}
+                                        </td>
+                                        <td class="text-left">
+                                            <div  style="margin-left: 5px;"  class="input-group">
+                                                {% if template_data_selected.product.price_param[i].limit is defined %}
+                                                    <input placeholder="{{ text_type_data_yml_setting_product_price_param_limit }}" name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][limit]" value="{{ template_data_selected.product.price_param[i].limit }}"  class="form-control" />
+                                                {% else %}
+                                                    <input placeholder="{{ text_type_data_yml_setting_product_price_param_limit }}" name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][limit]" value=""  class="form-control" />
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td class="text-left" style="padding-left: 5px;">
+                                            {{ text_type_data_yml_setting_product_price_param_delta }}
+                                        </td>
+                                        <td class="text-left">
+                                            <div  style="margin-left: 5px;"  class="input-group">
+                                                <div  style="margin-left: 5px;"  class="input-group">
+                                                    {% if template_data_selected.product.price_param[i].delta is defined %}
+                                                        <input placeholder="{{ text_type_data_yml_setting_product_price_param_delta }}" name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][delta]" value="{{ template_data_selected.product.price_param[i].delta }}"  class="form-control" />
+                                                    {% else %}
+                                                        <input placeholder="{{ text_type_data_yml_setting_product_price_param_delta }}" name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][delta]" value=""  class="form-control" />
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            <select name="import_yml_oc_template_data_yml[product][price_param][{{ i }}][delta_type]"  class="form-control">
+                                                {% if template_data_selected.product.price_param[i].delta_type is defined and template_data_selected.product.price_param[i].delta_type == 'currency' %}
+                                                    <option value="currency" selected="" >у.е. (в валюте магазина)</option>
+                                                    <option value="percent" >%</option>
+                                                {% else %}
+                                                    <option value="currency" >у.е. (в валюте магазина)</option>
+                                                    <option value="percent" selected="" >%</option>
+                                                {% endif %}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+
+                            <br>
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_price_special }}</label>
+                            <select onchange="openSettingBox('.product_price_special_delta',this.value)" name="import_yml_oc_template_data_yml[product][price_special]"  class="form-control">
+                                {% if template_data_selected.product.price_special is defined and template_data_selected.product.price_special %}
+                                    <option value="1" selected="" >{{ text_type_data_yml_setting_product_price_special }}</option>
+                                    <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                                {% else %}
+                                    <option value="0" selected="" >{{ text_type_data_yml_setting_no_import }}</option>
+                                    <option value="1" >{{ text_type_data_yml_setting_product_price_special }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $("select[name='import_yml_oc_template_data_yml[product][price]']").change();
+                                $("select[name='import_yml_oc_template_data_yml[product][price_special]']").change();
+                            });
+                        </script>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_quantity }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.product_quantity_param',this.value)"  style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][quantity]"  class="form-control">
+                            {% if template_data_selected.product.quantity is defined and template_data_selected.product.quantity %}
+                                <option value="1" selected="" >{{ text_enabled }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                <option value="1" >{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                        <div class="product_quantity_param">
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_quantity_false_0 }}</label>
+                            {% if template_data_selected.product.quantity_false_0 is defined %}
+                                <input placeholder="{{ text_type_data_yml_setting_product_quantity_false_0 }}" name="import_yml_oc_template_data_yml[product][quantity_false_0]" value="{{ template_data_selected.product.quantity_false_0 }}"  class="form-control" />
+                            {% else %}
+                                <input placeholder="{{ text_type_data_yml_setting_product_quantity_false_0 }}" name="import_yml_oc_template_data_yml[product][quantity_false_0]" value="0"  class="form-control" />
+                            {% endif %}
+                            <hr>
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_quantity_true_100 }}</label>
+                            {% if template_data_selected.product.quantity_true_100 is defined %}
+                                <input placeholder="{{ text_type_data_yml_setting_product_quantity_true_100 }}" name="import_yml_oc_template_data_yml[product][quantity_true_100]" value="{{ template_data_selected.product.quantity_true_100 }}"  class="form-control" />
+                            {% else %}
+                                <input placeholder="{{ text_type_data_yml_setting_product_quantity_true_100 }}" name="import_yml_oc_template_data_yml[product][quantity_true_100]" value="100"  class="form-control" />
+                            {% endif %}
+                            <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_quantity_false_status }}</label>
+                            <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][quantity_false_status]"  class="form-control">
+                                {% if template_data_selected.product.quantity_false_status is defined and template_data_selected.product.quantity_false_status %}
+                                    <option value="1" selected="">{{ text_enabled }}</option>
+                                    <option value="0" >{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="0" selected="">{{ text_disabled }}</option>
+                                    <option value="1" >{{ text_enabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $("select[name='import_yml_oc_template_data_yml[product][quantity]']").change();
+                            });
+                        </script>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_image }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.product_image_upload',this.value)"   style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][image]"  class="form-control">
+                            {% if template_data_selected.product.image is defined and template_data_selected.product.image %}
+                                <option value="1" selected="" >{{ text_enabled }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                <option value="1" >{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                        <div class="product_image_upload">
+                            <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][image_upload]"  class="form-control">
+                                {% if template_data_selected.product.image_upload is defined and template_data_selected.product.image_upload %}
+                                    <option value="1" selected="" >{{ text_type_data_yml_setting_product_image_upload_1 }}</option>
+                                    <option value="0" >{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="0" selected="" >{{ text_type_data_yml_setting_product_image_upload_0 }}</option>
+                                    <option value="1" >{{ text_type_data_yml_setting_product_image_upload_1 }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="product_image_upload">
+                            <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][image_new_name]"  class="form-control">
+                                {% if template_data_selected.product.image_new_name is defined and template_data_selected.product.image_new_name %}
+                                    <option value="1" selected="" >Оставлять название картинок</option>
+                                    <option value="0" >Создавать новое название картинкам</option>
+                                {% else %}
+                                    <option value="0" selected="" >Создавать новое название картинкам</option>
+                                    <option value="1" >Оставлять название картинок</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="product_image_upload">
+                            <label style="margin-top: 10px;">Путь размещения картинок</label><br>
+                            {% if template_data_selected.product.image_new_path is defined and template_data_selected.product.image_new_path %}
+                            <div style="float: left; padding-top: 10px;" ><?php echo HTTP_CATALOG }}image/</div><input placeholder="Путь к картинкам" name="import_yml_oc_template_data_yml[product][image_new_path]" value="{{ template_data_selected['product']['image_new_path'] }}"  class="form-control" style="width: auto !important" />
+                                {% else %}
+                                    <div style="float: left; padding-top: 10px;" ><?php echo HTTP_CATALOG ?>image/</div><input placeholder="Путь к картинкам" name="import_yml_oc_template_data_yml[product][image_new_path]" value="catalog/"  class="form-control" style="width: auto !important"  />
+                                {% endif %}
+                            </div>
+                            <script>
+                                $(document).ready(function() {
+                                    $("select[name='import_yml_oc_template_data_yml[product][image]']").change();
+                                });
+                            </script>
+                        </div>
+                </td>
+            </tr>
+            <tr class="product_import_status" style="display: none">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_rec }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][rec]"  class="form-control">
+                            {% if template_data_selected.product.rec is defined and template_data_selected.product.rec %}
+                                <option value="1" selected="" >{{ text_enabled }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                <option value="1" >{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status" >
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_description }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][description]"  class="form-control">
+                            {% if template_data_selected.product.description is defined and template_data_selected.product.description %}
+                                <option value="1" selected="" >{{ text_enabled }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                <option value="1" >{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                        <div>
+                            <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][description_cdata]"  class="form-control">
+                                {% if template_data_selected.product.description_cdata is defined and template_data_selected.product.description_cdata %}
+                                    <option value="1" selected="" >Описания в формате HTML (CDATA)</option>
+                                    <option value="0" >Описание текстом</option>
+                                {% else %}
+                                    <option value="0" selected="" >Описание текстом</option>
+                                    <option value="1" >Описания в формате HTML (CDATA)</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status" >
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_typePrefix }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select name="import_yml_oc_template_data_yml[product][typePrefix]"  class="form-control" style="margin-top: 5px;">
+                            <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                            {% for db_column_name, column_title in types_data.product.product %}
+                                {% if template_data_selected.product.typePrefix is defined and template_data_selected.product.typePrefix == db_column_name %}
+                                    <option value="{{ db_column_name }}" selected="" >{{ column_title }}</option>
+                                {% else %}
+                                    <option value="{{ db_column_name }}" >{{ column_title }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status" >
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_model }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select name="import_yml_oc_template_data_yml[product][model]"  class="form-control" style="margin-top: 5px;">
+                            <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                            {% for db_column_name, column_title in types_data.product.product %}
+                                {% if template_data_selected.product.model is defined and template_data_selected.product.model == db_column_name %}
+                                    <option value="{{ db_column_name }}" selected="">{{ column_title }}</option>
+                                {% elseif template_data_selected.product.model is defined and template_data_selected.product.model == 'model' %}
+                                    <option value="{{ db_column_name }}"  selected="">{{ column_title }}</option>
+                                {% else %}
+                                    <option value="{{ db_column_name }}">{{ column_title }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status" >
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_barcode }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select name="import_yml_oc_template_data_yml[product][barcode]" class="form-control" style="margin-top: 5px;">
+                            <option value="0">{{ text_type_data_yml_setting_no_import }}</option>
+                            {% for db_column_name, column_title in types_data.product.product %}
+                                {% if template_data_selected.product.barcode is defined and template_data_selected.product.barcode == db_column_name %}
+                                    <option value="{{ db_column_name }}" selected="">{{ column_title }}</option>
+                                {% elseif template_data_selected.product.barcode is defined and template_data_selected.product.barcode == 'barcode' %}
+                                    <option value="{{ db_column_name }}"  selected="">{{ column_title }}</option>
+                                {% else %}
+                                    <option value="{{ db_column_name }}">{{ column_title }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_name }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.product_seo_title',this.value)" style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][name]"  class="form-control">
+                            {% if template_data_selected.product.name is defined and template_data_selected.product.name %}
+                                <option value="1" selected="">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="">{{ text_disabled }}</option>
+                                <option value="1">{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                        <div class="product_seo_title">
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_title }}</label>
+                            <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][seo_title]"  class="form-control">
+                                {% if template_data_selected.product.seo_title is defined and template_data_selected.product.seo_title %}
+                                    <option value="1" selected="">{{ text_type_data_yml_setting_product_seo_title }}</option>
+                                    <option value="0">{{ text_type_data_yml_setting_no_import }}</option>
+                                {% else %}
+                                    <option value="0" selected="">{{ text_type_data_yml_setting_no_import }}</option>
+                                    <option value="1">{{ text_type_data_yml_setting_product_seo_title }}</option>
+                                {% endif %}
+                            </select>
+                            <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_name_self }}</label>
+                            <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][name_self]"  class="form-control">
+                                <option value="0">{{ text_type_data_yml_setting_no_import }}</option>
+
+                                {% for offer_element, tmp in offer_elements %}
+                                    {% if template_data_selected.product.name_self is defined and template_data_selected.product.name_self and template_data_selected.product.name_self == offer_element %}
+                                        <option value="{{ offer_element }}" selected="" >{{ offer_element }}</option>
+                                    {% elseif template_data_selected.product.name_self == false and offer_element == 'name' %}
+                                        <option value="{{ offer_element }}" >{{ offer_element }}</option>
+                                    {% else %}
+                                        <option value="{{ offer_element }}" >{{ offer_element }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $("select[name='import_yml_oc_template_data_yml[product][name]']").change();
+                            });
+                        </script>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product_import_status" >
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_product_custom_field_import }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <table>
+                            {% for i in range(low = 0, high = 5, step = 1) %}
+                                <tr>
+                                    <td class="text-left">
+                                        {{ text_type_data_yml_setting_product_custom_field_import_from }}
+                                    </td>
+                                    <td class="text-left">
+                                        <div  style="margin-left: 5px;"  class="input-group">
+                                            <select style="margin-bottom: 5px; max-width:150px;" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][from]"  class="form-control">
+                                                <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                                                {% for offer_element, tmp in offer_elements %}
+                                                    {% if template_data_selected.product.custom_field[i].from is defined and template_data_selected.product.custom_field[i].from and template_data_selected.product.custom_field[i].from == offer_element %}
+                                                        <option value="{{ offer_element }}" selected="">{{ offer_element }}</option>
+                                                    {% else %}
+                                                        <option value="{{ offer_element }}">{{ offer_element }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td class="text-left" style="padding-left: 5px;">
+                                        {{ text_type_data_yml_setting_product_custom_field_import_to }}
+                                    </td>
+                                    <td class="text-left">
+                                        <div style="margin-left: 5px;"  class="input-group">
+                                            <select name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][to]"  class="form-control" style="max-width:150px; ">
+                                                <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                                                {% for offer_element, tmp in offer_elements %}
+                                                    {% if template_data_selected.product.custom_field[i].to is defined and template_data_selected.product.custom_field[i].to and template_data_selected.product.custom_field[i].to == db_column_name %}
+                                                        <option value="{{ db_column_name }}" selected="">{{ column_title }}</option>
+                                                    {% else %}
+                                                        <option value="{{ db_column_name }}">{{ column_title }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td class="text-left">
+                                        {% if template_data_selected.product.custom_field[i].prefix_left is defined %}
+                                            <input placeholder="Текстовый префикс слева" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][prefix_left]" value="{{ template_data_selected.product.custom_field[i].prefix_left }}" class="form-control" />
+                                        {% else %}
+                                            <input placeholder="Текстовый префикс слева" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][prefix_left]" value="" class="form-control" />
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-left" >
+                                        {% if template_data_selected.product.custom_field[i].prefix_right is defined %}
+                                            <input placeholder="Текстовый префикс справа" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][prefix_right]" value="{{ template_data_selected.product.custom_field[i].prefix_right }}"  class="form-control" />
+                                        {% else %}
+                                            <input placeholder="Текстовый префикс справа" name="import_yml_oc_template_data_yml[product][custom_field][{{ i }}][prefix_right]" value=""  class="form-control" />
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            {% if offer_attributes %}
+                <tr class="product_import_status" >
+                    <td class="text-left" >
+                        Импортировать атрибут поля YML файла в поле товара
+                    </td>
+                    <td class="text-left" >
+                        <div class="input-group">
+                            <table>
+                                {% for i in range(low = 0, high = 5, step = 1) %}
+                                    <tr>
+                                        <td class="text-left">
+                                            Атрибут поля YML файла
+                                        </td>
+                                        <td class="text-left" >
+                                            <div  style="margin-left: 5px;"  class="input-group">
+                                                <select style="margin-bottom: 5px; max-width:150px;" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][from]"  class="form-control">
+                                                    <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                                                    {% for offer_attribute_element, offer_attribute_element_name in offer_attributes %}
+                                                        {% if template_data_selected.product.custom_field_attribute[i].from is defined and template_data_selected.product.custom_field_attribute[i].from and template_data_selected.product.custom_field_attribute[i].from == offer_attribute_element %}
+                                                            <option value="{{ offer_attribute_element }}" selected="" >{{ offer_attribute_element_name }}</option>
+                                                        {% else %}
+                                                            <option value="{{ offer_attribute_element }}" >{{ offer_attribute_element_name }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                        </td>
+                                        <td class="text-left" style="padding-left: 5px;">
+                                            {{ text_type_data_yml_setting_product_custom_field_import_to }}
+                                        </td>
+                                        <td class="text-left">
+                                            <div style="margin-left: 5px;"  class="input-group">
+                                                <select name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][to]"  class="form-control" style="max-width:150px; ">
+                                                    <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                                                    {% for db_column_name, column_title in types_data.product.product %}
+                                                        {% if template_data_selected.product.custom_field_attribute[i].to is defined and template_data_selected.product.custom_field_attribute[i].to and template_data_selected.product.custom_field_attribute[i].to == db_column_name %}
+                                                            <option value="{{ db_column_name }}" selected="" >{{ column_title }}</option>
+                                                        {% else %}
+                                                            <option value="{{ db_column_name }}" >{{ column_title }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            {% if template_data_selected.product.custom_field_attribute[i].prefix_left is defined %}
+                                                <input placeholder="Текстовый префикс слева" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][prefix_left]" value="{{ template_data_selected.product.custom_field_attribute[i].prefix_left }}"  class="form-control" />
+                                            {% else %}
+                                                <input placeholder="Текстовый префикс слева" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][prefix_left]" value="" class="form-control" />
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-left">
+                                            {% if template_data_selected.product.custom_field_attribute[i].prefix_right is defined %}
+                                                <input placeholder="Текстовый префикс справа" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][prefix_right]" value="{{ template_data_selected.product.custom_field_attribute[i].prefix_right }}"  class="form-control" />
+                                            {% else %}
+                                                <input placeholder="Текстовый префикс справа" name="import_yml_oc_template_data_yml[product][custom_field_attribute][{{ i }}][prefix_right]" value=""  class="form-control" />
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_category_import_status }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.product_category_param',this.value)"  name="import_yml_oc_template_data_yml[category][import_status]"  class="form-control">
+                            {% if template_data_selected.category.import_status is defined and template_data_selected.category.import_status %}
+                                <option value="1" selected="" >{{ text_enabled }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                <option value="1" >{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                        <div class="product_category_param">
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_category_seo_title }}</label>
+                            <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[category][seo_title]"  class="form-control">
+                                {% if template_data_selected.category.seo_title is defined and template_data_selected.category.seo_title %}
+                                    <option value="1" selected="" >{{ text_type_data_yml_setting_category_seo_title }}</option>
+                                    <option value="0" >{{ text_type_data_yml_setting_no_import }}</option>
+                                {% else %}
+                                    <option value="0" selected="" >{{ text_type_data_yml_setting_no_import }}</option>
+                                    <option value="1" >{{ text_type_data_yml_setting_category_seo_title }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $("select[name='import_yml_oc_template_data_yml[category][import_status]']").change();
+                            });
+                        </script>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_manufacturer_import_status }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.manufacturer_import_status',this.value)" name="import_yml_oc_template_data_yml[manufacturer][import_status]"  class="form-control">
+                            {% if template_data_selected.manufacturer.import_status is defined and template_data_selected.manufacturer.import_status %}
+                                <option value="1" selected="" >{{ text_enabled }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                <option value="1" >{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $("select[name='import_yml_oc_template_data_yml[manufacturer][import_status]']").change();
+                        });
+                    </script>
+                </td>
+            </tr>
+            <tr class="manufacturer_import_status">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_manufacturer_vendor_code }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.manufacturer_vendor_code_field',this.value)" name="import_yml_oc_template_data_yml[manufacturer][vendor_code]"  class="form-control">
+                            {% if template_data_selected.manufacturer.vendor_code is defined and template_data_selected.manufacturer.vendor_code %}
+                                <option value="1" selected="" >{{ text_type_data_yml_setting_manufacturer_vendor_code }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                <option value="1" >{{ text_type_data_yml_setting_manufacturer_vendor_code }}</option>
+                            {% endif %}
+                        </select>
+                        <div class="manufacturer_vendor_code_field" >
+                            <select name="import_yml_oc_template_data_yml[manufacturer][vendor_code_field]"  class="form-control" style="margin-top: 5px;">
+                                <option value="0" >{{ entry_select }}</option>
+                                {% for db_column_name, column_title in types_data.product.product %}
+                                    {% if template_data_selected.manufacturer.vendor_code_field is defined and template_data_selected.manufacturer.vendor_code_field == db_column_name %}
+                                        <option value="{{ db_column_name }}" selected="" >{{ column_title }}</option>
+                                    {% else %}
+                                        <option value="{{ db_column_name }}" >{{ column_title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $("select[name='import_yml_oc_template_data_yml[manufacturer][vendor_code]']").change();
+                            });
+                        </script>
+                    </div>
+                </td>
+            </tr>
+            {% if offer_params %}
+                <tr>
+                    <td class="text-left" >
+                        Импорт опций
+                    </td>
+                    <td class="text-left" >
+
+                        <div class="input-group">
+                            <select onchange="openSettingBox('.option_import_status',this.value)" name="import_yml_oc_template_data_yml[option][import_status]"  class="form-control">
+                                {% if template_data_selected.option.import_status is defined and template_data_selected.option.import_status %}
+                                    <option value="1" selected="">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="0" selected="">{{ text_disabled }}</option>
+                                    <option value="1">{{ text_enabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $("select[name='import_yml_oc_template_data_yml[option][import_status]']").change();
+                            });
+                        </script>
+                    </td>
+                </tr>
+                <tr class="option_import_status">
+                    <td class="text-left" >
+                        Выбор опций для импорта
+                    </td>
+                    <td class="text-left" >
+                        <div><a onclick="selectUnselect('.option_params_import')">Выделение</a><br><br></div>
+                        <table  class="table table-bordered table-hover">
+                            {% for offer_param_name in offer_params %}
+                                <tr>
+                                    <td class="text-left">
+                                        {{ offer_param_name }}
+                                    </td>
+                                    <td>
+                                        <select name="import_yml_oc_template_data_yml[option][params][{{ offer_param_name }}][status]"  class="form-control option_params_import">
+                                            {% if template_data_selected.option.params[offer_param_name].status is defined and template_data_selected.option.params[offer_param_name].status %}
+                                                <option value="1" selected="" >{{ text_enabled }}</option>
+                                                <option value="0" >{{ text_disabled }}</option>
+                                            {% else %}
+                                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                                <option value="1" >{{ text_enabled }}</option>
+                                            {% endif %}
+                                        </select>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_attribute_import_status }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.attribute_import_status',this.value)" name="import_yml_oc_template_data_yml[attribute][import_status]"  class="form-control">
+                            {% if template_data_selected.attribute.import_status is defined and template_data_selected.attribute.import_status %}
+                                <option value="1" selected="" >{{ text_enabled }}</option>
+                                <option value="0" >{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="" >{{ text_disabled }}</option>
+                                <option value="1" >{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            $("select[name='import_yml_oc_template_data_yml[attribute][import_status]']").change();
+                        });
+                    </script>
+                </td>
+            </tr>
+            <tr class="attribute_import_status">
+                <td class="text-left" >
+                    {{ text_type_data_yml_setting_attribute_groupe_id }}
+                </td>
+                <td class="text-left" >
+                    <div class="input-group">
+                        <select name="import_yml_oc_template_data_yml[attribute][attribute_group_id]"  class="form-control">
+                            <option value="0" >{{ entry_select }}</option>
+                            {% for attribute_group in attribute_groups %}
+                                {% if template_data_selected.attribute.attribute_group_id is defined and template_data_selected.attribute.attribute_group_id == attribute_group.attribute_group_id %}
+                                    <option value="{{ attribute_group.attribute_group_id }}" selected="" >{{ attribute_group.name }}</option>
+                                {% else %}
+                                    <option value="{{ attribute_group.attribute_group_id }}" >{{ attribute_group.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <td class="text-left" width="20%">
+                    {{ entry_type_change }}
+                </td>
+                <td class="text-left">
+                    <div class="input-group">
+                        <select name="import_yml_oc_template_data_yml[type_change]"  class="form-control">
+                            <option value="0" >{{ entry_select }}</option>
+                            {% for type_change, type_change_title in types_change %}
+                                {% if template_data_selected.type_change is defined and template_data_selected.type_change == type_change %}
+                                    <option value="{{ type_change }}" selected="" >{{ type_change_title }}</option>
+                                {% else %}
+                                    <option value="{{ type_change }}" >{{ type_change_title }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table class="table table-bordered table-hover">
+            <tbody>
+            <tr>
+                <td class="text-left" width="20%">
+                    {{ entry_import_yml_oc_template_data }}
+                </td>
+                <td class="text-left" width="20%">
+                    {% if template_data_selected.id %}
+                        <input placeholder="{{ entry_import_yml_oc_template_data_name }}" name="import_yml_oc_template_data_yml[name]" value="{{ template_data_selected.name }}"  class="form-control" />
+                    {% else %}
+                        <input placeholder="{{ entry_import_yml_oc_template_data_name }}" name="import_yml_oc_template_data_yml[name]" value="{{ template_data_name_new }}"  class="form-control" />
+                    {% endif %}
+                </td>
+                <td class="text-left">
+                    <div class="input-group">
+                        <select class="form-control" id="setTemplateDataTypeAction">
+                            {% if template_data_selected.id %}
+                                <option value="save" >{{ entry_import_yml_oc_template_data_save }}</option>
+                                <option value="update" selected="">{{ entry_import_yml_oc_template_data_update }}</option>
+                                <option value="delete" >{{ entry_import_yml_oc_template_data_delete }}</option>
+                            {% else %}
+                                <option value="save" >{{ entry_import_yml_oc_template_data_save }}</option>
+                                <option style="color: #ccc " value="update" >{{ entry_import_yml_oc_template_data_update }}</option>
+                                <option style="color: #ccc " value="delete" >{{ entry_import_yml_oc_template_data_delete }}</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </td>
+                <td class="text-left">
+                    <a id="setTemplateDataBtn" onclick="setTemplateData($('#setTemplateDataTypeAction').val())" class="btn btn-primary setTemplateDataBtn">{{ entry_import_yml_oc_template_data_save_template_data }}</a>
+                    <span id="setTemplateData" class="alert alert-info" style="display: none"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <h2>{{ text_step_3_ending }}</h2>
+        <table class="table table-bordered table-hover">
+            <tbody>
+            <tr>
+                <td class="text-center" width="20%">
+                    <a id="startImport" onclick="startImport($('input[name=\'import_yml_oc_template_data_yml[start]\']').val());" class="btn btn-primary" style="width: 100%">{{ text_step_3_start_import }}</a>
+                </td>
+                <td class="text-left">
+                    <input placeholder="{{ text_step_3_start }}" name="import_yml_oc_template_data_yml[start]" value="{{ template_data_selected.start }}"  class="form-control" />
+                </td>
+                <td class="text-left">
+                    <input placeholder="{{ text_step_3_limit }}" name="import_yml_oc_template_data_yml[limit]" value="{{ template_data_selected.limit }}"  class="form-control" />
+                </td>
+            </tr>
+            <tr >
+                <td colspan="3" id="importStartMessages">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    {% else %}
+        {{ entry_import_yml_oc_format_data_empty }}
+    {% endif %}
+    <script type="text/javascript">
+        function selectUnselect(class_css) {
+            if($(class_css).val()=="1") {
+                $(class_css).val(0);
+            }else{
+                $(class_css).val(1);
+            }
+
+            return;
         }
 
-        return;
-    }
+        let column_name_num = 0;
 
-    let column_name_num = 0;
+        function addTypeDataColumnTableRow(type_process,template_id) {
+            let id_td = new Date().getTime();
+            let column_name = 'column_'+column_name_num;
 
-    function addTypeDataColumnTableRow(type_process,template_id) {
-        let id_td = new Date().getTime();
-        let column_name = 'column_'+column_name_num;
+            column_name_num += 1;
 
-        column_name_num += 1;
+            let html = '';
+            html += '<tr id="type_data_column_'+id_td+'_table_row">';
+            html +=  '<td class="text-left" width="20%">';
+            html +=    '<input onchange="setNewTypesDataColumns(\''+column_name+'\',\''+id_td+'\',this.value,\''+type_process+'\',this.name,\''+template_id+'\');" value="'+column_name+'" class="form-control" name="import_yml_oc_template_data_yml[export_field_name]['+template_id+']['+column_name+']">';
+            html +=  '</td>';
+            html +=  '<td class="text-left" width="20%">';
+            html += 	  '<div class="input-group">';
+            html += '<select onchange="getTypesDataColumns(this.value,\'#type_data_column_'+id_td+'\',\''+column_name+'\',\''+type_process+'\');" name="import_yml_oc_template_data_yml[type_data]['+column_name+']"  class="form-control select-type-data">';
+            html += '<option value="0" >{{ text_type_data_ignor }}</option>';
 
-        let html = '';
-        html += '<tr id="type_data_column_'+id_td+'_table_row">';
-        html +=  '<td class="text-left" width="20%">';
-        html +=    '<input onchange="setNewTypesDataColumns(\''+column_name+'\',\''+id_td+'\',this.value,\''+type_process+'\',this.name,\''+template_id+'\');" value="'+column_name+'" class="form-control" name="import_yml_oc_template_data_yml[export_field_name]['+template_id+']['+column_name+']">';
-        html +=  '</td>';
-        html +=  '<td class="text-left" width="20%">';
-        html += 	  '<div class="input-group">';
-        html += '<select onchange="getTypesDataColumns(this.value,\'#type_data_column_'+id_td+'\',\''+column_name+'\',\''+type_process+'\');" name="import_yml_oc_template_data_yml[type_data]['+column_name+']"  class="form-control select-type-data">';
-        html += '<option value="0" >{{ text_type_data_ignor }}</option>';
+            {% for type, columns in types_data %}
+            html += '<option value="{{ type }}" >{{ "text_type_data_#{type}" }}</option>';
+            {% endfor %}
+            html +=          '</select>';
+            html += 	  '</div>';
+            html +=  '</td>';
+            html +=  '<td class="text-left" id="type_data_column_'+id_td+'">';
+            html +=  '</td>';
+            html += '<td class="text-left"><button type="button" onclick="$(\'#type_data_column_'+id_td+'_table_row\').remove();" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+            html += '</tr>';
 
-        {% for type, columns in types_data %}
-        html += '<option value="{{ type }}" >{{ "text_type_data_#{type}" }}</option>';
-        {% endfor %}
-        html +=          '</select>';
-        html += 	  '</div>';
-        html +=  '</td>';
-        html +=  '<td class="text-left" id="type_data_column_'+id_td+'">';
-        html +=  '</td>';
-        html += '<td class="text-left"><button type="button" onclick="$(\'#type_data_column_'+id_td+'_table_row\').remove();" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
-        html += '</tr>';
+            $('#addTypeDataColumnTableRow_'+type_process).before(html);
 
-        $('#addTypeDataColumnTableRow_'+type_process).before(html);
-
-    }
-</script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        updateSaveButton();
-    });
-</script>
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            updateSaveButton();
+        });
+    </script>
 {% else %}
     <h3>{{ errors_import_yml_oc_title }}</h3>
     {% for error in errors %}
-    <div class="alert alert-danger">{{ error }}</div>
+        <div class="alert alert-danger">{{ error }}</div>
     {% endfor %}
 {% endif %}

@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1741af76-61ce-4054-aa31-47a82d6a1310" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/test-import-yml-oc3.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/controller/extension/module/import_yml_oc.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/language/en-gb/extension/module/import_yml_oc.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/language/ru-ru/extension/module/import_yml_oc.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/language/uk-ua/extension/module/import_yml_oc.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/model/tool/import_yml_oc.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/view/image/loading/loading.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc_category_matching_yml.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc_step_one_settings_yml.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc_step_two_settings_yml.twig" afterDir="false" />
-    </list>
+    <list default="true" id="1741af76-61ce-4054-aa31-47a82d6a1310" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,11 +10,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="817">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor />
+              <first_editor>
+                <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
+              </first_editor>
               <second_editor />
             </state>
           </provider>
@@ -50,7 +35,7 @@
         <entry file="file://$PROJECT_DIR$/admin/model/tool/import_yml_oc.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-715">
-              <caret line="2077" column="50" lean-forward="true" selection-start-line="2077" selection-start-column="50" selection-end-line="2077" selection-end-column="50" />
+              <caret line="2077" column="50" selection-start-line="2077" selection-start-column="50" selection-end-line="2077" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -102,7 +87,7 @@
         <entry file="file://$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc_category_matching_yml.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
-              <caret line="8" column="15" lean-forward="true" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+              <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -121,11 +106,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc_step_two_settings_yml.twig">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-171">
-              <caret line="937" column="51" lean-forward="true" selection-start-line="937" selection-start-column="51" selection-end-line="937" selection-end-column="51" />
+              <caret line="937" column="51" selection-start-line="937" selection-start-column="51" selection-end-line="937" selection-end-column="51" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#td#1;n#tr#0;n#tbody#0;n#table#0;n#!!top" expanded="true" />
                 <element signature="e#1902#1908#0#HTML" expanded="true" />
@@ -213,6 +198,15 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
@@ -276,13 +270,8 @@
         <option value="$PROJECT_DIR$/admin/controller/extension/module/import_yml_oc.php" />
         <option value="$PROJECT_DIR$/admin/model/tool/import_yml_oc.php" />
         <option value="$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc.twig" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/gitignore" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -315,7 +304,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="D:/openserver/domains/mixtoolscomua09112019" />
+    <property name="last_opened_file_path" value="D:/openserver/domains/ocstore3" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -356,20 +345,36 @@
       <option name="presentableId" value="Default" />
       <updated>1574738464607</updated>
       <workItem from="1574738465956" duration="31242000" />
-      <workItem from="1574991811417" duration="22971000" />
+      <workItem from="1574991811417" duration="25037000" />
     </task>
+    <task id="LOCAL-00001" summary="start sources">
+      <created>1575167869066</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1575167869066</updated>
+    </task>
+    <task id="LOCAL-00002" summary="start sources">
+      <created>1575167907458</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1575167907458</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54213000" />
+    <option name="totallyTimeSpent" value="56279000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="2575" height="1415" extended-state="6" />
+    <frame x="-7" y="-7" width="2575" height="1415" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.14194831" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.14194831" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" weight="0.32936507" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" visible="true" weight="0.32936507" />
       <window_info anchor="bottom" id="Database Changes" order="1" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32936507" />
@@ -413,21 +418,19 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="start sources" />
+    <option name="LAST_COMMIT_MESSAGE" value="start sources" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/admin/language/ru-ru/extension/import_yml2.php" />
     <entry file="file://$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc_types_data_column.twig" />
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/admin/model/tool/import_yml_oc.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-715">
-          <caret line="2077" column="50" lean-forward="true" selection-start-line="2077" selection-start-column="50" selection-end-line="2077" selection-end-column="50" />
+          <caret line="2077" column="50" selection-start-line="2077" selection-start-column="50" selection-end-line="2077" selection-end-column="50" />
         </state>
       </provider>
     </entry>
@@ -476,7 +479,7 @@
     <entry file="file://$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc_category_matching_yml.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="8" column="15" lean-forward="true" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+          <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -495,7 +498,7 @@
     <entry file="file://$PROJECT_DIR$/admin/view/template/extension/module/import_yml_oc_step_two_settings_yml.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-171">
-          <caret line="937" column="51" lean-forward="true" selection-start-line="937" selection-start-column="51" selection-end-line="937" selection-end-column="51" />
+          <caret line="937" column="51" selection-start-line="937" selection-start-column="51" selection-end-line="937" selection-end-column="51" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#td#1;n#tr#0;n#tbody#0;n#table#0;n#!!top" expanded="true" />
             <element signature="e#1902#1908#0#HTML" expanded="true" />
@@ -579,6 +582,23 @@
             <element signature="n#style#0;n#span#0;n#td#3;n#tr#0;n#tbody#0;n#table#2;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#td#0;n#tr#0;n#tbody#0;n#table#3;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor>
+            <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

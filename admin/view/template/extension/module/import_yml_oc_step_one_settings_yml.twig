@@ -1,155 +1,153 @@
 {% if format_data == 'yml' %}
-<input name="import_yml_oc_template_data_yml[format_data]" type="hidden" value="{{ format_data }}" />
-<table class="table table-bordered table-hover">
-    <tbody>
-    <tr>
-        <td class="text-left">
-            {{ entry_import_yml_oc_template_data }}
-        </td>
-        <td class="text-left">
-            <div class="input-group">
-                {% if templates_data != true %}
-                    <select name="import_yml_oc_template_data_yml[id]"  class="form-control">
-                        <option value="0" >{{ entry_import_yml_oc_template_data_empty }}</option>
-                    </select>
-                {% else %}
-                    <select onchange="getStepOneSettings('{{ format_data }}',this.value);" name="import_yml_oc_template_data_yml[id]"  class="form-control">
-                        <option value="0" >{{ entry_import_yml_oc_template_data_new }}</option>
-                        {% for template_data_key, template_data in templates_data %}
-                            {% if template_data_selected.id == template_data_key %}
-                                <option value="{{ template_data_key }}" selected="" >{{ template_data.name }}</option>
+    <input name="import_yml_oc_template_data_yml[format_data]" type="hidden" value="{{ format_data }}" />
+    <table class="table table-bordered table-hover">
+        <tbody>
+        <tr>
+            <td class="text-left">
+                {{ entry_import_yml_oc_template_data }}
+            </td>
+            <td class="text-left">
+                <div class="input-group">
+                    {% if templates_data != true %}
+                        <select name="import_yml_oc_template_data_yml[id]"  class="form-control">
+                            <option value="0" >{{ entry_import_yml_oc_template_data_empty }}</option>
+                        </select>
+                    {% else %}
+                        <select onchange="getStepOneSettings('{{ format_data }}',this.value);" name="import_yml_oc_template_data_yml[id]"  class="form-control">
+                            <option value="0" >{{ entry_import_yml_oc_template_data_new }}</option>
+                            {% for template_data_key, template_data in templates_data %}
+                                {% if template_data_selected.id == template_data_key %}
+                                    <option value="{{ template_data_key }}" selected="" >{{ template_data.name }}</option>
+                                {% else %}
+                                    <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-left">
+                {{ entry_import_yml_oc_encoding }}
+            </td>
+            <td class="text-left">
+                <div class="input-group">
+                    <select name="import_yml_oc_template_data_yml[encoding]" class="form-control">
+                        <option value="0" >{{ entry_select }}</option>
+                        {% for encoding in encodings %}
+                            {% if template_data_selected.encoding == encoding %}
+                                <option value="{{ encoding }}" selected="" >{{ encoding }}</option>
                             {% else %}
-                                <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                <option value="{{ encoding }}" >{{ encoding }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-left">
+                {{ entry_import_yml_oc_file }}
+            </td>
+            <td class="text-left">
+                {% if entry_import_yml_oc_file_upload_error_type %}
+                    <div class="alert alert-danger">{{ entry_import_yml_oc_file_upload_error_type }}</div>
                 {% endif %}
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td class="text-left">
-            {{ entry_import_yml_oc_encoding }}
-        </td>
-        <td class="text-left">
-            <div class="input-group">
-                <select name="import_yml_oc_template_data_yml[encoding]" class="form-control">
-                    <option value="0" >{{ entry_select }}</option>
-                    {% for encoding in encodings %}
-                        {% if template_data_selected.encoding == encoding %}
-                            <option value="{{ encoding }}" selected="" >{{ encoding }}</option>
-                        {% else %}
-                            <option value="{{ encoding }}" >{{ encoding }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td class="text-left">
-            {{ entry_import_yml_oc_file }}
-        </td>
-        <td class="text-left">
-            {% if entry_import_yml_oc_file_upload_error_type %}
-            <div class="alert alert-danger">{{ entry_import_yml_oc_file_upload_error_type }}</div>
-            <?php } ?>
-            <div class="input-group">
-                <input type="text" name="import_yml_oc_template_data_yml[file_upload]" value="{{ template_data_selected.file_upload }}" placeholder="{{ entry_import_yml_oc_file_upload }}" id="input-filename" class="form-control" />
-                <span class="input-group-btn">
+                <div class="input-group">
+                    <input type="text" name="import_yml_oc_template_data_yml[file_upload]" value="{{ template_data_selected.file_upload }}" placeholder="{{ entry_import_yml_oc_file_upload }}" id="input-filename" class="form-control" />
+                    <span class="input-group-btn">
                     <button type="button" id="button-upload" data-loading-text="{{ text_wite }}" class="btn btn-primary"><i class="fa fa-upload"></i> {{ entry_import_yml_oc_file_upload }}</button>
                 </span>
-            </div>
-            <div class="input-group" style="margin-top: 7px;">
-                {{ entry_import_yml_oc_file_url }} <input type="text" name="import_yml_oc_template_data_yml[file_url]" value="{{ template_data_selected.file_url }}" placeholder="{{ entry_import_yml_oc_file_url }}" id="input-filename" class="form-control" />
-            </div>
-        </td>
-    </tr>
-
-    <tr>
-        <td class="text-left">
-            {{ entry_import_yml_oc_template_data_level }}
-        </td>
-        <td class="text-left">
-            <div class="input-group">
-                <select name="import_yml_oc_template_data_yml[level]" class="form-control">
-                    {% if template_data_selected.level %}
-                        <option value="1" selected="" >{{ entry_import_yml_oc_template_data_level_1 }}</option>
-                        <option value="0" >{{ entry_import_yml_oc_template_data_level_0 }}</option>
-                    {% else %}
-                        <option value="1"  >{{ entry_import_yml_oc_template_data_level_1 }}</option>
-                        <option value="0" selected="">{{ entry_import_yml_oc_template_data_level_0 }}</option>
-                    {% endif %}
-                </select>
-            </div>
-        </td>
-    </tr>
-
-    <tr>
-        <td class="text-left">
-            {{ entry_import_yml_oc_language }}
-        </td>
-        <td class="text-left">
-            <div class="input-group">
-                <select name="import_yml_oc_template_data_yml[language_id]" class="form-control">
-                    <option value="0" >{{ entry_select }}</option>
-                    {% for language_id, language in languages %}
-                        {% if template_data_selected.language_id == language_id %}
-                            <option value="{{ language_id }}" selected="" >{{ language.name }}</option>
-                        {% else %}
-                            <option value="{{ language_id }}" >{{ language.name }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td class="text-left">
-            {{ entry_import_yml_oc_currency }}
-        </td>
-        <td class="text-left">
-            <div class="input-group">
-                <select name="import_yml_oc_template_data_yml[currency_code]" class="form-control">
-                    <option value="0" >{{ entry_select }}</option>
-                    {% for currency_code, currency in currencies %}
-                        {% if template_data_selected.currency_code == currency_code %}
-                            <option value="{{ currency_code }}" selected="" >{{ currency.name }}</option>
-                        {% else %}
-                            <option value="{{ currency_code }}" >{{ currency.name }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td class="text-left">
-            {{ entry_import_yml_oc_store }}
-        </td>
-        <td class="text-left">
-            <div class="well well-sm" style="max-height: 70px; overflow: auto; margin-bottom: 0px;">
-                {% for store in stores %}
-                <div class="checkbox">
-                    <label>
-                        {% if template_data_selected['store_id'][store.store_id] is defined %}
-                            <input type="checkbox" name="import_yml_oc_template_data_yml[store_id][{{ store.store_id }}]" value="{{ store.store_id }}" checked="checked" />
-                            {{ store.name }}
-                        {% esle %}
-                            <input type="checkbox" name="import_yml_oc_template_data_yml[store_id][{{ store.store_id }}]" value="{{ store.store_id }}" />
-                            {{ store.name }}
-                        {% endif %}
-                    </label>
                 </div>
-                {% endfor %}
-            </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a onclick="getStepTwoSettings()" class="btn btn-primary btn-step-two">{{ entry_download_field_to_file }}</a>
+                <div class="input-group" style="margin-top: 7px;">
+                    {{ entry_import_yml_oc_file_url }} <input type="text" name="import_yml_oc_template_data_yml[file_url]" value="{{ template_data_selected.file_url }}" placeholder="{{ entry_import_yml_oc_file_url }}" id="input-filename" class="form-control" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-left">
+                {{ entry_import_yml_oc_template_data_level }}
+            </td>
+            <td class="text-left">
+                <div class="input-group">
+                    <select name="import_yml_oc_template_data_yml[level]" class="form-control">
+                        {% if template_data_selected.level %}
+                            <option value="1" selected="" >{{ entry_import_yml_oc_template_data_level_1 }}</option>
+                            <option value="0" >{{ entry_import_yml_oc_template_data_level_0 }}</option>
+                        {% else %}
+                            <option value="1"  >{{ entry_import_yml_oc_template_data_level_1 }}</option>
+                            <option value="0" selected="">{{ entry_import_yml_oc_template_data_level_0 }}</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-left">
+                {{ entry_import_yml_oc_language }}
+            </td>
+            <td class="text-left">
+                <div class="input-group">
+                    <select name="import_yml_oc_template_data_yml[language_id]" class="form-control">
+                        <option value="0" >{{ entry_select }}</option>
+                        {% for language_id, language in languages %}
+                            {% if template_data_selected.language_id == language_id %}
+                                <option value="{{ language_id }}" selected="" >{{ language.name }}</option>
+                            {% else %}
+                                <option value="{{ language_id }}" >{{ language.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-left">
+                {{ entry_import_yml_oc_currency }}
+            </td>
+            <td class="text-left">
+                <div class="input-group">
+                    <select name="import_yml_oc_template_data_yml[currency_code]" class="form-control">
+                        <option value="0" >{{ entry_select }}</option>
+                        {% for currency_code, currency in currencies %}
+                            {% if template_data_selected.currency_code == currency_code %}
+                                <option value="{{ currency_code }}" selected="" >{{ currency.name }}</option>
+                            {% else %}
+                                <option value="{{ currency_code }}" >{{ currency.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-left">
+                {{ entry_import_yml_oc_store }}
+            </td>
+            <td class="text-left">
+                <div class="well well-sm" style="max-height: 70px; overflow: auto; margin-bottom: 0px;">
+                    {% for store in stores %}
+                        <div class="checkbox">
+                            <label>
+                                {% if template_data_selected['store_id'][store.store_id] is defined %}
+                                    <input type="checkbox" name="import_yml_oc_template_data_yml[store_id][{{ store.store_id }}]" value="{{ store.store_id }}" checked="checked" />
+                                    {{ store.name }}
+                                {% else %}
+                                    <input type="checkbox" name="import_yml_oc_template_data_yml[store_id][{{ store.store_id }}]" value="{{ store.store_id }}" />
+                                    {{ store.name }}
+                                {% endif %}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a onclick="getStepTwoSettings()" class="btn btn-primary btn-step-two">{{ entry_download_field_to_file }}</a>
 {% else %}
-{{ entry_import_yml_oc_format_data_redirect }}
+    {{ entry_import_yml_oc_format_data_redirect }}
 {% endif %}
 <script type="text/javascript">
     $('#button-upload').on('click', function() {
@@ -201,10 +199,8 @@
 
 
     $(document).ready(function() {
-
-        for(var fofi=0;fofi<5;fofi++){
+        for(let fofi=0;fofi<5;fofi++) {
             //$('.btn-step-two').fadeOut('fast').fadeIn('fast');
         }
-
     });
 </script>

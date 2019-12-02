@@ -31,6 +31,9 @@ class ControllerExtensionModuleImportYmlOc extends Controller {
 //        $data['entry_import_yml_oc_format_data_format_csv'] = $this->language->get('entry_import_yml_oc_format_data_format_csv');
 //        $data['entry_import_yml_oc_format_data_format_yml'] = $this->language->get('entry_import_yml_oc_format_data_format_yml');
 
+//        $data['entry_import_yml_oc_format_data_format_yml'] = $this->language->get('entry_import_yml_oc_format_data_format_yml');
+//        var_dump($data['entry_import_yml_oc_format_data_format_yml']);
+
 
         $data['import_yml_oc_format_data'][] = 'yml';
 
@@ -404,7 +407,7 @@ class ControllerExtensionModuleImportYmlOc extends Controller {
         if ($format_data == 'yml') {
             $this->load->model('tool/import_yml_oc');
 
-            //$this->load->language('extension/module/import_yml_oc');
+            $this->load->language('extension/module/import_yml_oc');
 
             foreach ($import_yml_oc_template_data as $data_field => $data_value) {
                 if (($data_field == 'store_id' && !$data_value)) {
@@ -601,6 +604,8 @@ class ControllerExtensionModuleImportYmlOc extends Controller {
             );
 
             $data['entry_select'] = $this->language->get('entry_select');
+
+            var_dump($data['template_data_selected']);
 
             return $this->response->setOutput($this->load->view('extension/module/import_yml_oc_step_two_settings_yml', $data));
         }

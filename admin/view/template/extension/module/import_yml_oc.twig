@@ -7,7 +7,7 @@
             <h1>{{ heading_title }}</h1>
             <ul class="breadcrumb">
                 {% for breadcrumb in breadcrumbs %}
-                <li><a  href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                    <li><a  href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -18,13 +18,16 @@
                 font-size: 9px;
                 color: darkgray;
             }
+
             .small_text:hover{
                 font-size: 9px;
                 color: black;
             }
+
             .table_zebra tbody tr td:nth-child(2n+1){
                 background: lemonchiffon;
             }
+
             .table_zebra tbody tr td:nth-child(2){
                 background: none;
             }
@@ -50,6 +53,7 @@
                 border-bottom: 1px solid #ccc;
                 color:#bbb;
             }
+
             optgroup option{
                 color:#444;
             }
@@ -58,7 +62,6 @@
                 border:3px solid red;
                 background: bisque;
             }
-
 
             .setTemplateDataBtn{
                 border:1px solid #dddddd;
@@ -83,10 +86,10 @@
             .product_import_status,
             .manufacturer_import_status,
             .attribute_import_status,
-            .option_import_status
-            {
+            .option_import_status {
                 border-left: 10px solid #CCC;
             }
+
             #modal_form {
                 width: 800px;
                 height: 600px;
@@ -134,14 +137,14 @@
             }
         </style>
         {% if error_warning %}
-        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-        </div>
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
         {% endif %}
         {% if success %}
-        <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-        </div>
+            <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
         {% endif %}
         <div class="panel panel-default">
             <div class="panel-body">
@@ -169,7 +172,7 @@
                                                                 <select onchange="getStepOneSettings(this.value,0);" name="import_yml_oc_format_data"  class="form-control">
                                                                     <option value="0" >{{ entry_select }}</option>
                                                                     {% for import_yml_oc_format_data_row in import_yml_oc_format_data %}
-                                                                        <option value="{{ import_yml_oc_format_data_row }}" >{{ "entry_import_yml_oc_format_data_format_#{import_yml_oc_format_data_row}" }}</option>
+                                                                        <option value="{{ import_yml_oc_format_data_row }}">{{ _context['entry_import_yml_oc_format_data_format_' ~ import_yml_oc_format_data_row] }}</option>
                                                                     {% endfor %}
                                                                 </select>
                                                             </div>
@@ -212,16 +215,16 @@
                                     <td class="text-left">
                                         <div class="input-group">
                                             {% if import_yml_oc_update_yml_link_template_data == false %}
-                                            <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
-                                                <option value="0">{{ entry_import_yml_oc_template_data_empty }}</option>
-                                            </select>
+                                                <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                    <option value="0">{{ entry_import_yml_oc_template_data_empty }}</option>
+                                                </select>
                                             {% else %}
-                                            <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
-                                                <option value="0">{{ entry_select }}</option>
-                                                {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
-                                                    <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
-                                                {% endfor %}
-                                            </select>
+                                                <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                    <option value="0">{{ entry_select }}</option>
+                                                    {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
+                                                        <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             {% endif %}
                                         </div>
                                     </td>
@@ -240,76 +243,76 @@
                             </table>
                             <h2>{{ entry_update_csv_link_title }}</h2>
                             {% if import_yml_oc_update_yml_link %}
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>{{ column_update_csv_link_template_data }}</th>
-                                    <th>{{ column_update_csv_link_token }}</th>
-                                    <th>{{ column_update_csv_link_status }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for link_data in import_yml_oc_update_yml_link %}
-                                    {{ set id = link_data.id }}
-                                    <input name="import_yml_oc_update_yml_link[{{ id }}][id]" type="hidden" value="{{ id }}" />
+                                <table class="table table-bordered table-hover">
+                                    <thead>
                                     <tr>
-                                        <td class="text-left">
-                                            <div class="input-group">
-                                                {% if import_yml_oc_update_yml_link_template_data %}
-                                                <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
-                                                    <option value="0" >{{ entry_import_yml_oc_template_data_empty }}</option>
+                                        <th>{{ column_update_csv_link_template_data }}</th>
+                                        <th>{{ column_update_csv_link_token }}</th>
+                                        <th>{{ column_update_csv_link_status }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for link_data in import_yml_oc_update_yml_link %}
+                                        {% set id = link_data.id %}
+                                        <input name="import_yml_oc_update_yml_link[{{ id }}][id]" type="hidden" value="{{ id }}" />
+                                        <tr>
+                                            <td class="text-left">
+                                                <div class="input-group">
+                                                    {% if import_yml_oc_update_yml_link_template_data %}
+                                                        <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                            <option value="0" >{{ entry_import_yml_oc_template_data_empty }}</option>
+                                                        </select>
+                                                    {% else %}
+                                                        <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                            {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
+                                                                {% if link_data.template_data_id and link_data.template_data_id == template_data_key %}
+                                                                    <option selected="" value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input class="form-control" name="import_yml_oc_update_yml_link[{{ id }}][token]" value="{{ link_data.token }}" />
+                                            </td>
+                                            <td>
+                                                <select name="import_yml_oc_update_yml_link[{{ id }}][status]"  class="form-control">
+                                                    <option value="0" >{{ entry_update_csv_link_status_0 }}</option>
+                                                    {% if link_data.status and link_data.status == 1 %}
+                                                        <option selected="" value="1" >{{ entry_update_csv_link_status_1 }}</option>
+                                                        <option value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                    {% elseif link_data.status and link_data.status == 3 %}
+                                                        <option value="1" >{{ entry_update_csv_link_status_1 }}</option>
+                                                        <option selected=""  value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                    {% else %}
+                                                        <option value="1" >{{ entry_update_csv_link_status_1 }}</option>
+                                                        <option value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                    {% endif %}
                                                 </select>
-                                                {% else %}
-                                                    <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
-                                                        {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
-                                                            {% if link_data.template_data_id and link_data.template_data_id == template_data_key %}
-                                                                <option selected="" value="{{ template_data_key }}" >{{ template_data.name }}</option>
-                                                            {% else %}
-                                                                <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </select>
-                                                {% endif %}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" name="import_yml_oc_update_yml_link[{{ id }}][token]" value="{{ link_data.token }}" />
-                                        </td>
-                                        <td>
-                                            <select name="import_yml_oc_update_yml_link[{{ id }}][status]"  class="form-control">
-                                                <option value="0" >{{ entry_update_csv_link_status_0 }}</option>
-                                                {% if link_data.status and link_data.status == 1 %}
-                                                    <option selected="" value="1" >{{ entry_update_csv_link_status_1 }}</option>
-                                                    <option value="3" >{{ entry_update_csv_link_status_3 }}</option>
-                                                {% elseif link_data.status and link_data.status == 3 %}
-                                                    <option value="1" >{{ entry_update_csv_link_status_1 }}</option>
-                                                    <option selected=""  value="3" >{{ entry_update_csv_link_status_3 }}</option>
-                                                {% else %}
-                                                    <option value="1" >{{ entry_update_csv_link_status_1 }}</option>
-                                                    <option value="3" >{{ entry_update_csv_link_status_3 }}</option>
-                                                {% endif %}
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-right">{{ column_update_csv_link_link }}</td>
-                                        <td colspan="2">
-                                            <input style="width:60%"  class="form-control"  readonly="" onclick="$(this).select()" value="{{ "#{HTTP_CATALOG}index.php?route=feed/import_yml_oc_update_yml_link&user_token=#{link_data.token}" }}"/>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">{{ column_update_csv_link_link }}</td>
+                                            <td colspan="2">
+                                                <input style="width:60%"  class="form-control"  readonly="" onclick="$(this).select()" value="{{ "#{HTTP_CATALOG}index.php?route=feed/import_yml_oc_update_yml_link&user_token=#{link_data.token}" }}"/>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             {% else %}
                                 <div class="alert alert-success">{{ entry_update_csv_link_empty }}</div>
                             {% endif %}
                         </form>
                         <hr>
                         {% if error_warning == false and success == false %}
-                        <div id="import_yml_oc_notification" class="alert alert-info"><i class="fa fa-info-circle"></i>
-                            <div id="import_yml_oc_loading"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        </div>
+                            <div id="import_yml_oc_notification" class="alert alert-info"><i class="fa fa-info-circle"></i>
+                                <div id="import_yml_oc_loading"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -371,65 +374,65 @@
             url: 'index.php?route=extension/module/import_yml_oc/startImport&user_token={{ user_token }}&start='+start,
             data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
             {% if debug_mode %}
-                dataType: 'html',
+            dataType: 'html',
+            success: function(json) {
+                $('#importStartMessages').html('Sorry, debug mode is enabled<br><br>'+json);
+                $('#startImport').show();
+                start = 0;
+                total = 0;
+                first_start = 0;
+                limit = 0;
+                finished = 0;
+                return;
+                {% else %}
+                dataType: 'json',
                     success: function(json) {
-                    $('#importStartMessages').html('Sorry, debug mode is enabled<br><br>'+json);
-                    $('#startImport').show();
-                    start = 0;
-                    total = 0;
-                    first_start = 0;
-                    limit = 0;
-                    finished = 0;
-                    return;
-            {% else %}
-                    dataType: 'json',
-                        success: function(json) {
-            {% endif %}
+                    {% endif %}
 
-                if (json['error']!='') {
-                    $('#importStartMessages').html('<div class="alert alert-danger">'+json['error']+'</div>');
-                    $('#startImport').show();
-                    start = 0;
-                    total = 0;
-                    first_start = 0;
-                    limit = 0;
-                    finished = 0;
-                    return;
-                }
-
-                if (json['success']!='') {
-                    $('#importStartMessages').html('<div class="alert alert-success">'+json['success']+'</div>');
-                    $('input[name=\'import_yml_oc_template_data_yml[limit]\']').prop('readonly',false);
-                    $('input[name=\'import_yml_oc_template_data_yml[start]\']').prop('readonly',false);
-                    $('#startImport').show();
-                    start = 0;
-                    total = 0;
-                    first_start = 0;
-                    limit = 0;
-                    finished = 0;
-                    return;
-                }
-
-                if (json['total']!='') {
-                    total = parseInt(json['total']) - first_start;
-                    if(total<0){
+                    if (json['error']!='') {
+                        $('#importStartMessages').html('<div class="alert alert-danger">'+json['error']+'</div>');
+                        $('#startImport').show();
+                        start = 0;
                         total = 0;
+                        first_start = 0;
+                        limit = 0;
+                        finished = 0;
+                        return;
                     }
-                    $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }} : <b>'+finished+'</b> / <b>'+total+'</b></div>');
-                    startImport(start+limit);
+
+                    if (json['success']!='') {
+                        $('#importStartMessages').html('<div class="alert alert-success">'+json['success']+'</div>');
+                        $('input[name=\'import_yml_oc_template_data_yml[limit]\']').prop('readonly',false);
+                        $('input[name=\'import_yml_oc_template_data_yml[start]\']').prop('readonly',false);
+                        $('#startImport').show();
+                        start = 0;
+                        total = 0;
+                        first_start = 0;
+                        limit = 0;
+                        finished = 0;
+                        return;
+                    }
+
+                    if (json['total']!='') {
+                        total = parseInt(json['total']) - first_start;
+                        if(total<0){
+                            total = 0;
+                        }
+                        $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }} : <b>'+finished+'</b> / <b>'+total+'</b></div>');
+                        startImport(start+limit);
+                    }
+                },
+                failure: function(response) {
+                    {% if debug_mode %}
+                    alert(response);
+                    {% endif %}
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    {% if debug_mode %}
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    {% endif %}
                 }
-            },
-            failure: function(response) {
-            {% if debug_mode %}
-                alert(response);
-            {% endif %}
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-            {% if debug_mode %}
-                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-            {% endif %}
-            }
-        });
+            });
     }
 
     function openElementOnNameValue(name_open,value_this,value_open,element) {
@@ -630,7 +633,7 @@
     });
 
     function getStepOneSettings(format_data,template_data) {
-        $("#stepOneSettings").before('<div id="import_yml_oc_loading_stepOneSettings"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>');
+        $("#stepOneSettings").before('<div id="import_yml_oc_loading_stepOneSettings"><img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /></div>');
         $("#stepTwoSettings").empty();
         $.ajax({
             type: 'post',
@@ -639,7 +642,7 @@
             dataType: 'html',
             success: function(response) {
                 $('#stepOneSettings').html(response);
-                $('#ocext_loading_stepOneSettings').remove();
+                $('#import_yml_oc_loading_stepOneSettings').remove();
             },
             failure: function(response){
 
@@ -671,10 +674,10 @@
     }
 
     $(document).ready(function() {
-        $("a[href=\'#{{ open_tab ?>\']").click();
-        {% demo_mode %}
-            $("select[name='import_yml_oc_format_data']").val('csv');
-            $("select[name='import_yml_oc_format_data']").change();
+        $("a[href=\'#{{ open_tab }}\']").click();
+        {% if demo_mode %}
+        $("select[name='import_yml_oc_format_data']").val('csv');
+        $("select[name='import_yml_oc_format_data']").change();
         {% endif %}
     });
 
