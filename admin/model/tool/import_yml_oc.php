@@ -1472,24 +1472,24 @@ class ModelToolImportYmlOc extends Model {
 
         $template_id = $import_yml_oc_template_data['id'];
         $this->load->model('setting/setting');
-        $config_setting = $this->model_setting_setting->getSetting('import_yml_ocrecid');
+        $config_setting = $this->model_setting_setting->getSetting('import_yml_oc_recid');
 
         if ($config_setting) {
-            $import_yml_ocrecid = $config_setting;
-            $import_yml_ocrecid['import_yml_ocrecid'][$template_id][$yml_product_id] = array();
+            $import_yml_oc_recid = $config_setting;
+            $import_yml_oc_recid['import_yml_oc_recid'][$template_id][$yml_product_id] = array();
 
             foreach ($rec_ids as $key => $value) {
-                $import_yml_ocrecid['import_yml_ocrecid'][$template_id][$yml_product_id][$value] = $value;
+                $import_yml_oc_recid['import_yml_oc_recid'][$template_id][$yml_product_id][$value] = $value;
             }
         } else {
-            $import_yml_ocrecid['import_yml_ocrecid'][$template_id][$yml_product_id] = array();
+            $import_yml_oc_recid['import_yml_oc_recid'][$template_id][$yml_product_id] = array();
 
             foreach ($rec_ids as $key => $value) {
-                $import_yml_ocrecid['import_yml_ocrecid'][$template_id][$yml_product_id][$value] = $value;
+                $import_yml_oc_recid['import_yml_oc_recid'][$template_id][$yml_product_id][$value] = $value;
             }
         }
 
-        $this->model_setting_setting->editSetting('import_yml_ocrecid', $import_yml_ocrecid);
+        $this->model_setting_setting->editSetting('import_yml_oc_recid', $import_yml_oc_recid);
     }
 
     public function getImageByLink($site_from_image, $product_setting) {
@@ -1651,16 +1651,16 @@ class ModelToolImportYmlOc extends Model {
     private function setMatchingProductsIds($product_id, $yml_product_id, $import_yml_oc_template_data) {
         $template_id = $import_yml_oc_template_data['id'];
         $this->load->model('setting/setting');
-        $config_setting = $this->model_setting_setting->getSetting('import_yml_ocmatchingid');
+        $config_setting = $this->model_setting_setting->getSetting('import_yml_oc_matchingid');
 
         if ($config_setting) {
-            $import_yml_ocprodmatch['import_yml_ocmatchingid'] = $config_setting['import_yml_ocmatchingid'];
-            $import_yml_ocprodmatch['import_yml_ocmatchingid'][$template_id][$yml_product_id] = $product_id;
+            $import_yml_oc_matchingid['import_yml_oc_matchingid'] = $config_setting['import_yml_oc_matchingid'];
+            $import_yml_oc_matchingid['import_yml_oc_matchingid'][$template_id][$yml_product_id] = $product_id;
         } else {
-            $import_yml_ocprodmatch['import_yml_ocmatchingid'][$template_id][$yml_product_id] = $product_id;
+            $import_yml_oc_matchingid['import_yml_oc_matchingid'][$template_id][$yml_product_id] = $product_id;
         }
 
-        $this->model_setting_setting->editSetting('import_yml_ocmatchingid', $import_yml_ocprodmatch);
+        $this->model_setting_setting->editSetting('import_yml_oc_matchingid', $import_yml_oc_matchingid);
     }
 
     private function setAttributes($attributes, $attribute_group_id, $language_id, $product_id) {
@@ -1689,17 +1689,17 @@ class ModelToolImportYmlOc extends Model {
 
     private function setRelatedProducts($import_yml_oc_template_data) {
         $this->load->model('setting/setting');
-        $related = $this->model_setting_setting->getSetting('import_yml_ocrecid');
+        $related = $this->model_setting_setting->getSetting('import_yml_oc_recid');
         $deleted_relates = array();
 
         if ($related) {
-            $related = $related['import_yml_ocrecid'];
+            $related = $related['import_yml_oc_recid'];
         }
 
-        $ids_matching = $this->model_setting_setting->getSetting('import_yml_ocmatchingid');
+        $ids_matching = $this->model_setting_setting->getSetting('import_yml_oc_matchingid');
 
         if ($ids_matching) {
-            $ids_matching = $ids_matching['import_yml_ocmatchingid'];
+            $ids_matching = $ids_matching['import_yml_oc_matchingid'];
         }
 
         $template_id = $import_yml_oc_template_data['id'];

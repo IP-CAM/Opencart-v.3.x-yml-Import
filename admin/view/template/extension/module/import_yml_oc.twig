@@ -310,7 +310,7 @@
                         <hr>
                         {% if error_warning == false and success == false %}
                             <div id="import_yml_oc_notification" class="alert alert-info"><i class="fa fa-info-circle"></i>
-                                <div id="import_yml_oc_loading"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>
+                                <div id="import_yml_oc_loading"><img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /></div>
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                             </div>
                         {% endif %}
@@ -362,7 +362,7 @@
             $('input[name=\'import_yml_oc_template_data_yml[limit]\']').prop('readOnly',true);
             $('input[name=\'import_yml_oc_template_data_yml[start]\']').prop('readOnly',true);
             $('#startImport').hide();
-            $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }}: <b>{{ text_wite }}</b> / <b>{{ text_wite }}</b></div>');
+            $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }}: <b>{{ text_wite }}</b> / <b>{{ text_wite }}</b></div>');
         } else {
             finished = start+limit-first_start;
             new_start = parseInt(new_start);
@@ -418,7 +418,7 @@
                         if(total<0){
                             total = 0;
                         }
-                        $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }} : <b>'+finished+'</b> / <b>'+total+'</b></div>');
+                        $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }} : <b>'+finished+'</b> / <b>'+total+'</b></div>');
                         startImport(start+limit);
                     }
                 },
@@ -447,7 +447,7 @@
     function setTemplateData(type_action) {
         $("#setTemplateData").empty();
 
-        $("#setTemplateData").before('<div id="import_yml_oc_loading_setTemplateData"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>').show();
+        $("#setTemplateData").before('<div id="import_yml_oc_loading_setTemplateData"><img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /></div>').show();
 
         $.ajax({
             type: 'post',
@@ -483,7 +483,7 @@
     }
 
     function getTypesDataColumns(type_data,id_td,field) {
-        $(id_td).html('<div id="import_yml_oc_'+id_td+'"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>').show();
+        $(id_td).html('<div id="import_yml_oc_'+id_td+'"><img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /></div>').show();
         $.ajax({
             type: 'post',
             url: 'index.php?route=extension/module/import_yml_oc/getTypesData&user_token={{ user_token }}&field='+field+'&type_data='+type_data,
@@ -529,7 +529,7 @@
     }
 
     function getTypesDataColumnsAdditional(type_data_column,field,id_td) {
-        $(id_td).html('<div id="import_yml_oc_loading_'+id_td+'"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>').show();
+        $(id_td).html('<div id="import_yml_oc_loading_'+id_td+'"><img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /></div>').show();
         $.ajax({
             type: 'post',
             url: 'index.php?route=extension/module/import_yml_oc/getTypesDataColumnAdditional&user_token={{ user_token }}&field='+field+'&type_data_column='+type_data_column,
@@ -554,7 +554,7 @@
     }
 
     function getStepTwoSettings() {
-        $("#stepTwoSettings").before('<div class="import_yml_oc_loading_stepTwoSettings"><img src="{{ HTTP_SERVER }}/view/image/loading/loading.gif" /></div>');
+        $("#stepTwoSettings").before('<div class="import_yml_oc_loading_stepTwoSettings"><img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /></div>');
         $.ajax({
             type: 'post',
             url: 'index.php?route=extension/module/import_yml_oc/getStepTwoSettings&user_token={{ user_token }}',
