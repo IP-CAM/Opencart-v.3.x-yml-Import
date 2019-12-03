@@ -1,6 +1,6 @@
 <?php
 
-$_['heading_title'] = 'Import YML';
+$_['heading_title'] = '<span style="color:#32CD32; font-weight:bold">Import YML OC</span>';
 $_['text_module'] = 'Modules';
 $_['text_success'] = 'Success: module successfully changed!';
 $_['text_edit'] = 'Edit YML import';
@@ -206,3 +206,30 @@ $_['text_type_data_yml_setting_product_quantity_false_status'] = 'Turn off the p
 
 $_['text_all_categories_are_choosen'] = 'All categories are already selected for this category. YML';
 $_['text_no_categories_on_site'] = 'No categories created on site';
+
+$_['text_no_data_selected_for_import'] = 'No data selected for import';
+$_['text_sorry_debug_mode_is_enabled'] = 'Sorry, debug mode is enabled';
+$_['text_product_id_as_model'] = 'ID attribute Scam lies in the product model (if the product is new, the product model will be placed id tag Offer)';
+$_['text_import_product_by_equal_value_attribute_or_field_value'] = 'Import product groups as one under the same attribute or by the same field value';
+$_['text_products_with_same_value_chosen_attribute_add_like_one'] = 'Items with the same value of the selected attribute will be added as one item';
+$_['text_products_with_same_value_chosen_field_yml_add_like_one'] = 'Items with the same value of the selected YML field will be added as one item';
+$_['text_how_to_create_whole_identificator'] = 'how to create a single identifier';
+$_['text_pick_up'] = 'Select';
+$_['text_make_product_id_from_specify_attribute'] = 'Make product_id from specified attribute';
+$_['text_make_product_id_from_specify_field_yml'] = 'Make product_id from specified YML field';
+$_['text_make_product_id_from_specify_attribute_and_field_yml'] = 'Make product_id from specified attribute and from specified YML field';
+$_['text_make_prefix_for_product_from_group'] = ' Create a prefix for a product from a product group (recommended to avoid replacing existing products. For example 00000';
+$_['text_cond_unit'] = ' USD (in store currency)';
+$_['text_keep_name_image'] = 'Write the name of the pictures';
+$_['text_create_new_name_image'] = 'Create new name for pictures';
+$_['text_image_path'] = 'the Path for the location of pictures';
+$_['text_image_to_path'] = 'path to pictures';
+$_['text_description_in_format_cdata'] = ' HTML descriptions (CDATA)';
+$_['text_description_in_format_text'] = 'text Description';
+$_['text_prefix_from_left'] = 'text prefix on the left';
+$_['text_prefix_from_right'] = 'Text prefix on the right';
+$_['text_import_yml_attribute_in_product_field'] = 'Import YML file field attribute into product field';
+$_['text_attribute_field_yml_file'] = 'YML file field Attribute';
+$_['text_import_options'] = 'Import options';
+$_['text_select_options_for_product'] = 'select options to import';
+$_['text_selection'] = 'Selection';

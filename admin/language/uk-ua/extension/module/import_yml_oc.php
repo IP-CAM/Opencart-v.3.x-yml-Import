@@ -1,6 +1,6 @@
 <?php
 
-$_['heading_title']    = 'імпорт YML';
+$_['heading_title']    = '<span style="color:#32CD32; font-weight:bold">Iмпорт YML OC</span>';
 $_['text_module']      = 'модулі';
 $_['text_success']     = 'Успішно: модуль успішно змінено!';
 $_['text_edit']        = 'Редагувати Імпорт YML';
@@ -206,3 +206,30 @@ $_['text_type_data_yml_setting_product_quantity_false_status'] = 'Вимикат
 
 $_['text_all_categories_are_choosen'] = 'Уже всі категорії обрані для цієї категорії YML';
 $_['text_no_categories_on_site'] = 'На сайті немає створених категорій';
+
+$_['text_no_data_selected_for_import'] = 'Для імпорту не вибрано даних';
+$_['text_sorry_debug_mode_is_enabled'] = 'На жаль, увімкнено режим налагодження';
+$_['text_product_id_as_model'] = 'Id атрибута офера лежить в модель товару (якщо товар новий, в модель товару буде розміщений id тега offer)';
+$_['text_import_product_by_equal_value_attribute_or_field_value'] = 'імпорт групи товарів, як один під однаковим атрибутом або за однаковим значенням поля';
+$_['text_products_with_same_value_chosen_attribute_add_like_one'] = 'товари з однаковим значенням обраного атрибута будуть додані, як один товар';
+$_['text_products_with_same_value_chosen_field_yml_add_like_one'] = 'товари з однаковим значенням обраного поля YML будуть додані, як один товар';
+$_['text_how_to_create_whole_identificator'] = 'як створити єдиний ідентифікатор';
+$_['text_pick_up'] = 'Вибрати';
+$_['text_make_product_id_from_specify_attribute'] = 'робити product_id із зазначеного атрибута';
+$_['text_make_product_id_from_specify_field_yml'] = 'Робити product_id із зазначеного поля YML';
+$_['text_make_product_id_from_specify_attribute_and_field_yml'] = 'робити product_id із зазначеного атрибута і з зазначеного поля YML';
+$_['text_make_prefix_for_product_from_group'] = 'створювати префікс для товару з групи товарів (рекомендується, щоб уникнути заміни вже існуючих товарів. Наприклад 00000';
+$_['text_cond_unit'] = ' у. о. (у валюті магазину)';
+$_['text_keep_name_image'] = 'залишати назву картинок';
+$_['text_create_new_name_image'] = 'створювати нову назву картинкам';
+$_['text_image_path'] = 'Шлях розміщення картинок';
+$_['text_image_to_path'] = 'Шлях до картинок';
+$_['text_description_in_format_cdata'] = ' описи у форматі HTML (CDATA)';
+$_['text_description_in_format_text'] = 'Опис текстом';
+$_['text_prefix_from_left'] = 'Текстовий префікс зліва';
+$_['text_prefix_from_right'] = 'текстовий префікс справа';
+$_['text_import_yml_attribute_in_product_field'] = 'імпортувати атрибут поля YML файлу в поле товару';
+$_['text_attribute_field_yml_file'] = 'Атрибут поля YML файлу';
+$_['text_import_options'] = 'Імпорт опцій';
+$_['text_select_options_for_product'] = 'Вибір опцій для імпорту';
+$_['text_selection'] = 'Виділення';

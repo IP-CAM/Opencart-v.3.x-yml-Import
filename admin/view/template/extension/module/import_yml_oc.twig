@@ -7,7 +7,7 @@
             <h1>{{ heading_title }}</h1>
             <ul class="breadcrumb">
                 {% for breadcrumb in breadcrumbs %}
-                    <li><a  href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -148,9 +148,9 @@
         {% endif %}
         <div class="panel panel-default">
             <div class="panel-body">
-                <ul  class="nav nav-tabs" >
-                    <li><a  data-toggle="tab"  href="#tab_yml_import" >{{ tab_yml_import }}</a></li>
-                    <li><a  data-toggle="tab" href="#tab-setting"  >{{ tab_setting }}</a></li>
+                <ul class="nav nav-tabs">
+                    <li><a data-toggle="tab" href="#tab_yml_import">{{ tab_yml_import }}</a></li>
+                    <li><a data-toggle="tab" href="#tab-setting">{{ tab_setting }}</a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab_yml_import" class="tab-pane">
@@ -169,8 +169,8 @@
                                                     <td class="text-left">
                                                         <div class="panel-body">
                                                             <div class="form-group">
-                                                                <select onchange="getStepOneSettings(this.value,0);" name="import_yml_oc_format_data"  class="form-control">
-                                                                    <option value="0" >{{ entry_select }}</option>
+                                                                <select onchange="getStepOneSettings(this.value,0);" name="import_yml_oc_format_data" class="form-control">
+                                                                    <option value="0">{{ entry_select }}</option>
                                                                     {% for import_yml_oc_format_data_row in import_yml_oc_format_data %}
                                                                         <option value="{{ import_yml_oc_format_data_row }}">{{ _context['entry_import_yml_oc_format_data_format_' ~ import_yml_oc_format_data_row] }}</option>
                                                                     {% endfor %}
@@ -185,7 +185,7 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
-                                            <div  id="stepTwoSettings">
+                                            <div id="stepTwoSettings">
                                             </div>
                                         </form>
                                     </div>
@@ -193,14 +193,14 @@
                             </div>
                         </div>
                     </div>
-                    <div id="tab-setting" class="tab-pane" >
-                        <div align="right">
+                    <div id="tab-setting" class="tab-pane">
+                        <div>
                             <a onclick="$('#form-setting').submit();" title="{{ entry_import_yml_oc_template_data_save_template_data }}" class="btn btn-info"><i class="fa fa-tasks"></i>{{ entry_import_yml_oc_template_data_save_template_data }}</a>
                         </div>
                         <br>
                         <h2>{{ entry_update_csv_link_new_title }}</h2>
                         <form action="{{ action_setting }}" method="post" enctype="multipart/form-data" id="form-setting">
-                            {{ id|date('h:i A', 'UTC') }}
+                            {% set id = date().timestamp %}
                             <input name="import_yml_oc_update_yml_link[{{ id }}][id]" type="hidden" value="{{ id }}" />
                             <table class="table table-bordered table-hover">
                                 <thead>
@@ -215,14 +215,14 @@
                                     <td class="text-left">
                                         <div class="input-group">
                                             {% if import_yml_oc_update_yml_link_template_data == false %}
-                                                <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]" class="form-control">
                                                     <option value="0">{{ entry_import_yml_oc_template_data_empty }}</option>
                                                 </select>
                                             {% else %}
-                                                <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]" class="form-control">
                                                     <option value="0">{{ entry_select }}</option>
                                                     {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
-                                                        <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                        <option value="{{ template_data_key }}">{{ template_data.name }}</option>
                                                     {% endfor %}
                                                 </select>
                                             {% endif %}
@@ -232,7 +232,7 @@
                                         <input class="form-control" name="import_yml_oc_update_yml_link[{{ id }}][token]" value="" />
                                     </td>
                                     <td>
-                                        <select name="import_yml_oc_update_yml_link[{{ id }}][status]"  class="form-control">
+                                        <select name="import_yml_oc_update_yml_link[{{ id }}][status]" class="form-control">
                                             <option value="0">{{ entry_update_csv_link_status_0 }}</option>
                                             <option value="1">{{ entry_update_csv_link_status_1 }}</option>
                                             <option value="3">{{ entry_update_csv_link_status_3 }}</option>
@@ -259,16 +259,16 @@
                                             <td class="text-left">
                                                 <div class="input-group">
                                                     {% if import_yml_oc_update_yml_link_template_data %}
-                                                        <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
-                                                            <option value="0" >{{ entry_import_yml_oc_template_data_empty }}</option>
+                                                        <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]" class="form-control">
+                                                            <option value="0">{{ entry_import_yml_oc_template_data_empty }}</option>
                                                         </select>
                                                     {% else %}
-                                                        <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]"  class="form-control">
+                                                        <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]" class="form-control">
                                                             {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
                                                                 {% if link_data.template_data_id and link_data.template_data_id == template_data_key %}
-                                                                    <option selected="" value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                                    <option selected="" value="{{ template_data_key }}">{{ template_data.name }}</option>
                                                                 {% else %}
-                                                                    <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                                                    <option value="{{ template_data_key }}">{{ template_data.name }}</option>
                                                                 {% endif %}
                                                             {% endfor %}
                                                         </select>
@@ -279,17 +279,17 @@
                                                 <input class="form-control" name="import_yml_oc_update_yml_link[{{ id }}][token]" value="{{ link_data.token }}" />
                                             </td>
                                             <td>
-                                                <select name="import_yml_oc_update_yml_link[{{ id }}][status]"  class="form-control">
-                                                    <option value="0" >{{ entry_update_csv_link_status_0 }}</option>
+                                                <select name="import_yml_oc_update_yml_link[{{ id }}][status]" class="form-control">
+                                                    <option value="0">{{ entry_update_csv_link_status_0 }}</option>
                                                     {% if link_data.status and link_data.status == 1 %}
-                                                        <option selected="" value="1" >{{ entry_update_csv_link_status_1 }}</option>
-                                                        <option value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                        <option selected="" value="1">{{ entry_update_csv_link_status_1 }}</option>
+                                                        <option value="3">{{ entry_update_csv_link_status_3 }}</option>
                                                     {% elseif link_data.status and link_data.status == 3 %}
-                                                        <option value="1" >{{ entry_update_csv_link_status_1 }}</option>
-                                                        <option selected=""  value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                        <option value="1">{{ entry_update_csv_link_status_1 }}</option>
+                                                        <option selected="" value="3">{{ entry_update_csv_link_status_3 }}</option>
                                                     {% else %}
-                                                        <option value="1" >{{ entry_update_csv_link_status_1 }}</option>
-                                                        <option value="3" >{{ entry_update_csv_link_status_3 }}</option>
+                                                        <option value="1">{{ entry_update_csv_link_status_1 }}</option>
+                                                        <option value="3">{{ entry_update_csv_link_status_3 }}</option>
                                                     {% endif %}
                                                 </select>
                                             </td>
@@ -297,7 +297,7 @@
                                         <tr>
                                             <td class="text-right">{{ column_update_csv_link_link }}</td>
                                             <td colspan="2">
-                                                <input style="width:60%"  class="form-control"  readonly="" onclick="$(this).select()" value="{{ "#{HTTP_CATALOG}index.php?route=feed/import_yml_oc_update_yml_link&user_token=#{link_data.token}" }}"/>
+                                                <input style="width:60%" class="form-control" readonly="" onclick="$(this).select()" value="{{ "#{HTTP_CATALOG}index.php?route=feed/import_yml_oc_update_yml_link&user_token=#{link_data.token}" }}"/>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -326,17 +326,15 @@
     </div>
 </div>
 <div id="overlay"></div>
-
-<script type="text/javascript"><!--
-
-    var start = 0;
-    var first_start = 0;
-    var finished = 0;
-    var limit = 0;
-    var total = 0;
+<script>
+    let start = 0;
+    let first_start = 0;
+    let finished = 0;
+    let limit = 0;
+    let total = 0;
 
     function startImport(new_start) {
-        var errors = false;
+        let errors = false;
 
         if ($("select[name='import_yml_oc_template_data_yml[type_change]']").val() == 0) {
             $("select[name='import_yml_oc_template_data_yml[type_change]']").addClass('error-border');
@@ -344,17 +342,18 @@
         } else {
             $("select[name='import_yml_oc_template_data_yml[type_change]']").removeClass('error-border');
         }
+
         if (errors === true) {
             return;
         }
 
-        if (limit==0 && start==0) {
+        if (limit == 0 && start == 0) {
             start = parseInt($('input[name=\'import_yml_oc_template_data_yml[start]\']').val()) - 1;
             first_start = parseInt($('input[name=\'import_yml_oc_template_data_yml[start]\']').val()) - 1;
-            if (start<0) {
+            if (start < 0) {
                 start = 0;
             }
-            if (first_start<0) {
+            if (first_start < 0) {
                 first_start = 0;
             }
 
@@ -364,7 +363,7 @@
             $('#startImport').hide();
             $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }}: <b>{{ text_wite }}</b> / <b>{{ text_wite }}</b></div>');
         } else {
-            finished = start+limit-first_start;
+            finished = start + limit - first_start;
             new_start = parseInt(new_start);
             start = new_start;
         }
@@ -376,7 +375,7 @@
             {% if debug_mode %}
             dataType: 'html',
             success: function(json) {
-                $('#importStartMessages').html('Sorry, debug mode is enabled<br><br>'+json);
+                $('#importStartMessages').html('{{ text_sorry_debug_mode_is_enabled }}<br><br>'+json);
                 $('#startImport').show();
                 start = 0;
                 total = 0;
@@ -389,7 +388,7 @@
                     success: function(json) {
                     {% endif %}
 
-                    if (json['error']!='') {
+                    if (json['error'] != '') {
                         $('#importStartMessages').html('<div class="alert alert-danger">'+json['error']+'</div>');
                         $('#startImport').show();
                         start = 0;
@@ -400,7 +399,7 @@
                         return;
                     }
 
-                    if (json['success']!='') {
+                    if (json['success'] != '') {
                         $('#importStartMessages').html('<div class="alert alert-success">'+json['success']+'</div>');
                         $('input[name=\'import_yml_oc_template_data_yml[limit]\']').prop('readonly',false);
                         $('input[name=\'import_yml_oc_template_data_yml[start]\']').prop('readonly',false);
@@ -413,9 +412,9 @@
                         return;
                     }
 
-                    if (json['total']!='') {
+                    if (json['total'] != '') {
                         total = parseInt(json['total']) - first_start;
-                        if(total<0){
+                        if(total < 0){
                             total = 0;
                         }
                         $('#importStartMessages').html('<div class="alert alert-info"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /><button type="button" class="close" data-dismiss="alert">&times;</button>&nbsp;&nbsp;{{ text_import_start }} : <b>'+finished+'</b> / <b>'+total+'</b></div>');
@@ -435,7 +434,7 @@
             });
     }
 
-    function openElementOnNameValue(name_open,value_this,value_open,element) {
+    function openElementOnNameValue(name_open, value_this, value_open, element) {
         if (value_open == value_this) {
             $(element + "[name='"+name_open+"']").show();
         } else {
@@ -446,35 +445,32 @@
 
     function setTemplateData(type_action) {
         $("#setTemplateData").empty();
-
         $("#setTemplateData").before('<div id="import_yml_oc_loading_setTemplateData"><img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /></div>').show();
-
         $.ajax({
             type: 'post',
             url: 'index.php?route=extension/module/import_yml_oc/setTemplateData&user_token={{ user_token }}&type_action='+type_action,
             data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
             dataType: 'json',
             success: function(json) {
-                if (json['success']!='') {
+                if (json['success'] != '') {
                     $('#setTemplateData').html(json['success']);
                 }
-                if (json['error']!='') {
+                if (json['error'] != '') {
                     $('#setTemplateData').html(json['error']);
                 }
-                if (type_action=='save') {
-                    var new_option = '<option value="'+json['import_yml_oc_template_data_yml_id']+'">'+json['import_yml_oc_template_data_yml_name']+'</option>'
+                if (type_action == 'save') {
+                    let new_option = '<option value="'+json['import_yml_oc_template_data_yml_id']+'">'+json['import_yml_oc_template_data_yml_name']+'</option>'
                     $("select[name='import_yml_oc_template_data_yml[id]']").append(new_option);
                     $("select[name='import_yml_oc_template_data_yml[id]'] option[value='"+json['import_yml_oc_template_data_yml_id']+"']").prop('selected', true);
                     $("#setTemplateDataTypeAction option[value='update']").prop('selected', true);
                 }
-                if (type_action=='delete') {
+                if (type_action == 'delete') {
                     $("select[name='import_yml_oc_template_data_yml[id]'] option[value='"+json['import_yml_oc_template_data_yml_id_delete']+"']").remove();
                 }
                 $('#import_yml_oc_loading_setTemplateData').remove();
                 $("#setTemplateDataBtn").removeClass('setTemplateDataBtnNeedSave');
             },
             failure: function(response) {
-
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -493,7 +489,6 @@
                 $(id_td).html(response);
             },
             failure: function(response){
-
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -510,7 +505,7 @@
 
     function changeTypeData() {
         $('.select-type-data').each(function() {
-            if(this.value!=0){
+            if(this.value != 0){
                 $(this).change();
             }
         });
@@ -524,7 +519,7 @@
                 }
             });
         }else{
-            $('.'+data_column_class).change();
+            $('.' + data_column_class).change();
         }
     }
 
@@ -545,7 +540,6 @@
 
             },
             failure: function(response){
-
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -565,7 +559,6 @@
                 $('.import_yml_oc_loading_stepTwoSettings').remove();
             },
             failure: function(response){
-                //alert(response);
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -575,47 +568,43 @@
 
     function setCategoryMatchingRow(yml_category_id,category_id,set,text) {
         if (set == true) {
-            var row = "<div id='setCategoryMatchingRow_"+yml_category_id+"_"+category_id+"_0'><input onclick='removeSel("+yml_category_id+","+category_id+",0);' id='setCategoryMatchingRow"+yml_category_id+"_"+category_id+"' name='import_yml_oc_template_data_yml[category][category_matching]["+yml_category_id+"]["+category_id+"]' type='checkbox' checked='' value="+category_id+" /><label for='setCategoryMatchingRow"+yml_category_id+"_"+category_id+"' >&nbsp;&nbsp;&nbsp;"+text+"</label><br></div>";
-
-            $("#yml_category_category_matching_select"+yml_category_id).append(row);
-
-            $("#yml_category_category_matching_select"+yml_category_id).show();
+            let row = "<div id='setCategoryMatchingRow_" + yml_category_id + "_" + category_id + "_0'><input onclick='removeSel(" +yml_category_id + "," + category_id + ",0);' id='setCategoryMatchingRow" + yml_category_id + "_" + category_id + "' name='import_yml_oc_template_data_yml[category][category_matching][" + yml_category_id + "][" + category_id + "]' type='checkbox' checked='' value=" + category_id + " /><label for='setCategoryMatchingRow" + yml_category_id + "_" + category_id + "'>&nbsp;&nbsp;&nbsp;" + text + "</label><br></div>";
+            $("#yml_category_category_matching_select" + yml_category_id).append(row);
+            $("#yml_category_category_matching_select" + yml_category_id).show();
         } else {
-            $("#setCategoryMatchingRow"+yml_category_id+"_"+category_id+"_").remove();
+            $("#setCategoryMatchingRow" + yml_category_id + "_" + category_id + "_").remove();
         }
     }
 
-    function removeSel(yml_category_id,category_id,str){
-        $("#setCategoryMatchingRow_"+yml_category_id+"_"+category_id+"_"+str).remove();
+    function removeSel(yml_category_id,category_id,str) {
+        $("#setCategoryMatchingRow_" + yml_category_id + "_" + category_id + "_" + str).remove();
     }
 
-    function setCategoryMatching(yml_category_id,this_value,set){
-        if ( set == true && $("input[name='import_yml_oc_template_data_yml[category][category_matching]["+yml_category_id+"][select]']").is(":checked")==true ) {
+    function setCategoryMatching(yml_category_id,this_value,set) {
+        if (set == true && $("input[name='import_yml_oc_template_data_yml[category][category_matching]["+yml_category_id+"][select]']").is(":checked") == true) {
             $.ajax({
                 type: 'post',
-                url: 'index.php?route=extension/module/import_yml_oc/setCategoryMatching&user_token={{ user_token }}&yml_category_id='+yml_category_id,
+                url: 'index.php?route=extension/module/import_yml_oc/setCategoryMatching&user_token={{ user_token }}&yml_category_id=' + yml_category_id,
                 data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
                 dataType: 'html',
                 success: function(html) {
-
                     $('#modal_form_well').empty();
                     $('#modal_form_well').append(html);
-
                 },
                 failure: function(response){
-
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                 }
             });
-            $('#overlay').fadeIn(400,function(){
+            $('#overlay').fadeIn(400,function() {
                 $('#modal_form').css('display', 'block').animate({opacity: 1, top: '50%'}, 50);
             });
         }
 
-        if ($("input[name='import_yml_oc_template_data_yml[category][category_matching]["+yml_category_id+"][select]']").is(":checked")==false) {
+        if ($("input[name='import_yml_oc_template_data_yml[category][category_matching][" + yml_category_id + "][select]']").is(":checked") == false) {
             $("#yml_category_category_matching_select"+yml_category_id).hide();
+
             return;
         }
     }
@@ -638,14 +627,13 @@
         $.ajax({
             type: 'post',
             url: 'index.php?route=extension/module/import_yml_oc/getStepOneSettings&user_token={{ user_token }}',
-            data: 'template_data='+template_data+'&format_data='+format_data,
+            data: 'template_data=' + template_data + '&format_data=' + format_data,
             dataType: 'html',
             success: function(response) {
                 $('#stepOneSettings').html(response);
                 $('#import_yml_oc_loading_stepOneSettings').remove();
             },
             failure: function(response){
-
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -663,18 +651,17 @@
 
     function getUniqueParams() {
         $("#unique_param").hide();
-
         $(".unique_param_type_row").hide();
         $('.select-type-data').each(function(){
             if (this.value != 0) {
-                $("#unique_param_"+this.value).show(150);
+                $("#unique_param_" + this.value).show(150);
                 $("#unique_param").show(150);
             }
         });
     }
 
     $(document).ready(function() {
-        $("a[href=\'#{{ open_tab }}\']").click();
+        $("a[href='#{{ open_tab }}']").click();
         {% if demo_mode %}
         $("select[name='import_yml_oc_format_data']").val('csv');
         $("select[name='import_yml_oc_format_data']").change();
@@ -705,5 +692,5 @@
     }
     getNotifications();
 
-    //--></script>
+</script>
 {{ footer }}

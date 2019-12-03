@@ -10,13 +10,10 @@ class ModelToolImportYmlOc extends Model {
 
     public function getColumns($type_data, $format_data, $import_yml_oc_template_data) {
         $result = array();
-
         $abstract_field = array();
-
-        //$this->load->language('extension/module/' . $format_data . '_import_yml_oc');
+        $this->load->language('extension/module/' . $format_data . '_import_yml_oc');
 
         if ($format_data == 'yml') {
-
             $abstract_field = array(
                 'attribute' => array(
                     'attribute_name' => array(
@@ -85,7 +82,6 @@ class ModelToolImportYmlOc extends Model {
             } else {
                 $this->load->model('localisation/language');
                 $languages = $this->model_localisation_language->getLanguages();
-
                 $select_language_id = $import_yml_oc_template_data['language_id'];
 
                 foreach ($languages as $language_localisation) {
@@ -218,7 +214,6 @@ class ModelToolImportYmlOc extends Model {
         }
 
         foreach ($result as $key => $value) {
-
             // insert id
             $key_parts = explode('_', $key);
             $result[$key_parts[0] . '_identificator']['identificator'] = $abstract_field['identificator']['identificator']['name'];
@@ -268,7 +263,7 @@ class ModelToolImportYmlOc extends Model {
 
 
     public function getInstructionToOption($title = '', $field, $type, $format_data, $type_data) {
-        $this->load->language('extension/module/' . $format_data . '_ocext_dmpro');
+        $this->load->language('extension/module/import_yml_oc');
 
         $type_parts = explode('(', $type);
 
@@ -729,7 +724,7 @@ class ModelToolImportYmlOc extends Model {
 
         $type_change = $import_yml_oc_template_data['type_change'];
         $product_setting = $import_yml_oc_template_data['product'];
-        $manufucaturer_setting = $import_yml_oc_template_data['manufacturer'];
+        $manufacturer_setting = $import_yml_oc_template_data['manufacturer'];
         $attribute_setting = $import_yml_oc_template_data['attribute'];
         $option_setting = array('import_status' => 0);
 
@@ -869,13 +864,11 @@ class ModelToolImportYmlOc extends Model {
                         $identificator_value = (string)$offer['id'];
                     }
 
-
                     // change product_id if there is a group
                     if ($group_product_id) {
                         $identificator_value = $group_product_id;
                         $identificator_field = 'product_id';
                     }
-
 
                     if ($identificator_field && $identificator_value && $table) {
                         $product = $this->getIdByIdentificator($identificator_field, $identificator_value, $table, $language_id);
@@ -891,7 +884,6 @@ class ModelToolImportYmlOc extends Model {
 
                     // import options
                     $unsets_params = array();
-
                     $import_option = array();
 
                     if (isset($option_setting['import_status']) && $option_setting['import_status'] && !$skip) {
@@ -1052,19 +1044,13 @@ class ModelToolImportYmlOc extends Model {
                         $dimensions_parts = explode('/', $dimensions_string);
 
                         if (isset($dimensions_parts[0])) {
-
                             $sets['product'][] = " `length`= '" . (float)trim($dimensions_parts[0]) . "' ";
-
                         }
                         if (isset($dimensions_parts[1])) {
-
                             $sets['product'][] = " `width`= '" . (float)trim($dimensions_parts[1]) . "' ";
-
                         }
                         if (isset($dimensions_parts[2])) {
-
                             $sets['product'][] = " `height`= '" . (float)trim($dimensions_parts[2]) . "' ";
-
                         }
                     }
 
@@ -1238,7 +1224,7 @@ class ModelToolImportYmlOc extends Model {
                     }
 
                     // if id Offer goes into the model, then we overwrite the model, which could already come to avoid twice in the SQL query
-                    if ($product_setting['id_column'] && $product_setting['id_column'] == 'product_id_as_model' && isset ($offer['id'])) {
+                    if ($product_setting['id_column'] && $product_setting['id_column'] == 'product_id_as_model' && isset($offer['id'])) {
                         $sets['product']['model'] = " `model`= '" . (string)$offer['id'] . "' ";
                     }
 
@@ -1252,7 +1238,7 @@ class ModelToolImportYmlOc extends Model {
 
                     $sets['product'][] = $status_product;
 
-                    if ($manufucaturer_setting['import_status']) {
+                    if ($manufacturer_setting['import_status']) {
                         $manufacturer_id = '';
 
                         if (isset($offer->vendor)) {
@@ -1266,9 +1252,9 @@ class ModelToolImportYmlOc extends Model {
 
                         $sets['product'][] = " `manufacturer_id`= '" . $manufacturer_id . "' ";
 
-                        if ($manufucaturer_setting['vendor_code'] && $manufucaturer_setting['vendor_code_field'] && isset($offer->vendorCode)) {
+                        if ($manufacturer_setting['vendor_code'] && $manufacturer_setting['vendor_code_field'] && isset($offer->vendorCode)) {
                             $vendorCode = (string)$offer->vendorCode;
-                            $sets['product'][$manufucaturer_setting['vendor_code_field']] = " `" . $manufucaturer_setting['vendor_code_field'] . "`= '" . $this->db->escape($vendorCode) . "' ";
+                            $sets['product'][$manufacturer_setting['vendor_code_field']] = " `" . $manufacturer_setting['vendor_code_field'] . "`= '" . $this->db->escape($vendorCode) . "' ";
                         }
                     }
                 }
@@ -1421,7 +1407,7 @@ class ModelToolImportYmlOc extends Model {
             }
 
             $i++;
-            //последний продукт - добавляем рекомендованные
+            //last product - add recommended product
             if ($i == $count_offers && $product_setting['rec']) {
                 if ($product_setting['rec']) {
                     $this->setRelatedProducts($import_yml_oc_template_data);
@@ -1564,11 +1550,8 @@ class ModelToolImportYmlOc extends Model {
         }
 
         if ($new_image_name) {
-
             $image_name_parts = explode('.', $image_name);
-
             $image_name = md5($site_from_image) . '.' . end($image_name_parts);
-
         }
 
         $image = $image_path . $image_name;
@@ -1733,7 +1716,6 @@ class ModelToolImportYmlOc extends Model {
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_image WHERE product_id = '" . (int)$product_id . "'");
 
         foreach ($images as $product_image) {
-            //echo "INSERT INTO " . DB_PREFIX . "product_image SET product_id = '" . (int)$product_id . "', " . $product_image . ", sort_order = '0' ----<br>";
             $this->db->query("INSERT INTO " . DB_PREFIX . "product_image SET product_id = '" . (int)$product_id . "', " . $product_image . ", sort_order = '0'");
         }
     }
@@ -1763,7 +1745,6 @@ class ModelToolImportYmlOc extends Model {
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_attribute WHERE product_id = '" . (int)$product_id . "'");
 
         foreach ($atribute_values as $atribute_value) {
-            //echo "INSERT INTO " . DB_PREFIX . "product_attribute SET product_id = '" . $product_id . "', ".  $atribute_value."---<br>";
             $this->db->query("INSERT INTO " . DB_PREFIX . "product_attribute SET product_id = '" . $product_id . "', " . $atribute_value);
         }
     }
@@ -1785,7 +1766,7 @@ class ModelToolImportYmlOc extends Model {
         $result['category_id'] = 0;
 
         if ($this->showTable($table, DB_PREFIX)) {
-            // look for a category with this identifier and return the rozaltat
+            // look for a category with this identifier and return the result
             if (!$by_name) {
 
                 $sql = " SELECT * FROM " . DB_PREFIX . "category WHERE category_id = '" . (int)$category_id_for_identification . "' ";
@@ -1895,7 +1876,6 @@ class ModelToolImportYmlOc extends Model {
         $this->repairCategories();
 
         return $result;
-
     }
 
     public function getIdByIdentificatorForCategoryImportProduct($by_name, $path_for_identification, $name_for_identification, $category_id_for_identification, $delimiter, $type_data, $table, $language_id = array(), $store_id = array(), $save_last_element_path = FALSE) {
@@ -1998,7 +1978,6 @@ class ModelToolImportYmlOc extends Model {
         $this->repairCategories();
 
         return $result;
-
     }
 
     public function getIdByIdentificatorAndGroupIdentificator($by_name, $identificator_value, $type_data, $group_identificator_value, $table, $language_id = array()) {
@@ -2026,7 +2005,6 @@ class ModelToolImportYmlOc extends Model {
     }
 
     public function getFilterId($filter_name, $filter_group_name, $filter_group_id, $language_id) {
-
         $result = FALSE;
 
         if ($filter_name && $filter_group_name) {
@@ -2080,107 +2058,6 @@ class ModelToolImportYmlOc extends Model {
 
         return $query->row;
     }
-
-//    public function exportToCSV($positions, $setting) {
-//        $data_template = array('Name', 'Model', 'SKU', 'EAN', 'Total', 'Category');
-//        $csv_file = 'matrix';
-//        $this->load->language('extension/module/abcxyzanalysis');
-//
-//        $error = FALSE;
-//
-//        if (!$positions) {
-//            $error = $this->language->get('error_write_csv_empty_positions');
-//        }
-//        if ($error) {
-//            $result[1] = 'error';
-//            $result[2] = $error;
-//        } else {
-//            $write = $this->writeCsv($positions, $data_template, ';', DIR_IMAGE . $csv_file, $setting);
-//            if (isset($write[1]) && $write[1] == 'error') {
-//                $result = $write;
-//            } elseif (isset($write[1]) && $write[1] == 'ok') {
-//                $result[1] = 'ok';
-//                $result[2] = $this->language->get('success_write_csv') . ' ' . HTTP_CATALOG . 'image/' . $csv_file . '.csv';
-//            } else {
-//                $result[1] = 'error';
-//                $result[2] = $this->language->get('error_write_csv_error');
-//            }
-//        }
-//
-//        return $result;
-//    }
-//
-//    public function writeCsv($data, $data_template, $razdelitel, $file_name_and_path, $setting) {
-//        $handle = fopen($file_name_and_path . '.csv', "w");
-//        fclose($handle);
-//        // open
-//        $handle = fopen($file_name_and_path . '.csv', "a");
-//        if (!$handle) {
-//            $this->load->language('extension/module/abcxyzanalysis');
-//            $json[1] = 'error';
-//            $json[2] = $this->language->get('error_write_csv_file_open');
-//            return $json;
-//        }
-//        $value = '';
-//        // First, create the headers.
-//        if ($data_template) {
-//            foreach ($data_template as $field) {
-//                $value .= $field . $razdelitel;
-//            }
-//            $value = str_replace(array("\r\n", "\r", "\n"), " ", $value);
-//            $value = str_replace(array("\""), "&quot;", $value);
-//            fputcsv($handle, explode($razdelitel, $value), $razdelitel, '"');
-//        }
-//        //$data_template = array('Name','Model','SKU','EAN','Total','Category');
-//        foreach ($data as $csv_row) {
-//            $value = '';
-//            foreach ($data_template as $field) {
-//                if ($field == 'Name') {
-//                    $field = str_replace(array(";"), " ", $csv_row['product_name']);
-//                    $value .= $field . $razdelitel;
-//                }
-//                if ($field == 'Category' && $setting['method_analysis'] == 'abc') {
-//                    $field = $csv_row['abc'];
-//                    $value .= $field . $razdelitel;
-//                } elseif ($field == 'Category' && $setting['method_analysis'] == 'aabbcc') {
-//                    $field = $csv_row['abc'] . $csv_row['aabbcc'];
-//                    $value .= $field . $razdelitel;
-//                } elseif ($field == 'Category' && $setting['method_analysis'] == 'xyz') {
-//                    $field = $csv_row['xyz'];
-//                    $value .= $field . $razdelitel;
-//                } elseif ($field == 'Category' && $setting['method_analysis'] == 'axbycz') {
-//                    $field = $csv_row['xyz'] . $csv_row['abc'];
-//                    $value .= $field . $razdelitel;
-//                } elseif ($field == 'Category' && $setting['method_analysis'] == 'aaxbbyccz') {
-//
-//                    $field = $csv_row['xyz'] . $csv_row['abc'] . $csv_row['aabbcc'];
-//                    $value .= $field . $razdelitel;
-//                }
-//                if ($field == 'Total') {
-//                    $field = str_replace(array(";"), " ", $csv_row['total']);
-//                    $value .= $field . $razdelitel;
-//                }
-//                if ($field == 'EAN') {
-//                    $field = str_replace(array(";"), " ", $csv_row['ean']);
-//                    $value .= $field . $razdelitel;
-//                }
-//                if ($field == 'SKU') {
-//                    $field = str_replace(array(";"), " ", $csv_row['sku']);
-//                    $value .= $field . $razdelitel;
-//                }
-//                if ($field == 'Model') {
-//                    $field = str_replace(array(";"), " ", $csv_row['model']);
-//                    $value .= $field . $razdelitel;
-//                }
-//            }
-//            $value = str_replace(array("\r\n", "\r", "\n"), " ", $value);
-//            $value = str_replace(array("\""), "'", $value);
-//            fputcsv($handle, explode($razdelitel, $value), $razdelitel, '"');
-//        }
-//        fclose($handle);
-//        $json[1] = 'ok';
-//        return $json;
-//    }
 }
 
 ?>

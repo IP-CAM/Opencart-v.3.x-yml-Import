@@ -9,17 +9,17 @@
             <td class="text-left">
                 <div class="input-group">
                     {% if templates_data != true %}
-                        <select name="import_yml_oc_template_data_yml[id]"  class="form-control">
-                            <option value="0" >{{ entry_import_yml_oc_template_data_empty }}</option>
+                        <select name="import_yml_oc_template_data_yml[id]" class="form-control">
+                            <option value="0">{{ entry_import_yml_oc_template_data_empty }}</option>
                         </select>
                     {% else %}
-                        <select onchange="getStepOneSettings('{{ format_data }}',this.value);" name="import_yml_oc_template_data_yml[id]"  class="form-control">
-                            <option value="0" >{{ entry_import_yml_oc_template_data_new }}</option>
+                        <select onchange="getStepOneSettings('{{ format_data }}',this.value);" name="import_yml_oc_template_data_yml[id]" class="form-control">
+                            <option value="0">{{ entry_import_yml_oc_template_data_new }}</option>
                             {% for template_data_key, template_data in templates_data %}
                                 {% if template_data_selected.id == template_data_key %}
-                                    <option value="{{ template_data_key }}" selected="" >{{ template_data.name }}</option>
+                                    <option value="{{ template_data_key }}" selected="">{{ template_data.name }}</option>
                                 {% else %}
-                                    <option value="{{ template_data_key }}" >{{ template_data.name }}</option>
+                                    <option value="{{ template_data_key }}">{{ template_data.name }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -34,12 +34,12 @@
             <td class="text-left">
                 <div class="input-group">
                     <select name="import_yml_oc_template_data_yml[encoding]" class="form-control">
-                        <option value="0" >{{ entry_select }}</option>
+                        <option value="0">{{ entry_select }}</option>
                         {% for encoding in encodings %}
                             {% if template_data_selected.encoding == encoding %}
-                                <option value="{{ encoding }}" selected="" >{{ encoding }}</option>
+                                <option value="{{ encoding }}" selected="">{{ encoding }}</option>
                             {% else %}
-                                <option value="{{ encoding }}" >{{ encoding }}</option>
+                                <option value="{{ encoding }}">{{ encoding }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -73,10 +73,10 @@
                 <div class="input-group">
                     <select name="import_yml_oc_template_data_yml[level]" class="form-control">
                         {% if template_data_selected.level %}
-                            <option value="1" selected="" >{{ entry_import_yml_oc_template_data_level_1 }}</option>
-                            <option value="0" >{{ entry_import_yml_oc_template_data_level_0 }}</option>
+                            <option value="1" selected="">{{ entry_import_yml_oc_template_data_level_1 }}</option>
+                            <option value="0">{{ entry_import_yml_oc_template_data_level_0 }}</option>
                         {% else %}
-                            <option value="1"  >{{ entry_import_yml_oc_template_data_level_1 }}</option>
+                            <option value="1">{{ entry_import_yml_oc_template_data_level_1 }}</option>
                             <option value="0" selected="">{{ entry_import_yml_oc_template_data_level_0 }}</option>
                         {% endif %}
                     </select>
@@ -90,12 +90,12 @@
             <td class="text-left">
                 <div class="input-group">
                     <select name="import_yml_oc_template_data_yml[language_id]" class="form-control">
-                        <option value="0" >{{ entry_select }}</option>
+                        <option value="0">{{ entry_select }}</option>
                         {% for language_id, language in languages %}
                             {% if template_data_selected.language_id == language_id %}
-                                <option value="{{ language_id }}" selected="" >{{ language.name }}</option>
+                                <option value="{{ language_id }}" selected="">{{ language.name }}</option>
                             {% else %}
-                                <option value="{{ language_id }}" >{{ language.name }}</option>
+                                <option value="{{ language_id }}">{{ language.name }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -109,12 +109,12 @@
             <td class="text-left">
                 <div class="input-group">
                     <select name="import_yml_oc_template_data_yml[currency_code]" class="form-control">
-                        <option value="0" >{{ entry_select }}</option>
+                        <option value="0">{{ entry_select }}</option>
                         {% for currency_code, currency in currencies %}
                             {% if template_data_selected.currency_code == currency_code %}
-                                <option value="{{ currency_code }}" selected="" >{{ currency.name }}</option>
+                                <option value="{{ currency_code }}" selected="">{{ currency.name }}</option>
                             {% else %}
-                                <option value="{{ currency_code }}" >{{ currency.name }}</option>
+                                <option value="{{ currency_code }}">{{ currency.name }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
@@ -152,16 +152,9 @@
 <script type="text/javascript">
     $('#button-upload').on('click', function() {
         $('#form-upload').remove();
-
         $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
-
         $('#form-upload input[name=\'file\']').trigger('click');
-
-        if (typeof timer != 'undefined') {
-            clearInterval(timer);
-        }
-
-        timer = setInterval(function() {
+        let timer = setInterval(function() {
             if ($('#form-upload input[name=\'file\']').val() != '') {
                 clearInterval(timer);
 
@@ -195,12 +188,9 @@
                 });
             }
         }, 500);
-    });
 
-
-    $(document).ready(function() {
-        for(let fofi=0;fofi<5;fofi++) {
-            //$('.btn-step-two').fadeOut('fast').fadeIn('fast');
+        if (typeof timer != 'undefined') {
+            clearInterval(timer);
         }
     });
 </script>
