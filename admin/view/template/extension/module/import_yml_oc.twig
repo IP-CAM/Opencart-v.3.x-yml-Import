@@ -469,6 +469,10 @@
                 }
                 $('#import_yml_oc_loading_setTemplateData').remove();
                 $("#setTemplateDataBtn").removeClass('setTemplateDataBtnNeedSave');
+                $("#setTemplateData").css('display', 'block');
+                setTimeout(function() {
+                    $("#setTemplateData").hide();
+                }, 2000);
             },
             failure: function(response) {
             },
