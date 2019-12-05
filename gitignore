@@ -2,6 +2,7 @@
 /.git/
 
 # IDE Project files
+.idea/
 /.idea
 /upload/.idea
 
