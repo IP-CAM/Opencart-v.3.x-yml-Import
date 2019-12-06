@@ -542,6 +542,16 @@
                                     <option value="1">{{ text_type_data_yml_setting_product_seo_title }}</option>
                                 {% endif %}
                             </select>
+                            {% if template_data_selected.product.seo_title is defined and template_data_selected.product.seo_title %}
+                                <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_seo_title_text }}</label>
+                                <input placeholder="{{ text_prefix_from_left }}" name="import_yml_oc_template_data_yml[product][seo_title_text_left]" value="{% if template_data_selected.product.seo_title_text_left is defined and template_data_selected.product.seo_title_text_left %}{{ template_data_selected.product.seo_title_text_left }}{% endif %}" class="form-control" />
+                                <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_seo_title_text_right }}</label>
+                                <input placeholder="{{ text_prefix_from_right }}" name="import_yml_oc_template_data_yml[product][seo_title_text_right]" value="{% if template_data_selected.product.seo_title_text_right is defined and template_data_selected.product.seo_title_text_right %}{{ template_data_selected.product.seo_title_text_right }}{% endif %}" class="form-control" />
+                                <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_seo_meta_description_text }}</label>
+                                <input placeholder="{{ text_prefix_from_left }}" name="import_yml_oc_template_data_yml[product][seo_meta_description_text_left]" value="{% if template_data_selected.product.seo_meta_description_text_left is defined and template_data_selected.product.seo_meta_description_text_left %}{{ template_data_selected.product.seo_meta_description_text_left }}{% endif %}" class="form-control" />
+                                <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_seo_meta_description_text_right }}</label>
+                                <input placeholder="{{ text_prefix_from_right }}" name="import_yml_oc_template_data_yml[product][seo_meta_description_text_right]" value="{% if template_data_selected.product.seo_meta_description_text_right is defined and template_data_selected.product.seo_meta_description_text_right %}{{ template_data_selected.product.seo_meta_description_text_right }}{% endif %}" class="form-control" />
+                            {% endif %}
                             <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_name_self }}</label>
                             <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[product][name_self]" class="form-control">
                                 <option value="0">{{ text_type_data_yml_setting_no_import }}</option>
@@ -719,6 +729,19 @@
                                     <option value="1">{{ text_type_data_yml_setting_category_seo_title }}</option>
                                 {% endif %}
                             </select>
+                            {% if template_data_selected.category.seo_title is defined and template_data_selected.category.seo_title %}
+                                <br>
+                                <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_title_text }}</label>
+                                <input placeholder="{{ text_prefix_from_left }}" name="import_yml_oc_template_data_yml[category][seo_title_text_left]" value="{% if template_data_selected.category.seo_title_text_left is defined and template_data_selected.category.seo_title_text_left %}{{ template_data_selected.category.seo_title_text_left }}{% endif %}" class="form-control" />
+                                <br>
+                                <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_title_text_right }}</label>
+                                <input placeholder="{{ text_prefix_from_right }}" name="import_yml_oc_template_data_yml[category][seo_title_text_right]" value="{% if template_data_selected.category.seo_title_text_right is defined and template_data_selected.category.seo_title_text_right %}{{ template_data_selected.category.seo_title_text_right }}{% endif %}" class="form-control" />
+                                <br>
+                                <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_meta_description_text }}</label>
+                                <input placeholder="{{ text_prefix_from_left }}" name="import_yml_oc_template_data_yml[category][seo_meta_description_text_left]" value="{% if template_data_selected.category.seo_meta_description_text_left is defined and template_data_selected.category.seo_meta_description_text_left %}{{ template_data_selected.category.seo_meta_description_text_left }}{% endif %}" class="form-control" />
+                                <br><label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_meta_description_text_right }}</label>
+                                <input placeholder="{{ text_prefix_from_right }}" name="import_yml_oc_template_data_yml[category][seo_meta_description_text_right]" value="{% if template_data_selected.category.seo_meta_description_text_right is defined and template_data_selected.category.seo_meta_description_text_right %}{{ template_data_selected.category.seo_meta_description_text_right }}{% endif %}" class="form-control" />
+                            {% endif %}
                         </div>
                         <script>
                             $(document).ready(function() {
@@ -738,11 +761,36 @@
                             {% if template_data_selected.manufacturer.import_status is defined and template_data_selected.manufacturer.import_status %}
                                 <option value="1" selected="">{{ text_enabled }}</option>
                                 <option value="0">{{ text_disabled }}</option>
+
                             {% else %}
                                 <option value="0" selected="">{{ text_disabled }}</option>
                                 <option value="1">{{ text_enabled }}</option>
                             {% endif %}
                         </select>
+                        <label style="margin-top: 10px;">{{ text_type_data_yml_setting_category_seo_title }}</label>
+                        <select style="margin-bottom: 5px;" name="import_yml_oc_template_data_yml[manufacturer][seo_title]" class="form-control">
+                            {% if template_data_selected.manufacturer.seo_title is defined and template_data_selected.manufacturer.seo_title %}
+                                <option value="1" selected="">{{ text_type_data_yml_setting_manufacturer_seo_title }}</option>
+                                <option value="0">{{ text_type_data_yml_setting_no_import }}</option>
+                            {% else %}
+                                <option value="0" selected="">{{ text_type_data_yml_setting_no_import }}</option>
+                                <option value="1">{{ text_type_data_yml_setting_manufacturer_seo_title }}</option>
+                            {% endif %}
+                        </select>
+                        {% if template_data_selected.manufacturer.seo_title is defined and template_data_selected.manufacturer.seo_title %}
+                            <br>
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_title_text }}</label>
+                            <input placeholder="{{ text_prefix_from_left }}" name="import_yml_oc_template_data_yml[manufacturer][seo_title_text_left]" value="{% if template_data_selected.manufacturer.seo_title_text_left is defined and template_data_selected.manufacturer.seo_title_text_left %}{{ template_data_selected.manufacturer.seo_title_text_left }}{% endif %}" class="form-control" />
+                            <br>
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_title_text_right }}</label>
+                            <input placeholder="{{ text_prefix_from_right }}" name="import_yml_oc_template_data_yml[manufacturer][seo_title_text_right]" value="{% if template_data_selected.manufacturer.seo_title_text_right is defined and template_data_selected.manufacturer.seo_title_text_right %}{{ template_data_selected.manufacturer.seo_title_text_right }}{% endif %}" class="form-control" />
+                            <br>
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_meta_description_text }}</label>
+                            <input placeholder="{{ text_prefix_from_left }}" name="import_yml_oc_template_data_yml[manufacturer][seo_meta_description_text_left]" value="{% if template_data_selected.manufacturer.seo_meta_description_text_left is defined and template_data_selected.manufacturer.seo_meta_description_text_left %}{{ template_data_selected.manufacturer.seo_meta_description_text_left }}{% endif %}" class="form-control" />
+                            <br>
+                            <label style="margin-top: 10px;">{{ text_type_data_yml_setting_product_seo_meta_description_text_right }}</label>
+                            <input placeholder="{{ text_prefix_from_right }}" name="import_yml_oc_template_data_yml[manufacturer][seo_meta_description_text_right]" value="{% if template_data_selected.manufacturer.seo_meta_description_text_right is defined and template_data_selected.manufacturer.seo_meta_description_text_right %}{{ template_data_selected.manufacturer.seo_meta_description_text_right }}{% endif %}" class="form-control" />
+                        {% endif %}
                     </div>
                     <script type="text/javascript">
                         $(document).ready(function() {
