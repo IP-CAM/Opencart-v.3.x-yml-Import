@@ -234,6 +234,8 @@ $_['text_import_options'] = 'Импорт опций';
 $_['text_select_options_for_product'] = 'Выбор опций для импорта';
 $_['text_selection'] = 'Выделение';
 
+$_['text_left'] = 'Текст слева';
+$_['text_right'] = 'Текст справа';
 $_['text_type_data_yml_setting_manufacturer_seo_title'] = 'Использовать название производителя для meta title и seo h1';
 $_['text_type_data_yml_setting_seo_title_text'] = 'meta_title доп. текст';
 $_['text_type_data_yml_setting_seo_title_text_left'] = 'meta_title доп. текст слева';
@@ -241,3 +243,5 @@ $_['text_type_data_yml_setting_seo_title_text_right'] = 'meta_title доп. те
 $_['text_type_data_yml_setting_seo_meta_description_text'] = 'meta_description доп. текст';
 $_['text_type_data_yml_setting_seo_meta_description_left'] = 'meta_description доп. текст слева';
 $_['text_type_data_yml_setting_seo_meta_description_right'] = 'meta_description доп. текст справа';
+
+$_['text_type_data_yml_setting_product_translate_status'] = 'Перевод на другие языки';

@@ -234,6 +234,8 @@ $_['text_import_options'] = 'Import options';
 $_['text_select_options_for_product'] = 'select options to import';
 $_['text_selection'] = 'Selection';
 
+$_['text_left'] = 'Text left';
+$_['text_right'] = 'Text right';
 $_['text_type_data_yml_setting_manufacturer_seo_title'] = 'Use manufacturer name for meta title and seo h1';
 $_['text_type_data_yml_setting_seo_title_text'] = 'meta_title add. text';
 $_['text_type_data_yml_setting_seo_title_text_left'] = 'meta_title add. left';
@@ -241,3 +243,5 @@ $_['text_type_data_yml_setting_seo_title_text_right'] = 'meta_title add. right';
 $_['text_type_data_yml_setting_seo_meta_description_text'] = 'meta_description add. text';
 $_['text_type_data_yml_setting_seo_meta_description_left'] = 'meta_description add. left';
 $_['text_type_data_yml_setting_seo_meta_description_right'] = 'meta_description add. right';
+
+$_['text_type_data_yml_setting_product_translate_status'] = 'Translate into other languages';
