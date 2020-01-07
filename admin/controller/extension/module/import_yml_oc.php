@@ -58,7 +58,7 @@ class ControllerExtensionModuleImportYmlOc extends Controller {
 
         if (isset($this->error['warning'])) {
             $data['error_warning'] = $this->error['warning'];
-        } elseif (isset ($this->session->data['error'])) {
+        } elseif (isset($this->session->data['error'])) {
             $data['error_warning'] = $this->session->data['error'];
             unset($this->session->data['error']);
         } else {
@@ -935,24 +935,24 @@ class ControllerExtensionModuleImportYmlOc extends Controller {
         }
     }
 
-    public function getCategories() {
-        $this->load->language('extension/module/abcxyzanalysis');
-        $data['text_no_manufacturers'] = $this->language->get('text_no_manufacturers');
-        $data['text_select_all'] = $this->language->get('text_select_all');
-
-        $this->load->model('catalog/category');
-        $data['categories'] = $this->model_catalog_category->getCategories(array('limit' => 10000, 'start' => 0));
-        $data['categories_selected'] = array();
-
-        if (isset($this->request->get['c']) && $this->request->get['c']) {
-            $categories_selected = explode('_', $this->request->get['c']);
-            foreach ($categories_selected as $category_selected) {
-                $data['categories_selected'][$category_selected] = $category_selected;
-            }
-        }
-
-        $this->response->setOutput($this->load->view('extension/module/abcxyzanalysis_categories.tpl', $data));
-    }
+//    public function getCategories() {
+//        $this->load->language('extension/module/abcxyzanalysis');
+//        $data['text_no_manufacturers'] = $this->language->get('text_no_manufacturers');
+//        $data['text_select_all'] = $this->language->get('text_select_all');
+//
+//        $this->load->model('catalog/category');
+//        $data['categories'] = $this->model_catalog_category->getCategories(array('limit' => 10000, 'start' => 0));
+//        $data['categories_selected'] = array();
+//
+//        if (isset($this->request->get['c']) && $this->request->get['c']) {
+//            $categories_selected = explode('_', $this->request->get['c']);
+//            foreach ($categories_selected as $category_selected) {
+//                $data['categories_selected'][$category_selected] = $category_selected;
+//            }
+//        }
+//
+//        $this->response->setOutput($this->load->view('extension/module/abcxyzanalysis_categories.tpl', $data));
+//    }
 
     protected function curl_get_contents($url) {
         if (function_exists('curl_version')) {

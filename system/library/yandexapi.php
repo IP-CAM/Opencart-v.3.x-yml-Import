@@ -1,15 +1,18 @@
 <?php
 
 class YandexApi {
-    const URL = 'https://translate.yandex.net/api/v1.5/tr.json/translate';
-    const TEXT_FORMAT_PLAIN ='plain';
-    const TEXT_FORMAT_XML = 'xml';
+    const URL = 'https://translate.yandex.net/api/v1.5/tr.json/translate?';
     private $keys = array(
-        array('expired' => false, 'key' => 'trnsl.1.1.20191206T153608Z.ad3375b66a0ee151.6e6606f00a22641e96b512ace931abed5f840115'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20191206T153509Z.8c624e2a13bad083.28e4c7302b1a8c6dbadba3d7bd0b94ed8f904c54'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20191206T153917Z.2df316128ef217c8.0c0daec331ec08c8c19ad2cdeb24b3aed4a6c00d'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20191206T153806Z.62d6d35ce8cde938.081f9c2aa575dd9d5bfd09c20942064797cd8e82'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20191206T154430Z.266910a0c81f67ce.afc79a185aac8318af296815d7965173746357d8')
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T204933Z.50c69975ad08dd54.548ace68df8e2ff352e714550f2ce4f4493af9c6'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T210935Z.93a49a5eedb85bff.2f9e7ca2a5eea01f9e8939fe7a53d3cfdbdb22b3'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211121Z.7599108471aecc09.c37363dde086ec1e1dfdb17947cb8a3556a0d3e0'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211243Z.390349354cd2f4b8.f27097f1907f3ebdc880752241248e021e5c3f5c'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211243Z.390349354cd2f4b8.f27097f1907f3ebdc880752241248e021e5c3f5c'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211404Z.ec35364cb260a617.4f32129eef68961374f403cb18d3d0c0b4b50420'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211505Z.4a60ed87a1165579.d0f0bc06df28ea36910a4150c92ddf7f65a4b2d1'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211600Z.4153a8e92fb56681.ae1eaa21ffa2b11de0894073f4731804eeeded7f'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211730Z.f3d4d69879bb66ff.204399bbb3cfa489f27e9030cd9201126ce2e459'),
+        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211823Z.e09a80a1ee9118c3.a6b78f4518bb705bd3735a463a3637a5c2492567')
     );
     private $key = '';
     private static $instance;
@@ -19,7 +22,7 @@ class YandexApi {
     private function __construct() {
         $this->key = $this->keys[0]['key'];
         if (!$this->getSupportedlanguages()) {
-            $this->languages = array('ru' => 'русский');
+            $this->languages = array('ru' => 'русский', 'uk' => 'украинский', 'en' => 'английский');
         }
     }
 
@@ -30,14 +33,13 @@ class YandexApi {
         return self::$instance;
     }
 
-    public function plainTranslate($text, $source_language, $dest_language, &$translatedText) {
+    public function plainTranslate($text, $source_language, $dest_language, &$translatedText, $format = 'plain') {
         if (array_key_exists($source_language, $this->languages) && array_key_exists($dest_language, $this->languages)) {
             try {
                 $url = self::URL;
                 $key = $this->key;
                 $lang = $source_language . "-" . $dest_language;
-                $format = self::TEXT_FORMAT_PLAIN;
-                $data = "key=$key&text=$text&lang=$lang&format=$format";
+                $data = "key=$key&lang=$lang&text=$text&format=$format";
                 $ch = curl_init($url);
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -54,7 +56,7 @@ class YandexApi {
                             $nonExpiredKey = $this->getNonExpiredKey();
                             if ($nonExpiredKey !== false) {
                                 $this->setCurrentKey($nonExpiredKey);
-                                $this->plainTranslate($text, $source_language, $dest_language, $translatedText);
+                                $this->plainTranslate($text, $source_language, $dest_language, $translatedText, $format);
                             } else {
                                 $this->err_msg = $ob->message;
                                 return false;
@@ -69,7 +71,7 @@ class YandexApi {
                 }
                 $translatedText = $ob->text[0];
                 return true;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->err_msg = "exception : " . $e->getMessage();
                 return false;
             }
@@ -78,8 +80,8 @@ class YandexApi {
 
     public function getSupportedlanguages() {
         try {
-            $url="https://translate.yandex.net/api/v1.5/tr.json/getLangs";
-            $data ="key=" . $this->key . "&ui=en";
+            $url="https://translate.yandex.net/api/v1.5/tr.json/getLangs?";
+            $data ="key=" . $this->key . "&ui=ru";
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -94,36 +96,11 @@ class YandexApi {
             }
             $this->languages = $ob->langs;
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->err_msg = "exception : " . $e->getMessage();
             return false;
         }
     }
-
-//    public function detect($text, &$lang, &$msg, &$err_msg) {
-//        try {
-//            $url = "https://translate.yandex.net/api/v1.5/tr.json/detect";
-//            $data = "key=" . $this->key;
-//            $data .= "&text=$text";
-//            $ch = curl_init($url);
-//            curl_setopt($ch, CURLOPT_POST, 1);
-//            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-//            curl_setopt($ch, CURLOPT_HEADER, 0);
-//            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//            $response = curl_exec($ch);
-//            $ob = json_decode($response);
-//            if (isset($ob->code) && $ob->code != 200) {
-//                $err_msg = $ob->message;
-//                return false;
-//            }
-//            $lang = $ob->lang;
-//            return true;
-//        } catch (\Exception $e) {
-//            $err_msg = "exception : " . $e->getMessage();
-//            return false;
-//        }
-//    }
 
     public function getErrorMsg() {
         return $this->err_msg;
@@ -134,7 +111,7 @@ class YandexApi {
     }
 
     private function setExpiredByIndex($index) {
-        foreach ($this->keys as $idx => $keyArr) {
+        foreach ($this->keys as $idx => &$keyArr) {
             if ($idx == $index) {
                 $keyArr['expired'] = true;
             }
@@ -163,3 +140,5 @@ class YandexApi {
         return false;
     }
 }
+
+?>

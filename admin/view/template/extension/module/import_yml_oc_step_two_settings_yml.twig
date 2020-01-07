@@ -964,6 +964,29 @@
                     </script>
                 </td>
             </tr>
+            <tr>
+                <td class="text-left">
+                    {{ text_type_data_yml_setting_product_seo_keyword }}
+                </td>
+                <td class="text-left">
+                    <div class="input-group">
+                        <select onchange="openSettingBox('.seo_keyword_status',this.value)" name="import_yml_oc_template_data_yml[product][seo_keyword]" class="form-control">
+                            {% if template_data_selected.product.seo_keyword is defined and template_data_selected.product.seo_keyword %}
+                                <option value="1" selected="">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                            {% else %}
+                                <option value="0" selected="">{{ text_disabled }}</option>
+                                <option value="1">{{ text_enabled }}</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            $("select[name='import_yml_oc_template_data_yml[product][seo_keyword]']").change();
+                        });
+                    </script>
+                </td>
+            </tr>
             </tbody>
         </table>
         <table class="table table-bordered table-hover">

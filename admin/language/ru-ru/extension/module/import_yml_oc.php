@@ -245,3 +245,4 @@ $_['text_type_data_yml_setting_seo_meta_description_left'] = 'meta_description �
 $_['text_type_data_yml_setting_seo_meta_description_right'] = 'meta_description доп. текст справа';
 
 $_['text_type_data_yml_setting_product_translate_status'] = 'Перевод на другие языки';
+$_['text_type_data_yml_setting_product_seo_keyword'] = 'Seo URL';

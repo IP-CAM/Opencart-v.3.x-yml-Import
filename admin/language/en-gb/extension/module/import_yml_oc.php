@@ -245,3 +245,4 @@ $_['text_type_data_yml_setting_seo_meta_description_left'] = 'meta_description a
 $_['text_type_data_yml_setting_seo_meta_description_right'] = 'meta_description add. right';
 
 $_['text_type_data_yml_setting_product_translate_status'] = 'Translate into other languages';
+$_['text_type_data_yml_setting_product_seo_keyword'] = 'Seo URL';

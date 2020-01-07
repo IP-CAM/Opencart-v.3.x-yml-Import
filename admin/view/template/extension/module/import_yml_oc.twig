@@ -471,7 +471,8 @@
                 $("#setTemplateDataBtn").removeClass('setTemplateDataBtnNeedSave');
                 $("#setTemplateData").css('display', 'block');
                 setTimeout(function() {
-                    $("#setTemplateData").hide();
+                    // $("#setTemplateData").hide();
+                    updateSaveButton();
                 }, 2000);
             },
             failure: function(response) {
@@ -516,18 +517,18 @@
     }
 
     function changeTypeDataColumn(data_column_class) {
-        if(data_column_class === 0) {
+        if (data_column_class === 0) {
             $('.select-type-data-column').each(function() {
                 if(this.value != 0) {
                     $(this).change();
                 }
             });
-        }else{
+        } else {
             $('.' + data_column_class).change();
         }
     }
 
-    function getTypesDataColumnsAdditional(type_data_column,field,id_td) {
+    function getTypesDataColumnsAdditional(type_data_column, field, id_td) {
         $(id_td).html('<div id="import_yml_oc_loading_'+id_td+'"><img src="{{ HTTP_SERVER }}/admin/view/image/loading/loading.gif" /></div>').show();
         $.ajax({
             type: 'post',
@@ -535,10 +536,10 @@
             data: $('#template_data_form input:text, #template_data_form input:hidden, #template_data_form input:checkbox:checked, #template_data_form select'),
             dataType: 'html',
             success: function(response) {
-                if(response!=''){
+                if (response!='') {
                     $(id_td).show(100);
                     $(id_td).html(response);
-                }else{
+                } else {
                     $(id_td).hide();
                 }
 
@@ -572,7 +573,7 @@
 
     function setCategoryMatchingRow(yml_category_id,category_id,set,text) {
         if (set == true) {
-            let row = "<div id='setCategoryMatchingRow_" + yml_category_id + "_" + category_id + "_0'><input onclick='removeSel(" +yml_category_id + "," + category_id + ",0);' id='setCategoryMatchingRow" + yml_category_id + "_" + category_id + "' name='import_yml_oc_template_data_yml[category][category_matching][" + yml_category_id + "][" + category_id + "]' type='checkbox' checked='' value=" + category_id + " /><label for='setCategoryMatchingRow" + yml_category_id + "_" + category_id + "'>&nbsp;&nbsp;&nbsp;" + text + "</label><br></div>";
+            let row = "<div id='setCategoryMatchingRow_" + yml_category_id + "_" + category_id + "_0'><input onclick='removeSel(" + yml_category_id + "," + category_id + ",0);' id='setCategoryMatchingRow" + yml_category_id + "_" + category_id + "' name='import_yml_oc_template_data_yml[category][category_matching][" + yml_category_id + "][" + category_id + "]' type='checkbox' checked='' value=" + category_id + " /><label for='setCategoryMatchingRow" + yml_category_id + "_" + category_id + "'>&nbsp;&nbsp;&nbsp;" + text + "</label><br></div>";
             $("#yml_category_category_matching_select" + yml_category_id).append(row);
             $("#yml_category_category_matching_select" + yml_category_id).show();
         } else {
