@@ -2266,8 +2266,8 @@ class ModelToolImportYmlOc extends Model {
         }
 
         $template_id = $import_yml_oc_template_data['id'];
-        $this->load->model('setting/setting');
-        $config_setting = $this->model_setting_setting->getSetting('import_yml_oc_recid');
+        $this->load->model('setting/setting_yml');
+        $config_setting = $this->model_setting_setting_yml->getSetting('import_yml_oc_recid');
 
         if ($config_setting) {
             $import_yml_oc_recid = $config_setting;
@@ -2284,7 +2284,7 @@ class ModelToolImportYmlOc extends Model {
             }
         }
 
-        $this->model_setting_setting->editSetting('import_yml_oc_recid', $import_yml_oc_recid);
+        $this->model_setting_setting_yml->editSetting('import_yml_oc_recid', $import_yml_oc_recid);
     }
 
     public function getImageByLink($site_from_image, $product_setting) {
@@ -2626,8 +2626,8 @@ class ModelToolImportYmlOc extends Model {
 
     private function setMatchingProductsIds($product_id, $yml_product_id, $import_yml_oc_template_data) {
         $template_id = $import_yml_oc_template_data['id'];
-        $this->load->model('setting/setting');
-        $config_setting = $this->model_setting_setting->getSetting('import_yml_oc_matchingid');
+        $this->load->model('setting/setting_yml');
+        $config_setting = $this->model_setting_setting_yml->getSetting('import_yml_oc_matchingid');
 
         //$this->log->write('before setMatchingProductsIds - updateProducts');
         //$this->log->write(var_export($config_setting, true));
@@ -2639,7 +2639,7 @@ class ModelToolImportYmlOc extends Model {
             $import_yml_oc_matchingid['import_yml_oc_matchingid'][$template_id][$yml_product_id] = $product_id;
         }
 
-        $this->model_setting_setting->editSetting('import_yml_oc_matchingid', $import_yml_oc_matchingid);
+        $this->model_setting_setting_yml->editSetting('import_yml_oc_matchingid', $import_yml_oc_matchingid);
 
         //$this->log->write('after setMatchingProductsIds - updateProducts');
         //$this->log->write(var_export($import_yml_oc_matchingid, true));
