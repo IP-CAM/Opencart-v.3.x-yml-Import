@@ -695,6 +695,8 @@ class ModelToolImportYmlOc extends Model {
                             $result_translate_name = $this->yandexApi->plainTranslate($yml_category_name, $translate_from, $translate_to,  $translate_name);
 
                             if ($result_translate_name) {
+
+                                // translation
                                 // seo title
                                 if (isset($import_yml_oc_template_data_category['seo_title']) && $import_yml_oc_template_data_category['seo_title']) {
                                     //$this->log->write('before seo title translate_to != translate_from getCategoryIdByNameAndParentCategoryName');
@@ -760,7 +762,7 @@ class ModelToolImportYmlOc extends Model {
                                                 } else {
                                                     $sets[] = " `" . $column_name . "` = '" . $this->db->escape($translate_name) . "' ";
                                                 }
-                                            } else {
+                                            } elseif ($column_name == 'name') {
                                                 $sets[] = " `" . $column_name . "` = '" . $this->db->escape($translate_name) . "' ";
                                             }
                                         }
@@ -776,12 +778,13 @@ class ModelToolImportYmlOc extends Model {
                                 } else {
                                     //$this->log->write('before without seo title translate_to != translate_from getCategoryIdByNameAndParentCategoryName');
 
+                                    // translation
                                     // without seo title
                                     $sets = array();
                                     $category_columns = $this->getColumnsByTable('category_description');
 
                                     foreach ($category_columns as $column_name => $tml) {
-                                        if($column_name == 'name' || $column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title'|| $column_name == 'seo_h1') {
+                                        if ($column_name == 'name') {
                                             $sets[] = " `" . $column_name . "` = '" . $this->db->escape($translate_name) . "' ";
                                         }
                                     }
@@ -796,6 +799,8 @@ class ModelToolImportYmlOc extends Model {
                                 }
                             }
                         } else {
+
+                            // translation
                             // seo title
                             if (isset($import_yml_oc_template_data_category['seo_title']) && $import_yml_oc_template_data_category['seo_title']) {
                                 //$this->log->write('before seo title translate_to == translate_from getCategoryIdByNameAndParentCategoryName');
@@ -825,7 +830,7 @@ class ModelToolImportYmlOc extends Model {
                                             } else {
                                                 $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
                                             }
-                                        } else {
+                                        } elseif ($column_name == 'name') {
                                             $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
                                         }
                                     }
@@ -843,17 +848,18 @@ class ModelToolImportYmlOc extends Model {
                             } else {
                                 //$this->log->write('before without seo title translate_to == translate_from getCategoryIdByNameAndParentCategoryName');
 
+                                // translation
                                 // without seo title
                                 $sets = array();
                                 $category_columns = $this->getColumnsByTable('category_description');
 
                                 foreach ($category_columns as $column_name => $tml) {
-                                    if($column_name == 'name' || $column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title'|| $column_name == 'seo_h1') {
+                                    if ($column_name == 'name') {
                                         $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
                                     }
                                 }
 
-                                $sql = "INSERT INTO " . DB_PREFIX . "category_description SET category_id = '" . (int)$parent_id . "', language_id = '" . $language_id . "' ";
+                                $sql = "INSERT INTO " . DB_PREFIX . "category_description SET category_id = '" . (int)$parent_id . "', language_id = '" . (int)$language['language_id'] . "' ";
 
                                 if ($sets) {
                                     $sql .= ", " . implode(',', $sets) . " ";
@@ -864,70 +870,75 @@ class ModelToolImportYmlOc extends Model {
                         }
                     }
                 } else {
+
                     // without translate
                     // seo title
-                    if (isset($import_yml_oc_template_data_category['seo_title']) && $import_yml_oc_template_data_category['seo_title']) {
-                        //$this->log->write('before seo title without translate getCategoryIdByNameAndParentCategoryName');
+                    $this->load->model('localisation/language');
+                    $languages = $this->model_localisation_language->getLanguages();
+                    foreach ($languages as $language) {
+                        if (isset($import_yml_oc_template_data_category['seo_title']) && $import_yml_oc_template_data_category['seo_title']) {
+                            //$this->log->write('before seo title without translate getCategoryIdByNameAndParentCategoryName');
 
-                        $sets = array();
-                        $category_columns = $this->getColumnsByTable('category_description');
+                            $sets = array();
+                            $category_columns = $this->getColumnsByTable('category_description');
 
-                        foreach ($category_columns as $column_name => $tml) {
-                            if ($column_name == 'name' || $column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title' || $column_name == 'seo_h1' || $column_name == 'meta_description') {
-                                if ($column_name == 'meta_title') {
-                                    if (isset($import_yml_oc_template_data_category['seo_meta_title_text_left']) && $import_yml_oc_template_data_category['seo_meta_title_text_left'] != '' && (!isset($import_yml_oc_template_data_category['seo_meta_title_text_right']) || $import_yml_oc_template_data_category['seo_meta_title_text_right'] == '')) {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($import_yml_oc_template_data_category['seo_meta_title_text_left']) . " " . $this->db->escape($yml_category_name) . "' ";
-                                    } elseif (isset($import_yml_oc_template_data_category['seo_meta_title_text_right']) && $import_yml_oc_template_data_category['seo_meta_title_text_right'] != '' && (!isset($import_yml_oc_template_data_category['seo_meta_title_text_left']) || $import_yml_oc_template_data_category['seo_meta_title_text_left'] == '')) {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . " " . $this->db->escape($import_yml_oc_template_data_category['seo_meta_title_text_right']) . "' ";
-                                    } elseif (isset($import_yml_oc_template_data_category['seo_meta_title_text_left']) && $import_yml_oc_template_data_category['seo_meta_title_text_left'] != '' && isset($import_yml_oc_template_data_category['seo_meta_title_text_right']) && $import_yml_oc_template_data_category['seo_meta_title_text_right'] != '') {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($import_yml_oc_template_data_category['seo_meta_title_text_left']) . " " . $this->db->escape($yml_category_name) . " " . $this->db->escape($import_yml_oc_template_data_category['seo_meta_title_text_right']) . "' ";
-                                    } else {
+                            foreach ($category_columns as $column_name => $tml) {
+                                if ($column_name == 'name' || $column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title' || $column_name == 'seo_h1' || $column_name == 'meta_description') {
+                                    if ($column_name == 'meta_title') {
+                                        if (isset($import_yml_oc_template_data_category['seo_meta_title_text_left']) && $import_yml_oc_template_data_category['seo_meta_title_text_left'] != '' && (!isset($import_yml_oc_template_data_category['seo_meta_title_text_right']) || $import_yml_oc_template_data_category['seo_meta_title_text_right'] == '')) {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($import_yml_oc_template_data_category['seo_meta_title_text_left']) . " " . $this->db->escape($yml_category_name) . "' ";
+                                        } elseif (isset($import_yml_oc_template_data_category['seo_meta_title_text_right']) && $import_yml_oc_template_data_category['seo_meta_title_text_right'] != '' && (!isset($import_yml_oc_template_data_category['seo_meta_title_text_left']) || $import_yml_oc_template_data_category['seo_meta_title_text_left'] == '')) {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . " " . $this->db->escape($import_yml_oc_template_data_category['seo_meta_title_text_right']) . "' ";
+                                        } elseif (isset($import_yml_oc_template_data_category['seo_meta_title_text_left']) && $import_yml_oc_template_data_category['seo_meta_title_text_left'] != '' && isset($import_yml_oc_template_data_category['seo_meta_title_text_right']) && $import_yml_oc_template_data_category['seo_meta_title_text_right'] != '') {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($import_yml_oc_template_data_category['seo_meta_title_text_left']) . " " . $this->db->escape($yml_category_name) . " " . $this->db->escape($import_yml_oc_template_data_category['seo_meta_title_text_right']) . "' ";
+                                        } else {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
+                                        }
+                                    } elseif ($column_name == 'meta_description') {
+                                        if (isset($import_yml_oc_template_data_category['seo_meta_description_text_left']) && $import_yml_oc_template_data_category['seo_meta_description_text_left'] != '' && (!isset($import_yml_oc_template_data_category['seo_meta_description_text_right']) || $import_yml_oc_template_data_category['seo_meta_description_text_right'] == '')) {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($import_yml_oc_template_data_category['seo_meta_description_text_left']) . " " . $this->db->escape($yml_category_name) . "' ";
+                                        } elseif (isset($import_yml_oc_template_data_category['seo_meta_description_text_right']) && $import_yml_oc_template_data_category['seo_meta_description_text_right'] != '' && (!isset($import_yml_oc_template_data_category['seo_meta_description_text_left']) || $import_yml_oc_template_data_category['seo_meta_description_text_left'] == '')) {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . " " . $this->db->escape($import_yml_oc_template_data_category['seo_meta_description_text_right']) . "' ";
+                                        } elseif (isset($import_yml_oc_template_data_category['seo_meta_description_text_left']) && $import_yml_oc_template_data_category['seo_meta_description_text_left'] != '' && isset($import_yml_oc_template_data_category['seo_meta_description_text_right']) && $import_yml_oc_template_data_category['seo_meta_description_text_right'] != '') {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($import_yml_oc_template_data_category['seo_meta_description_text_left']) . " " . $this->db->escape($yml_category_name) . " " . $this->db->escape($import_yml_oc_template_data_category['seo_meta_description_text_right']) . "' ";
+                                        } else {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
+                                        }
+                                    } elseif ($column_name == 'name') {
                                         $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
                                     }
-                                } elseif ($column_name == 'meta_description') {
-                                    if (isset($import_yml_oc_template_data_category['seo_meta_description_text_left']) && $import_yml_oc_template_data_category['seo_meta_description_text_left'] != '' && (!isset($import_yml_oc_template_data_category['seo_meta_description_text_right']) || $import_yml_oc_template_data_category['seo_meta_description_text_right'] == '')) {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($import_yml_oc_template_data_category['seo_meta_description_text_left']) . " " . $this->db->escape($yml_category_name) . "' ";
-                                    } elseif (isset($import_yml_oc_template_data_category['seo_meta_description_text_right']) && $import_yml_oc_template_data_category['seo_meta_description_text_right'] != '' && (!isset($import_yml_oc_template_data_category['seo_meta_description_text_left']) || $import_yml_oc_template_data_category['seo_meta_description_text_left'] == '')) {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . " " . $this->db->escape($import_yml_oc_template_data_category['seo_meta_description_text_right']) . "' ";
-                                    } elseif (isset($import_yml_oc_template_data_category['seo_meta_description_text_left']) && $import_yml_oc_template_data_category['seo_meta_description_text_left'] != '' && isset($import_yml_oc_template_data_category['seo_meta_description_text_right']) && $import_yml_oc_template_data_category['seo_meta_description_text_right'] != '') {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($import_yml_oc_template_data_category['seo_meta_description_text_left']) . " " . $this->db->escape($yml_category_name) . " " . $this->db->escape($import_yml_oc_template_data_category['seo_meta_description_text_right']) . "' ";
-                                    } else {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
-                                    }
-                                } else {
+                                }
+                            }
+
+                            $sql = "INSERT INTO " . DB_PREFIX . "category_description SET category_id = '" . (int)$parent_id . "', language_id = '" . (int)$language['language_id'] . "' ";
+
+                            if ($sets) {
+                                $sql .= ", " . implode(',', $sets) . " ";
+                            }
+
+                            $this->db->query($sql);
+                        } else {
+                            //$this->log->write('before without seo title without translate getCategoryIdByNameAndParentCategoryName');
+
+                            // without translate
+                            // without seo title
+                            $sets = array();
+                            $category_columns = $this->getColumnsByTable('category_description');
+
+                            foreach ($category_columns as $column_name => $tml) {
+                                if ($column_name == 'name') {
                                     $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
                                 }
                             }
-                        }
 
-                        $sql = "INSERT INTO " . DB_PREFIX . "category_description SET category_id = '" . (int)$parent_id . "', language_id = '" . (int)$language_id . "' ";
+                            $sql = "INSERT INTO " . DB_PREFIX . "category_description SET category_id = '" . (int)$parent_id . "', language_id = '" . (int)$language['language_id'] . "' ";
 
-                        if ($sets) {
-                            $sql .= ", " . implode(',', $sets) . " ";
-                        }
-
-                        $this->db->query($sql);
-                    } else {
-                        //$this->log->write('before without seo title without translate getCategoryIdByNameAndParentCategoryName');
-
-                        // without translate
-                        // without seo title
-                        $sets = array();
-                        $category_columns = $this->getColumnsByTable('category_description');
-
-                        foreach ($category_columns as $column_name => $tml) {
-                            if($column_name == 'name' || $column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title'|| $column_name == 'seo_h1') {
-                                $sets[] = " `" . $column_name . "` = '" . $this->db->escape($yml_category_name) . "' ";
+                            if ($sets) {
+                                $sql .= ", " . implode(',', $sets) . " ";
                             }
+
+                            $this->db->query($sql);
                         }
-
-                        $sql = "INSERT INTO " . DB_PREFIX . "category_description SET category_id = '" . (int)$parent_id . "', language_id = '" . (int)$language_id . "' ";
-
-                        if ($sets) {
-                            $sql .= ", " . implode(',', $sets) . " ";
-                        }
-
-                        $this->db->query($sql);
                     }
                 }
             }
@@ -1310,7 +1321,7 @@ class ModelToolImportYmlOc extends Model {
                                                         //$this->log->write('before translate_to != translate_from updateProduct - options create missing option values and get id of option values');
 
                                                         if ($translate_to != $translate_from) {
-                                                            $result_translate_option_value_name = $this->yandexApi->plainTranslate($option_name, $translate_from, $translate_to, $translate_option_value_name);
+                                                            $result_translate_option_value_name = $this->yandexApi->plainTranslate($option_value_name, $translate_from, $translate_to, $translate_option_value_name);
 
                                                             //$this->log->write('before translate_to != translate_from updateProduct - options create missing option values and get id of option values');
 
@@ -1701,8 +1712,6 @@ class ModelToolImportYmlOc extends Model {
                                                         } else {
                                                             $sets['product_description'][$language['language_id']][] = " `" . $column_name . "` = '" . $this->db->escape($translate_name) . "' ";
                                                         }
-                                                    } else {
-                                                        $sets['product_description'][$language['language_id']][] = " `" . $column_name . "` = '" . $this->db->escape($translate_name) . "' ";
                                                     }
                                                 }
                                             }
@@ -1742,8 +1751,6 @@ class ModelToolImportYmlOc extends Model {
                                                     } else {
                                                         $sets['product_description'][$language['language_id']][] = " `" . $column_name . "` = '" . $this->db->escape($name) . "' ";
                                                     }
-                                                } else {
-                                                    $sets['product_description'][$language['language_id']][] = " `" . $column_name . "` = '" . $this->db->escape($name) . "' ";
                                                 }
                                             }
                                         }
@@ -1759,69 +1766,70 @@ class ModelToolImportYmlOc extends Model {
                         //$this->log->write('before without translate updateProduct - all product_description table');
 
                         // without translate
-                        if ($product_setting['description']) {
-                            $description = '';
+                        $languages = $this->model_localisation_language->getLanguages();
+                        foreach ($languages as $language) {
+                            if ($product_setting['description']) {
+                                $description = '';
 
-                            if (isset($offer->description) && isset($product_setting['description_cdata']) && !$product_setting['description_cdata']) {
-                                $description = $this->prepareFieldForDb(str_replace('\n', '<br>', strip_tags(str_replace('<br>', '\n', (string)$offer->description))));
-                            } elseif (isset($offer->description) && isset($product_setting['description_cdata']) && $product_setting['description_cdata']) {
-                                $description = html_entity_decode(nl2br((string)$offer->description));
+                                if (isset($offer->description) && isset($product_setting['description_cdata']) && !$product_setting['description_cdata']) {
+                                    $description = $this->prepareFieldForDb(str_replace('\n', '<br>', strip_tags(str_replace('<br>', '\n', (string)$offer->description))));
+                                } elseif (isset($offer->description) && isset($product_setting['description_cdata']) && $product_setting['description_cdata']) {
+                                    $description = html_entity_decode(nl2br((string)$offer->description));
+                                }
+
+                                $sets['product_description'][$language['language_id']] = " `description`= '" . $this->db->escape($description) . "' ";
+                            } elseif (!$product_setting['description'] && !$product_id) {
+                                $sets['product_description'][$language['language_id']] = " `description`= '' ";
                             }
 
-                            $sets['product_description'][] = " `description`= '" . $this->db->escape($description) . "' ";
-                        } elseif (!$product_setting['description'] && !$product_id) {
-                            $sets['product_description'][] = " `description`= '' ";
-                        }
+                            if ($product_setting['name']) {
+                                $name = '';
 
-                        if ($product_setting['name']) {
-                            $name = '';
+                                if (isset($offer->name)) {
+                                    $name = (string)$offer->name;
+                                }
 
-                            if (isset($offer->name)) {
-                                $name = (string)$offer->name;
-                            }
+                                if ($product_setting['name_self'] && isset($offer->{$product_setting['name_self']})) {
+                                    $name = (string)$offer->{$product_setting['name_self']};
+                                }
 
-                            if ($product_setting['name_self'] && isset($offer->{$product_setting['name_self']})) {
-                                $name = (string)$offer->{$product_setting['name_self']};
-                            }
+                                $name = $this->prepareValue2($name);
+                                $name = $this->prepareFieldForDb($name);
+                                $sets['product_description'][$language['language_id']] = " `name`= '" . $this->db->escape($name) . "' ";
 
-                            $name = $this->prepareValue2($name);
-                            $name = $this->prepareFieldForDb($name);
-                            $sets['product_description'][] = " `name`= '" . $this->db->escape($name) . "' ";
+                                if (isset($product_setting['seo_title']) && $product_setting['seo_title']) {
+                                    //$this->log->write('before without translate seo title updateProduct - all product_description table');
 
-                            if (isset($product_setting['seo_title']) && $product_setting['seo_title']) {
-                                //$this->log->write('before without translate seo title updateProduct - all product_description table');
-
-                                $product_columns = $this->getColumnsByTable('product_description');
-                                foreach ($product_columns as $column_name => $tml) {
-                                    if ($column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title' || $column_name == 'seo_h1' || $column_name == 'meta_description') {
-                                        if ($column_name == 'meta_title') {
-                                            if (isset($product_setting['seo_meta_title_text_left']) && $product_setting['seo_meta_title_text_left'] != '' && (!isset($product_setting['seo_meta_title_text_right']) || $product_setting['seo_meta_title_text_right'] == '')) {
-                                                $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($product_setting['seo_meta_title_text_left']) . " " . $this->db->escape($name) . "' ";
-                                            } elseif (isset($product_setting['seo_meta_title_text_right']) && $product_setting['seo_meta_title_text_right'] != '' && (!isset($product_setting['seo_meta_title_text_left']) || $product_setting['seo_meta_title_text_left'] == '')) {
-                                                $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($name) . " " . $this->db->escape($product_setting['seo_meta_title_text_right']) . "' ";
-                                            } elseif (isset($product_setting['seo_meta_title_text_left']) && $product_setting['seo_meta_title_text_left'] != '' && isset($product_setting['seo_meta_title_text_right']) && $product_setting['seo_meta_title_text_right'] != '') {
-                                                $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($product_setting['seo_meta_title_text_left']) . " " . $this->db->escape($name) . " " . $product_setting['seo_meta_title_text_right'] . "' ";
-                                            } else {
-                                                $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($name) . "' ";
+                                    $product_columns = $this->getColumnsByTable('product_description');
+                                    foreach ($product_columns as $column_name => $tml) {
+                                        if ($column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title' || $column_name == 'seo_h1' || $column_name == 'meta_description') {
+                                            if ($column_name == 'meta_title') {
+                                                if (isset($product_setting['seo_meta_title_text_left']) && $product_setting['seo_meta_title_text_left'] != '' && (!isset($product_setting['seo_meta_title_text_right']) || $product_setting['seo_meta_title_text_right'] == '')) {
+                                                    $sets['product_description'][$language['language_id']] = " `" . $column_name . "` = '" . $this->db->escape($product_setting['seo_meta_title_text_left']) . " " . $this->db->escape($name) . "' ";
+                                                } elseif (isset($product_setting['seo_meta_title_text_right']) && $product_setting['seo_meta_title_text_right'] != '' && (!isset($product_setting['seo_meta_title_text_left']) || $product_setting['seo_meta_title_text_left'] == '')) {
+                                                    $sets['product_description'][$language['language_id']] = " `" . $column_name . "` = '" . $this->db->escape($name) . " " . $this->db->escape($product_setting['seo_meta_title_text_right']) . "' ";
+                                                } elseif (isset($product_setting['seo_meta_title_text_left']) && $product_setting['seo_meta_title_text_left'] != '' && isset($product_setting['seo_meta_title_text_right']) && $product_setting['seo_meta_title_text_right'] != '') {
+                                                    $sets['product_description'][$language['language_id']] = " `" . $column_name . "` = '" . $this->db->escape($product_setting['seo_meta_title_text_left']) . " " . $this->db->escape($name) . " " . $product_setting['seo_meta_title_text_right'] . "' ";
+                                                } else {
+                                                    $sets['product_description'][$language['language_id']] = " `" . $column_name . "` = '" . $this->db->escape($name) . "' ";
+                                                }
+                                            } elseif ($column_name == 'meta_description') {
+                                                if (isset($product_setting['seo_meta_description_text_left']) && $product_setting['seo_meta_description_text_left'] != '' && (!isset($product_setting['seo_meta_description_text_right']) || $product_setting['seo_meta_description_text_right'] == '')) {
+                                                    $sets['product_description'][$language['language_id']] = " `" . $column_name . "` = '" . $this->db->escape($product_setting['seo_meta_title_text_left']) . " " . $this->db->escape($name) . "' ";
+                                                } elseif (isset($product_setting['seo_meta_description_text_right']) && $product_setting['seo_meta_description_text_right'] != '' && (!isset($product_setting['seo_meta_description_text_left']) || $product_setting['seo_meta_description_text_left'] == '')) {
+                                                    $sets['product_description'][$language['language_id']] = " `" . $column_name . "` = '" . $this->db->escape($name) . " " . $this->db->escape($product_setting['seo_meta_description_text_right']) . "' ";
+                                                } elseif (isset($product_setting['seo_meta_description_text_left']) && $product_setting['seo_meta_description_text_left'] != '' && isset($product_setting['seo_meta_description_text_right']) && $product_setting['seo_meta_description_text_right'] != '') {
+                                                    $sets['product_description'][$language['language_id']] = " `" . $column_name . "` = '" . $this->db->escape($product_setting['seo_meta_description_text_left']) . " " . $this->db->escape($name) . " " . $product_setting['seo_meta_description_text_right'] . "' ";
+                                                } else {
+                                                    $sets['product_description'][$language['language_id']] = " `" . $column_name . "` = '" . $this->db->escape($name) . "' ";
+                                                }
                                             }
-                                        } elseif ($column_name == 'meta_description') {
-                                            if (isset($product_setting['seo_meta_description_text_left']) && $product_setting['seo_meta_description_text_left'] != '' && (!isset($product_setting['seo_meta_description_text_right']) || $product_setting['seo_meta_description_text_right'] == '')) {
-                                                $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($product_setting['seo_meta_title_text_left']) . " " . $this->db->escape($name) . "' ";
-                                            } elseif (isset($product_setting['seo_meta_description_text_right']) && $product_setting['seo_meta_description_text_right'] != '' && (!isset($product_setting['seo_meta_description_text_left']) || $product_setting['seo_meta_description_text_left'] == '')) {
-                                                $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($name) . " " . $this->db->escape($product_setting['seo_meta_description_text_right']) . "' ";
-                                            } elseif (isset($product_setting['seo_meta_description_text_left']) && $product_setting['seo_meta_description_text_left'] != '' && isset($product_setting['seo_meta_description_text_right']) && $product_setting['seo_meta_description_text_right'] != '') {
-                                                $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($product_setting['seo_meta_description_text_left']) . " " . $this->db->escape($name) . " " . $product_setting['seo_meta_description_text_right'] . "' ";
-                                            } else {
-                                                $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($name) . "' ";
-                                            }
-                                        } else {
-                                            $sets['product_description'][] = " `" . $column_name . "` = '" . $this->db->escape($name) . "' ";
                                         }
                                     }
                                 }
+                            } elseif (!$product_setting['name'] && !$product_id) {
+                                $sets['product_description'][$language['language_id']] = " `name`= '' ";
                             }
-                        } elseif (!$product_setting['name'] && !$product_id) {
-                            $sets['product_description'][] = " `name`= '' ";
                         }
                     }
 
@@ -1976,39 +1984,46 @@ class ModelToolImportYmlOc extends Model {
                         }
 
                         if ($table == 'product_description') {
-                            if (!$product_setting['translate'] && !$new_product && $where_product_id) {
-                                $sql .= implode(',', $set);
-                                $sql .= " WHERE " . $where_product_id . " AND language_id = '" . $import_yml_oc_template_data['language_id'] . "' ";
-                                $this->db->query($sql);
-                            } elseif (!$product_setting['translate'] && $new_product && $product_id) {
-                                $sql .= implode(',', $set);
-                                $sql .= ", product_id = '" . $product_id . "' ";
-                                $this->db->query($sql);
-                            }
+//                            if (!$product_setting['translate'] && !$new_product && $where_product_id) {
+//                                $sql .= implode(',', $set);
+//                                $sql .= " WHERE " . $where_product_id . " AND language_id = '" . $import_yml_oc_template_data['language_id'] . "' ";
+//                                $this->db->query($sql);
+//                            } elseif (!$product_setting['translate'] && $new_product && $product_id) {
+//                                $sql .= implode(',', $set);
+//                                $sql .= ", product_id = '" . $product_id . "' ";
+//                                $this->db->query($sql);
+//                            }
 
-                            if ($product_setting['translate']) {
-                                //$this->log->write('before product_setting["translate"] updateProduct');
+//                            if ($product_setting['translate']) {
+                            //$this->log->write('before product_setting["translate"] updateProduct');
 
-                                foreach ($set as $k => $s) {
-                                    $sql = '';
+                            foreach ($set as $k => $s) {
+                                $sql = '';
 
-                                    if (!$new_product) {
-                                        $sql .= " UPDATE `" . DB_PREFIX . $table . "` SET ";
-                                    } else {
-                                        $sql .= " INSERT INTO `" . DB_PREFIX . $table . "` SET product_id = '" . $product_id . "', ";
-                                    }
-
-                                    $sql .= implode(',', $s);
-
-                                    if (!$new_product) {
-                                        $sql .= " WHERE product_id = '" . $product_id . "' AND language_id = '" . $k . "' ";
-                                    }
-
-                                    //$this->log->write(var_export($sql, true));
-
-                                    $this->db->query($sql);
+                                if (!$new_product) {
+                                    $sql .= " UPDATE `" . DB_PREFIX . $table . "` SET ";
+                                } else {
+                                    $sql .= " INSERT INTO `" . DB_PREFIX . $table . "` SET product_id = '" . $product_id . "', ";
                                 }
+
+                                if (!is_array($s)) {
+                                    $sql .= $s;
+                                } else {
+                                    $sql .= implode(',', $s);
+                                }
+
+
+                                if (!$new_product) {
+                                    $sql .= " WHERE product_id = '" . $product_id . "' AND language_id = '" . $k . "' ";
+                                } else {
+                                    $sql .= ", language_id = '" . $k . "' ";
+                                }
+
+                                //$this->log->write(var_export($sql, true));
+
+                                $this->db->query($sql);
                             }
+//                            }
                         }
 
                         if ($table == 'product_to_category') {
@@ -2085,32 +2100,6 @@ class ModelToolImportYmlOc extends Model {
                                         }
                                     }
                                 }
-//                                else {
-//                                    //$this->log->write('before seo url alias - seo keyword already exist updateProduct');
-//
-//                                    // already exist - add another seo keyword with postfix '-counter'
-//                                    if (!$group_product_id) {
-//                                        $counter_url = 0;
-//                                        $str_url_tmp = $str_url;
-//
-//                                        do {
-//                                            $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE keyword = '" . $this->db->escape($str_url_tmp) . "' ");
-//                                            if ($query->num_rows > 0) {
-//                                                $str_url_tmp = $str_url . '-' . ++$counter_url;
-//                                            }
-//                                        } while (($query->num_rows > 0));
-//
-//                                        //$this->log->write(var_export($str_url_tmp, true));
-//
-//                                        $this->load->model('localisation/language');
-//                                        $languages = $this->model_localisation_language->getLanguages();
-//                                        foreach ($languages as $language) {
-//                                            foreach ($import_yml_oc_template_data['store_id'] as $store_id) {
-//                                                $query = $this->db->query("INSERT INTO " . DB_PREFIX . "seo_url SET query = 'product_id=" . $this->db->escape($product_id) . "', keyword = '" . $this->db->escape($str_url_tmp) . "', language_id = '" . $language['language_id'] . "', store_id = '" . $store_id . "' ");
-//                                            }
-//                                        }
-//                                    }
-//                                }
                             } else {
                                 //$this->log->write('before seo url alias - no seo keyword - create it updateProduct');
 
@@ -2436,6 +2425,7 @@ class ModelToolImportYmlOc extends Model {
                 if (isset($manufacturer_setting['translate']) && $manufacturer_setting['translate']) {
                     //$this->log->write('before manufacturer translate - updateProduct');
 
+
                     $this->load->model('localisation/language');
                     $languages = $this->model_localisation_language->getLanguages();
                     foreach ($languages as $language) {
@@ -2445,6 +2435,8 @@ class ModelToolImportYmlOc extends Model {
                         if ($translate_to != $translate_from) {
                             //$this->log->write('before manufacturer translate_to != translate_from - updateProduct');
 
+                            // translate
+                            // with seo title
                             if (isset($manufacturer_setting['seo_title']) && $manufacturer_setting['seo_title']) {
                                 //$this->log->write('before manufacturer seo_title translate_to != translate_from - updateProduct');
 
@@ -2507,7 +2499,7 @@ class ModelToolImportYmlOc extends Model {
                                             } else {
                                                 $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
                                             }
-                                        } else {
+                                        } elseif ($column_name == 'name') {
                                             $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
                                         }
                                     }
@@ -2520,8 +2512,31 @@ class ModelToolImportYmlOc extends Model {
                                 }
 
                                 $this->db->query($sql);
+                            } else {
+
+                                // translate
+                                // without seo title
+                                $sets = array();
+                                $manufacturer_columns = $this->getColumnsByTable('manufacturer_description');
+
+                                foreach ($manufacturer_columns as $column_name => $tml) {
+                                    if ($column_name == 'name') {
+                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
+                                    }
+                                }
+
+                                $sql = " INSERT INTO " . DB_PREFIX . "manufacturer_description SET manufacturer_id = " . $manufacturer_id . ", language_id = " . (int)$language['language_id'] . " ";
+
+                                if ($sets) {
+                                    $sql .= ", " . implode(',', $sets) . " ";
+                                }
+
+                                $this->db->query($sql);
                             }
                         } else {
+
+                            // translate
+                            // with seo title
                             if (isset($manufacturer_setting['seo_title']) && $manufacturer_setting['seo_title']) {
                                 //$this->log->write('before manufacturer seo_title translate_to == translate_from - updateProduct');
 
@@ -2550,13 +2565,33 @@ class ModelToolImportYmlOc extends Model {
                                             } else {
                                                 $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
                                             }
-                                        } else {
+                                        } elseif ($column_name == 'name') {
                                             $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
                                         }
                                     }
                                 }
 
-                                $sql = " INSERT INTO " . DB_PREFIX . "manufacturer_description SET manufacturer_id = " . $manufacturer_id . ", language_id = " . (int)$language_id . " ";
+                                $sql = " INSERT INTO " . DB_PREFIX . "manufacturer_description SET manufacturer_id = " . $manufacturer_id . ", language_id = " . (int)$language['language_id'] . " ";
+
+                                if ($sets) {
+                                    $sql .= ", " . implode(',', $sets) . " ";
+                                }
+
+                                $this->db->query($sql);
+                            } else {
+
+                                // translate
+                                // without seo title
+                                $sets = array();
+                                $manufacturer_columns = $this->getColumnsByTable('manufacturer_description');
+
+                                foreach ($manufacturer_columns as $column_name => $tml) {
+                                    if ($column_name == 'name') {
+                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
+                                    }
+                                }
+
+                                $sql = " INSERT INTO " . DB_PREFIX . "manufacturer_description SET manufacturer_id = " . $manufacturer_id . ", language_id = " . (int)$language['language_id'] . " ";
 
                                 if ($sets) {
                                     $sql .= ", " . implode(',', $sets) . " ";
@@ -2567,49 +2602,72 @@ class ModelToolImportYmlOc extends Model {
                         }
                     }
                 } else {
-                    //$this->log->write('before manufacturer without translate - updateProduct');
+                    //$this->log->write('before manufacturer without translate seo title - updateProduct');
 
-                    if (isset($manufacturer_setting['seo_title']) && $manufacturer_setting['seo_title']) {
-                        //$this->log->write('before manufacturer seo title without translate - updateProduct');
+                    $this->load->model('localisation/language');
+                    $languages = $this->model_localisation_language->getLanguages();
+                    foreach ($languages as $language) {
+                        if (isset($manufacturer_setting['seo_title']) && $manufacturer_setting['seo_title']) {
+                            //$this->log->write('before manufacturer seo title without translate - updateProduct');
 
-                        $sets = array();
-                        $manufacturer_columns = $this->getColumnsByTable('manufacturer_description');
+                            $sets = array();
+                            $manufacturer_columns = $this->getColumnsByTable('manufacturer_description');
 
-                        foreach ($manufacturer_columns as $column_name => $tml) {
-                            if ($column_name == 'name' || $column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title' || $column_name == 'seo_h1' || $column_name == 'meta_description') {
-                                if ($column_name == 'meta_title') {
-                                    if (isset($manufacturer_setting['seo_meta_title_text_left']) && $manufacturer_setting['seo_meta_title_text_left'] != '' && (!isset($manufacturer_setting['seo_meta_title_text_right']) && $manufacturer_setting['seo_meta_title_text_right'] == '')) {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_setting['seo_meta_title_text_left']) . " " . $this->db->escape($manufacturer_name) . "' ";
-                                    } elseif (isset($manufacturer_setting['seo_meta_title_text_right']) && $manufacturer_setting['seo_meta_title_text_right'] != '' && (!isset($manufacturer_setting['seo_meta_title_text_left']) && $manufacturer_setting['seo_meta_title_text_left'] == '')) {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . " " . $this->db->escape($manufacturer_setting['seo_meta_title_text_right']) . "' ";
-                                    } elseif (isset($manufacturer_setting['seo_meta_title_text_left']) && $manufacturer_setting['seo_meta_title_text_left'] != '' && isset($manufacturer_setting['seo_meta_title_text_right']) && $manufacturer_setting['seo_meta_title_text_right'] != '') {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_setting['seo_meta_title_text_left']) . " " . $this->db->escape($manufacturer_name) . " " . $this->db->escape($manufacturer_setting['seo_meta_title_text_right']) . "' ";
-                                    } else {
+                            foreach ($manufacturer_columns as $column_name => $tml) {
+                                if ($column_name == 'name' || $column_name == 'meta_title' || $column_name == 'meta_h1' || $column_name == 'seo_title' || $column_name == 'seo_h1' || $column_name == 'meta_description') {
+                                    if ($column_name == 'meta_title') {
+                                        if (isset($manufacturer_setting['seo_meta_title_text_left']) && $manufacturer_setting['seo_meta_title_text_left'] != '' && (!isset($manufacturer_setting['seo_meta_title_text_right']) && $manufacturer_setting['seo_meta_title_text_right'] == '')) {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_setting['seo_meta_title_text_left']) . " " . $this->db->escape($manufacturer_name) . "' ";
+                                        } elseif (isset($manufacturer_setting['seo_meta_title_text_right']) && $manufacturer_setting['seo_meta_title_text_right'] != '' && (!isset($manufacturer_setting['seo_meta_title_text_left']) && $manufacturer_setting['seo_meta_title_text_left'] == '')) {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . " " . $this->db->escape($manufacturer_setting['seo_meta_title_text_right']) . "' ";
+                                        } elseif (isset($manufacturer_setting['seo_meta_title_text_left']) && $manufacturer_setting['seo_meta_title_text_left'] != '' && isset($manufacturer_setting['seo_meta_title_text_right']) && $manufacturer_setting['seo_meta_title_text_right'] != '') {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_setting['seo_meta_title_text_left']) . " " . $this->db->escape($manufacturer_name) . " " . $this->db->escape($manufacturer_setting['seo_meta_title_text_right']) . "' ";
+                                        } else {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
+                                        }
+                                    } elseif ($column_name == 'meta_description') {
+                                        if (isset($manufacturer_setting['seo_meta_description_text_left']) && $manufacturer_setting['seo_meta_description_text_left'] != '' && (!isset($manufacturer_setting['seo_meta_description_text_right']) && $manufacturer_setting['seo_meta_description_text_right'] == '')) {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_setting['seo_meta_description_text_left']) . " " . $this->db->escape($manufacturer_name) . "' ";
+                                        } elseif (isset($manufacturer_setting['seo_meta_description_text_right']) && $manufacturer_setting['seo_meta_description_text_right'] != '' && (!isset($manufacturer_setting['seo_meta_description_text_left']) && $manufacturer_setting['seo_meta_description_text_left'] == '')) {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . " " . $this->db->escape($manufacturer_setting['seo_meta_description_text_right']) . "' ";
+                                        } elseif (isset($manufacturer_setting['seo_meta_description_text_left']) && $manufacturer_setting['seo_meta_description_text_left'] != '' && isset($manufacturer_setting['seo_meta_description_text_right']) && $manufacturer_setting['seo_meta_description_text_right'] != '') {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_setting['seo_meta_description_text_left']) . " " . $this->db->escape($manufacturer_name) . " " . $this->db->escape($manufacturer_setting['seo_meta_description_text_right']) . "' ";
+                                        } else {
+                                            $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
+                                        }
+                                    } elseif ($column_name == 'name') {
                                         $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
                                     }
-                                } elseif ($column_name == 'meta_description') {
-                                    if (isset($manufacturer_setting['seo_meta_description_text_left']) && $manufacturer_setting['seo_meta_description_text_left'] != '' && (!isset($manufacturer_setting['seo_meta_description_text_right']) && $manufacturer_setting['seo_meta_description_text_right'] == '')) {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_setting['seo_meta_description_text_left']) . " " . $this->db->escape($manufacturer_name) . "' ";
-                                    } elseif (isset($manufacturer_setting['seo_meta_description_text_right']) && $manufacturer_setting['seo_meta_description_text_right'] != '' && (!isset($manufacturer_setting['seo_meta_description_text_left']) && $manufacturer_setting['seo_meta_description_text_left'] == '')) {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . " " . $this->db->escape($manufacturer_setting['seo_meta_description_text_right']) . "' ";
-                                    } elseif (isset($manufacturer_setting['seo_meta_description_text_left']) && $manufacturer_setting['seo_meta_description_text_left'] != '' && isset($manufacturer_setting['seo_meta_description_text_right']) && $manufacturer_setting['seo_meta_description_text_right'] != '') {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_setting['seo_meta_description_text_left']) . " " . $this->db->escape($manufacturer_name) . " " . $this->db->escape($manufacturer_setting['seo_meta_description_text_right']) . "' ";
-                                    } else {
-                                        $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
-                                    }
-                                } else {
+                                }
+                            }
+
+                            $sql = " INSERT INTO " . DB_PREFIX . "manufacturer_description SET manufacturer_id = " . $manufacturer_id . ", language_id = " . $language['language_id'] . " ";
+
+                            if ($sets) {
+                                $sql .= ", " . implode(',', $sets) . " ";
+                            }
+
+                            $this->db->query($sql);
+                        } else {
+                            //$this->log->write('before manufacturer without translate without seo title - updateProduct');
+
+                            $sets = array();
+                            $manufacturer_columns = $this->getColumnsByTable('manufacturer_description');
+
+                            foreach ($manufacturer_columns as $column_name => $tml) {
+                                if ($column_name == 'name') {
                                     $sets[] = " `" . $column_name . "` = '" . $this->db->escape($manufacturer_name) . "' ";
                                 }
                             }
+
+                            $sql = " INSERT INTO " . DB_PREFIX . "manufacturer_description SET manufacturer_id = " . $manufacturer_id . ", language_id = " . $language['language_id'] . " ";
+
+                            if ($sets) {
+                                $sql .= ", " . implode(',', $sets) . " ";
+                            }
+
+                            $this->db->query($sql);
                         }
-
-                        $sql = " INSERT INTO " . DB_PREFIX . "manufacturer_description SET manufacturer_id = " . $manufacturer_id . ", language_id = " . (int)$language_id . " ";
-
-                        if ($sets) {
-                            $sql .= ", " . implode(',', $sets) . " ";
-                        }
-
-                        $this->db->query($sql);
                     }
                 }
             }
@@ -2645,71 +2703,10 @@ class ModelToolImportYmlOc extends Model {
         //$this->log->write(var_export($import_yml_oc_matchingid, true));
     }
 
-//    private function setAttributes($attributes, $attribute_group_id, $language_id, $product_id, $translate_from, $translate) {
-//        $attribute_values = array();
-//
-//        foreach ($attributes as $attribute_name => $attribute_value) {
-//            $sql = "SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id AND ad.name = '" . $this->db->escape($attribute_name) . "' ) WHERE a.attribute_group_id = '" . $attribute_group_id . "' AND ad.language_id = '" . $language_id . "' GROUP BY a.attribute_id ";
-//            $query = $this->db->query($sql);
-//
-//            if ($query->row) {
-//                $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language_id . ", attribute_id='" . $query->row['attribute_id'] . "' ";
-//            } else {
-//                $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute` SET attribute_group_id = '" . $attribute_group_id . "', sort_order = 0 ");
-//                $attribute_id = $this->db->getLastId();
-//
-//                // translate
-//                if (isset($translate) && $translate) {
-//                    //$this->log->write('before import attributes translate - updateProduct');
-//
-//                    $this->load->model('localisation/language');
-//                    $languages = $this->model_localisation_language->getLanguages();
-//                    foreach ($languages as $language) {
-//                        $translate_attribute_name = '';
-//                        $translate_attribute_value = '';
-//
-//                        $translate_to = explode('-',$language['code']);
-//                        $translate_to = $translate_to[0];
-//
-//                        if ($translate_to != $translate_from) {
-//                            //$this->log->write('before import attributes translate_to != translate_from - updateProduct');
-//
-//                            $result_translate_attr_name = $this->yandexApi->plainTranslate($attribute_name, $translate_from, $translate_to, $translate_attribute_name);
-//                            $result_translate_attr_value = $this->yandexApi->plainTranslate($attribute_value, $translate_from, $translate_to, $translate_attribute_value);
-//
-//                            if ($result_translate_attr_name && $result_translate_attr_value) {
-//                                $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute_description` SET attribute_id = '" . $attribute_id . "', language_id = " . $language['language_id'] . ", name= '" . $this->db->escape($translate_attribute_name) . "' ");
-//                                $attribute_values[] = " text = '" . $this->db->escape($translate_attribute_value) . "', language_id = " . $language['language_id'] . ", attribute_id='" . $attribute_id . "' ";
-//                            }
-//                        } else {
-//                            //$this->log->write('before import attributes translate_to == translate_from - updateProduct');
-//
-//                            $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute_description` SET attribute_id = '" . $attribute_id . "', language_id = " . $language_id . ", name= '" . $this->db->escape($attribute_name) . "' ");
-//                            $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language_id . ", attribute_id='" . $attribute_id . "' ";
-//                        }
-//                    }
-//                } else {
-//                    //$this->log->write('before import attributes without translate - updateProduct');
-//
-//                    // without translate
-//                    $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute_description` SET attribute_id = '" . $attribute_id . "', language_id = " . $language_id . ", name= '" . $this->db->escape($attribute_name) . "' ");
-//                    $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language_id . ", attribute_id='" . $attribute_id . "' ";
-//                }
-//            }
-//        }
-//
-//        $this->db->query("DELETE FROM " . DB_PREFIX . "product_attribute WHERE product_id = '" . (int)$product_id . "'");
-//
-//        foreach ($attribute_values as $attribute_value) {
-//            $this->db->query("INSERT INTO " . DB_PREFIX . "product_attribute SET product_id = '" . $product_id . "', " . $attribute_value);
-//        }
-//    }
-
     private function setAttributes($attributes, $attribute_group_id, $language_id, $product_id, $translate_from, $translate) {
         $attribute_values = array();
 
         foreach ($attributes as $attribute_name => $attribute_value) {
-
             // translate
             if (isset($translate) && $translate) {
                 //$this->log->write('before import attributes translate - updateProduct');
@@ -2731,17 +2728,20 @@ class ModelToolImportYmlOc extends Model {
 
                         if ($result_translate_attr_name && $result_translate_attr_value) {
 
-                            $sql = "SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id AND ad.name = '" . $this->db->escape($translate_attribute_name) . "' ) WHERE a.attribute_group_id = '" . $attribute_group_id . "' AND ad.language_id = '" . $language['language_id'] . "' GROUP BY a.attribute_id ";
+                            $sql = "SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id AND ad.name = '" . $this->db->escape($attribute_name) . "' ) WHERE a.attribute_group_id = '" . $attribute_group_id . "' AND ad.language_id = '" . $language_id . "' GROUP BY a.attribute_id ";
                             $query = $this->db->query($sql);
 
                             if ($query->row) {
-                                $attribute_values[] = " text = '" . $this->db->escape($translate_attribute_value) . "', language_id = " . $language['language_id'] . ", attribute_id = '" . $query->row['attribute_id'] . "' ";
-                            } else {
-                                $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute` SET attribute_group_id = '" . $attribute_group_id . "', sort_order = 0 ");
-                                $attribute_id = $this->db->getLastId();
+                                $attribute_id_without_translate = $query->row['attribute_id'];
+                                $sql = "SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id AND ad.name = '" . $this->db->escape($translate_attribute_name) . "' ) WHERE a.attribute_group_id = '" . $attribute_group_id . "' AND ad.language_id = '" . $language['language_id'] . "' GROUP BY a.attribute_id ";
+                                $query = $this->db->query($sql);
 
-                                $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute_description` SET attribute_id = '" . $attribute_id . "', language_id = " . $language['language_id'] . ", name = '" . $this->db->escape($translate_attribute_name) . "' ");
-                                $attribute_values[] = " text = '" . $this->db->escape($translate_attribute_value) . "', language_id = " . $language['language_id'] . ", attribute_id = '" . $attribute_id . "' ";
+                                if ($query->row) {
+                                    $attribute_values[] = " text = '" . $this->db->escape($translate_attribute_value) . "', language_id = " . $language['language_id'] . ", attribute_id = '" . $query->row['attribute_id'] . "' ";
+                                } else {
+                                    $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute_description` SET attribute_id = '" . $attribute_id_without_translate . "', language_id = " . $language['language_id'] . ", name = '" . $this->db->escape($translate_attribute_name) . "' ");
+                                    $attribute_values[] = " text = '" . $this->db->escape($translate_attribute_value) . "', language_id = " . $language['language_id'] . ", attribute_id = '" . $attribute_id_without_translate . "' ";
+                                }
                             }
                         }
 
@@ -2766,17 +2766,38 @@ class ModelToolImportYmlOc extends Model {
                 // without translate
                 //$this->log->write('before import attributes without translate - updateProduct');
 
-                $sql = "SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id AND ad.name = '" . $this->db->escape($attribute_name) . "' ) WHERE a.attribute_group_id = '" . $attribute_group_id . "' AND ad.language_id = '" . $language_id . "' GROUP BY a.attribute_id ";
-                $query = $this->db->query($sql);
+                $languages = $this->model_localisation_language->getLanguages();
+                foreach ($languages as $language) {
+                    if ($language['language_id'] == $language_id) {
+                        $sql = "SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id AND ad.name = '" . $this->db->escape($attribute_name) . "' ) WHERE a.attribute_group_id = '" . $attribute_group_id . "' AND ad.language_id = '" . $language_id . "' GROUP BY a.attribute_id ";
+                        $query = $this->db->query($sql);
 
-                if ($query->row) {
-                    $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language_id . ", attribute_id = '" . $query->row['attribute_id'] . "' ";
-                } else {
-                    $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute` SET attribute_group_id = '" . $attribute_group_id . "', sort_order = 0 ");
-                    $attribute_id = $this->db->getLastId();
+                        if ($query->row) {
+                            $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language_id . ", attribute_id = '" . $query->row['attribute_id'] . "' ";
+                        } else {
+                            $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute` SET attribute_group_id = '" . $attribute_group_id . "', sort_order = 0 ");
+                            $attribute_id = $this->db->getLastId();
 
-                    $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute_description` SET attribute_id = '" . $attribute_id . "', language_id = " . $language_id . ", name = '" . $this->db->escape($attribute_name) . "' ");
-                    $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language_id . ", attribute_id='" . $attribute_id . "' ";
+                            $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute_description` SET attribute_id = '" . $attribute_id . "', language_id = " . $language_id . ", name = '" . $this->db->escape($attribute_name) . "' ");
+                            $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language_id . ", attribute_id = '" . $attribute_id . "' ";
+                        }
+                    } else {
+                        $sql = "SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id AND ad.name = '" . $this->db->escape($attribute_name) . "' ) WHERE a.attribute_group_id = '" . $attribute_group_id . "' AND ad.language_id = '" . $language['language_id'] . "' GROUP BY a.attribute_id ";
+                        $query = $this->db->query($sql);
+
+                        if ($query->row) {
+                            $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language['language_id'] . ", attribute_id = '" . $query->row['attribute_id'] . "' ";
+                        } else {
+                            $sql = "SELECT * FROM " . DB_PREFIX . "attribute a LEFT JOIN " . DB_PREFIX . "attribute_description ad ON (a.attribute_id = ad.attribute_id AND ad.name = '" . $this->db->escape($attribute_name) . "' ) WHERE a.attribute_group_id = '" . $attribute_group_id . "' AND ad.language_id = '" . $language_id . "' GROUP BY a.attribute_id ";
+                            $query = $this->db->query($sql);
+
+                            if ($query->row) {
+                                $this->db->query(" INSERT INTO `" . DB_PREFIX . "attribute_description` SET attribute_id = '" . $query->row['attribute_id'] . "', language_id = " . $language['language_id'] . ", name = '" . $this->db->escape($attribute_name) . "' ");
+                                $attribute_values[] = " text = '" . $this->db->escape($attribute_value) . "', language_id = " . $language['language_id'] . ", attribute_id = '" . $query->row['attribute_id'] . "' ";
+                            }
+                        }
+                    }
+
                 }
             }
         }

@@ -236,7 +236,7 @@ $_['text_selection'] = 'Выделение';
 
 $_['text_left'] = 'Текст слева';
 $_['text_right'] = 'Текст справа';
-$_['text_type_data_yml_setting_manufacturer_seo_title'] = 'Использовать название производителя для meta title и seo h1';
+$_['text_type_data_yml_setting_manufacturer_seo_title'] = 'Использовать название производителя для meta title и meta description';
 $_['text_type_data_yml_setting_seo_title_text'] = 'meta_title доп. текст';
 $_['text_type_data_yml_setting_seo_title_text_left'] = 'meta_title доп. текст слева';
 $_['text_type_data_yml_setting_seo_title_text_right'] = 'meta_title доп. текст справа';

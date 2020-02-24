@@ -260,10 +260,6 @@
                                                 <div class="input-group">
                                                     {% if import_yml_oc_update_yml_link_template_data %}
                                                         <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]" class="form-control">
-                                                            <option value="0">{{ entry_import_yml_oc_template_data_empty }}</option>
-                                                        </select>
-                                                    {% else %}
-                                                        <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]" class="form-control">
                                                             {% for template_data_key, template_data in import_yml_oc_update_yml_link_template_data %}
                                                                 {% if link_data.template_data_id and link_data.template_data_id == template_data_key %}
                                                                     <option selected="" value="{{ template_data_key }}">{{ template_data.name }}</option>
@@ -271,6 +267,10 @@
                                                                     <option value="{{ template_data_key }}">{{ template_data.name }}</option>
                                                                 {% endif %}
                                                             {% endfor %}
+                                                        </select>
+                                                    {% else %}
+                                                        <select name="import_yml_oc_update_yml_link[{{ id }}][template_data_id]" class="form-control">
+                                                            <option value="0">{{ entry_import_yml_oc_template_data_empty }}</option>
                                                         </select>
                                                     {% endif %}
                                                 </div>
@@ -297,7 +297,7 @@
                                         <tr>
                                             <td class="text-right">{{ column_update_csv_link_link }}</td>
                                             <td colspan="2">
-                                                <input style="width:60%" class="form-control" readonly="" onclick="$(this).select()" value="{{ "#{HTTP_CATALOG}index.php?route=feed/import_yml_oc_update_yml_link&user_token=#{link_data.token}" }}"/>
+                                                <input style="width:60%" class="form-control" readonly="" onclick="$(this).select()" value="{{ "#{HTTP_CATALOG}index.php?route=extension/feed/import_yml_oc&user_token=#{link_data.token}" }}"/>
                                             </td>
                                         </tr>
                                     {% endfor %}
