@@ -7,7 +7,6 @@ class YandexApi {
         array('expired' => false, 'key' => 'trnsl.1.1.20191222T210935Z.93a49a5eedb85bff.2f9e7ca2a5eea01f9e8939fe7a53d3cfdbdb22b3'),
         array('expired' => false, 'key' => 'trnsl.1.1.20191222T211121Z.7599108471aecc09.c37363dde086ec1e1dfdb17947cb8a3556a0d3e0'),
         array('expired' => false, 'key' => 'trnsl.1.1.20191222T211243Z.390349354cd2f4b8.f27097f1907f3ebdc880752241248e021e5c3f5c'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20191222T211243Z.390349354cd2f4b8.f27097f1907f3ebdc880752241248e021e5c3f5c'),
         array('expired' => false, 'key' => 'trnsl.1.1.20191222T211404Z.ec35364cb260a617.4f32129eef68961374f403cb18d3d0c0b4b50420'),
         array('expired' => false, 'key' => 'trnsl.1.1.20191222T211505Z.4a60ed87a1165579.d0f0bc06df28ea36910a4150c92ddf7f65a4b2d1'),
         array('expired' => false, 'key' => 'trnsl.1.1.20191222T211600Z.4153a8e92fb56681.ae1eaa21ffa2b11de0894073f4731804eeeded7f'),
