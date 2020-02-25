@@ -20,8 +20,7 @@ class YandexApi {
         array('expired' => false, 'key' => 'trnsl.1.1.20200225T153503Z.075b39a3cb31091a.32a33e6b6a256d3c866d5a8a525b56821ecc9862'),
         array('expired' => false, 'key' => 'trnsl.1.1.20200225T153700Z.6f92d989e5aa1ef1.2b7b577b7579daf74909ec3019237d04d93c4888'),
         array('expired' => false, 'key' => 'trnsl.1.1.20200225T153822Z.0eb9cce1487e814c.03a7bc1945be7c899e6e86c2e1deae3f45fbcc83'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200225T153944Z.175417a5207e2d55.6ce1e640398c22fae3807b0289950abde1b12728'),
-
+        array('expired' => false, 'key' => 'trnsl.1.1.20200225T153944Z.175417a5207e2d55.6ce1e640398c22fae3807b0289950abde1b12728')
     );
     private $key = '';
     private static $instance;
