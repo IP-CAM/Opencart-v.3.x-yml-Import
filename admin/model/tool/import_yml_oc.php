@@ -2191,13 +2191,24 @@ class ModelToolImportYmlOc extends Model {
 
                             if ($product_option_value_id_by_option_value_id->row) {
                                 $product_option_value_id = $product_option_value_id_by_option_value_id->row['product_option_value_id'];
+
+                                if ($group_product_id && isset($group_product_price[$identificator_value]) && $group_product_price[$identificator_value]) {
+                                    $this->db->query("UPDATE " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '". $option_price . "', price_prefix = '" . $option_price_prefix . "', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+' WHERE product_option_value_id = '" . $product_option_value_id . "' ");
+                                }
+
+//                                else {
+//                                    $this->db->query("UPDATE " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '0', price_prefix = '+', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+' WHERE product_option_value_id = '" . $product_option_value_id . "' ");
+//                                }
                             } else {
                                 if ($group_product_id && isset($group_product_price[$identificator_value]) && $group_product_price[$identificator_value]) {
                                     $this->db->query("INSERT INTO " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '". $option_price . "', price_prefix = '" . $option_price_prefix . "', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+'");
-                                } else {
-                                    $this->db->query("INSERT INTO " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '0', price_prefix = '+', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+'");
                                 }
-                                $product_option_value_id = $this->db->getLastId();
+
+//                                else {
+//                                    $this->db->query("INSERT INTO " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '0', price_prefix = '+', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+'");
+//                                }
+
+                                //$product_option_value_id = $this->db->getLastId();
                             }
                         }
                     }
