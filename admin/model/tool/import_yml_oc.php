@@ -1581,6 +1581,7 @@ class ModelToolImportYmlOc extends Model {
 
                     // translate
                     if (isset($product_setting['translate']) && $product_setting['translate']) {
+                        $this->load->model('localisation/language');
                         $languages = $this->model_localisation_language->getLanguages();
                         foreach ($languages as $language) {
                             $translate_to = explode('-',$language['code']);
@@ -1766,6 +1767,7 @@ class ModelToolImportYmlOc extends Model {
                         //$this->log->write('before without translate updateProduct - all product_description table');
 
                         // without translate
+                        $this->load->model('localisation/language');
                         $languages = $this->model_localisation_language->getLanguages();
                         foreach ($languages as $language) {
                             if ($product_setting['description']) {
@@ -2777,6 +2779,7 @@ class ModelToolImportYmlOc extends Model {
                 // without translate
                 //$this->log->write('before import attributes without translate - updateProduct');
 
+                $this->load->model('localisation/language');
                 $languages = $this->model_localisation_language->getLanguages();
                 foreach ($languages as $language) {
                     if ($language['language_id'] == $language_id) {
