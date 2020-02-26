@@ -1533,7 +1533,7 @@ class ModelToolImportYmlOc extends Model {
                             }
                         }
 
-                        $sets['product'][] = " `quantity`= '" . $quantity . "' ";
+                        $sets['product'][] = " `quantity`= '" . $quantity . "', `stock_status_id` = '7' ";
                     }
 
                     if ($product_setting['rec']) {
