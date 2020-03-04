@@ -1602,6 +1602,7 @@ class ModelToolImportYmlOc extends Model {
                                             $description = $this->prepareFieldForDb(str_replace('\n', '<br>', strip_tags(str_replace('<br>', '\n', str_replace('< /', '</', $translate_description)))));
                                         } elseif (isset($offer->description) && isset($product_setting['description_cdata']) && $product_setting['description_cdata']) {
                                             $description = html_entity_decode(nl2br(str_replace('< /', '</', $translate_description)));
+                                            $description = str_replace('<br />', '', $description);
                                         }
 
                                         $sets['product_description'][$language['language_id']][] = " `description`= '" . $this->db->escape($description) . "' ";
@@ -1610,6 +1611,7 @@ class ModelToolImportYmlOc extends Model {
                                             $description = $this->prepareFieldForDb(str_replace('\n', '<br>', strip_tags(str_replace('<br>', '\n', (string)$offer->description))));
                                         } elseif (isset($offer->description) && isset($product_setting['description_cdata']) && $product_setting['description_cdata']) {
                                             $description = html_entity_decode(nl2br((string)$offer->description));
+                                            $description = str_replace('<br />', '', $description);
                                         }
 
                                         $sets['product_description'][$language['language_id']][] = " `description`= '" . $this->db->escape($description) . "' ";
@@ -1621,6 +1623,7 @@ class ModelToolImportYmlOc extends Model {
                                         $description = $this->prepareFieldForDb(str_replace('\n', '<br>', strip_tags(str_replace('<br>', '\n', (string)$offer->description))));
                                     } elseif (isset($offer->description) && isset($product_setting['description_cdata']) && $product_setting['description_cdata']) {
                                         $description = html_entity_decode(nl2br((string)$offer->description));
+                                        $description = str_replace('<br />', '', $description);
                                     }
 
                                     $sets['product_description'][$language['language_id']][] = " `description`= '" . $this->db->escape($description) . "' ";
@@ -1777,6 +1780,7 @@ class ModelToolImportYmlOc extends Model {
                                     $description = $this->prepareFieldForDb(str_replace('\n', '<br>', strip_tags(str_replace('<br>', '\n', (string)$offer->description))));
                                 } elseif (isset($offer->description) && isset($product_setting['description_cdata']) && $product_setting['description_cdata']) {
                                     $description = html_entity_decode(nl2br((string)$offer->description));
+                                    $description = str_replace('<br />', '', $description);
                                 }
 
                                 $sets['product_description'][$language['language_id']] = " `description`= '" . $this->db->escape($description) . "' ";
@@ -2177,7 +2181,7 @@ class ModelToolImportYmlOc extends Model {
                             $option_value_id = $option_data['option_value_id'];
                         }
 
-                        if ($option_id && $option_value_id) {
+                        if (isset($offer->attributes()->group_id) && $option_id && $option_value_id) {
                             $product_option_id_by_option_id = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_option WHERE product_id = '" . (int)$product_id . "' AND option_id = '" . (int)$option_id . "'");
 
                             if ($product_option_id_by_option_id->row) {
@@ -2196,15 +2200,13 @@ class ModelToolImportYmlOc extends Model {
 
                                 if ($group_product_id && isset($group_product_price[$identificator_value]) && $group_product_price[$identificator_value]) {
                                     $this->db->query("UPDATE " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '". $option_price . "', price_prefix = '" . $option_price_prefix . "', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+' WHERE product_option_value_id = '" . $product_option_value_id . "' ");
-                                }
-                                else {
+                                } else {
                                     $this->db->query("UPDATE " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '0', price_prefix = '+', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+' WHERE product_option_value_id = '" . $product_option_value_id . "' ");
                                 }
                             } else {
                                 if ($group_product_id && isset($group_product_price[$identificator_value]) && $group_product_price[$identificator_value]) {
                                     $this->db->query("INSERT INTO " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '". $option_price . "', price_prefix = '" . $option_price_prefix . "', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+'");
-                                }
-                                else {
+                                } else {
                                     $this->db->query("INSERT INTO " . DB_PREFIX . "product_option_value SET product_option_id = '" . (int)$product_option_id . "', product_id = '" . (int)$product_id . "', option_id = '" . (int)$option_id . "', option_value_id = '" . (int)$option_value_id . "', quantity = '" . 100 . "', subtract = '0', price = '0', price_prefix = '+', points = '0', points_prefix = '+', weight = '0', weight_prefix = '+'");
                                 }
 
