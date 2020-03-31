@@ -20,14 +20,7 @@ class YandexApi {
         array('expired' => false, 'key' => 'trnsl.1.1.20200225T153503Z.075b39a3cb31091a.32a33e6b6a256d3c866d5a8a525b56821ecc9862'),
         array('expired' => false, 'key' => 'trnsl.1.1.20200225T153700Z.6f92d989e5aa1ef1.2b7b577b7579daf74909ec3019237d04d93c4888'),
         array('expired' => false, 'key' => 'trnsl.1.1.20200225T153822Z.0eb9cce1487e814c.03a7bc1945be7c899e6e86c2e1deae3f45fbcc83'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200225T153944Z.175417a5207e2d55.6ce1e640398c22fae3807b0289950abde1b12728'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200309T172317Z.6551bf44d3934a06.a7138731ffad81c11fa48bfe9a7dc9623065c1ba'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200309T172547Z.8d7756b80d8d6273.d2b26266181daa36b5eec7794a8de186bcd22cd9'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200309T172843Z.b8342c3e1c01b235.531e17996615c4cdb106c2e78cd13804a8d62efe'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200309T173126Z.828e36d11fe78a56.54d892e9ca89b1dff419ccf65e44574ab2cf244b'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200309T173419Z.e7f24bcf5eca75f3.b2f09ef68b4a3c3583db714851b41ece04e321b5'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200309T173607Z.df09ca10b2eae726.13b5932aaf7a5f0929ef11b3d22ef902797d02f1'),
-        array('expired' => false, 'key' => 'trnsl.1.1.20200309T173803Z.2735c35b495a8935.576342a4549837152ef28ba7565737ea56ce6bd1')
+        array('expired' => false, 'key' => 'trnsl.1.1.20200225T153944Z.175417a5207e2d55.6ce1e640398c22fae3807b0289950abde1b12728')
     );
     private $key = '';
     private static $instance;
