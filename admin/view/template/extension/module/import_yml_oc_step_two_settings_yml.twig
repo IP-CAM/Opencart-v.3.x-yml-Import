@@ -13,9 +13,9 @@
                         <div class="well" style="max-height: 200px; overflow-y: auto">
                             {% for yml_category_data_row in yml_categories %}
                                 {% if template_data_selected.category.category_matching[yml_category_data_row.yml_category_id].select is defined and template_data_selected.category.category_matching[yml_category_data_row.yml_category_id]|length > 1 %}
-                            <input class="setCategoryMatching" onchange="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)" name="import_yml_oc_template_data_yml.category.category_matching[{{ yml_category_data_row.yml_category_id }}].select" type="checkbox" id="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" checked="" />
+                            <input class="setCategoryMatching" onchange="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)" name="import_yml_oc_template_data_yml[category][category_matching][{{ yml_category_data_row.yml_category_id }}][select]" type="checkbox" id="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" checked="" />
                                 {% else %}
-                            <input class="setCategoryMatching" onchange="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)" name="import_yml_oc_template_data_yml.category.category_matching[{{ yml_category_data_row.yml_category_id }}].select" type="checkbox" id="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" />
+                            <input class="setCategoryMatching" onchange="setCategoryMatching('{{ yml_category_data_row.yml_category_id }}',this.value,true)" name="import_yml_oc_template_data_yml[category][category_matching][{{ yml_category_data_row.yml_category_id }}][select]" type="checkbox" id="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}" value="{{ yml_category_data_row.yml_category_id }}" />
                                 {% endif %}
                                 <label for="yml_category_category_matching_{{ yml_category_data_row.yml_category_id }}">&nbsp;&nbsp;&nbsp;{{ yml_category_data_row.name }}</label><br>
                                 <div id="yml_category_category_matching_select{{ yml_category_data_row.yml_category_id }}" class="well" style="max-height: 200px; overflow-y: auto">
@@ -23,15 +23,8 @@
                                     {% set categories_matching_selected = [] %}
                                     {% set yml_category_id = yml_category_data_row.yml_category_id %}
                                     {% if template_data_selected.category.category_matching[yml_category_id].select is defined and template_data_selected.category.category_matching[yml_category_id].select and yml_categories and categories %}
-                                        {% set template_data_selected = template_data_selected|merge({
-                                            category: template_data_selected.category|merge({
-                                                category_matching: template_data_selected.category.category_matching|merge({
-                                                    yml_category_id: template_data_selected.category.category_matching[yml_category_id]|merge({
-                                                        select: false
-                                                    })
-                                                })
-                                            })
-                                        }) %}
+                                        {% set selCat = template_data_selected.category.category_matching[yml_category_id].select %}
+                                        {% set selCat = false %}
                                         {% if template_data_selected.category.category_matching[yml_category_id] %}
                                             {% set categories_matching_selected = template_data_selected.category.category_matching[yml_category_id] %}
                                         {% endif %}

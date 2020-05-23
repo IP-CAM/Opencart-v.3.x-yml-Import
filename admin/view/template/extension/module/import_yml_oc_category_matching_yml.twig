@@ -1,15 +1,17 @@
 {% set i = false %}
 {% for category in categories %}
-    {% if template_data_selected[category.category_matching.{{ yml_category_id }}.{{ category.category_id }}] not defined %}
+    {% if ( template_data_selected['category']['category_matching'][yml_category_id][category['category_id']] is not defined ) %}
         {% set i = true %}
-        <div id="setCategoryMatchingRow_{{ yml_category_id }}_{{ category.category_id }}__">
-            <input onclick="setCategoryMatchingRow('{{ yml_category_id }},{{ category.category_id }}',true,'{{ category.name }}');removeSel({{ yml_category_id }},{{ category.category_id }},'_')" name="import_yml_oc_template_data_yml[category][category_matching][{{ yml_category_id }}][{{ category.category_id }}]" type="checkbox" value="{{ category.category_id }}" />
-            <label for="import_yml_oc_template_data_yml[category][category_matching][{{ yml_category_id }}][{{ category.category_id }}]">&nbsp;&nbsp;&nbsp;{{ category.name }}</label><br>
+        <div id="setCategoryMatchingRow_{{ yml_category_id }}_{{ category['category_id'] }}__">
+            <input onclick="setCategoryMatchingRow('{{ yml_category_id }}','{{ category['category_id'] }}',true,'{{ category['name'] }}');removeSel({{ yml_category_id }},{{ category['category_id'] }},'_')"
+                   name="import_yml_oc_template_data_yml[category][category_matching][{{ yml_category_id }}][{{ category['category_id'] }}]"
+                   type="checkbox" value="{{ category['category_id'] }}"/>
+            <label for="import_yml_oc_template_data_yml[category][category_matching][{{ yml_category_id }}][{{ category['category_id'] }}]">&nbsp;&nbsp;&nbsp;{{ category['name'] }}</label><br>
         </div>
     {% endif %}
 {% endfor %}
-{% if i == false and categories is defined %}
+{% if (not i and categories) %}
     {{ text_all_categories_are_choosen }}
-{% elseif categories is not defined %}
+{% elseif (not categories) %}
     {{ text_no_categories_on_site }}
 {% endif %}
